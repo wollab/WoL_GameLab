@@ -80,6 +80,8 @@
   .ichip.miss{background:#fdeee9;border-color:#f3cfc2;color:#b5462f}
   .iimg{vertical-align:middle;border-radius:5px;object-fit:cover;box-shadow:0 1px 2px rgba(0,0,0,.15)}
   .ownrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .sharewrap{margin-top:8px}
+  #sharecard{width:100%;max-width:340px;height:auto;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
   .shop .emoji .iimg{box-shadow:0 2px 4px rgba(0,0,0,.18)}
   .big{font-size:42px;font-weight:800;color:var(--navy)}
   .tier{font-size:20px;font-weight:700;color:var(--gold2);margin:6px 0}
@@ -702,6 +704,8 @@ function endGame(){
   let total=wl+obj+gold+emg+unc+debt;
   let tier = total<6?"ลองใหม่อีกครั้ง!" : total<16?"มีพื้นฐานการเงินแล้ว!" : total<26?"นักบริหารเงินตัวจริง" : "ทำฝันสำเร็จขั้นเทพ!";
   const persona=getPersona();
+  S.result={total,tier,persona,doneCount:S.done.length,gold:S.gold,net:netWorth(),
+    character:S.character, breakdown:{wl,obj,gold,emg,unc,debt}};
   S.phase=3; render();
   M().innerHTML=`<div class="card center">
     <h2>จบเกม! สรุปผล 5 รอบ</h2>
@@ -724,12 +728,96 @@ function endGame(){
     <div class="legend">เงินคงเหลือสุทธิ: ${netWorth()} · ออมสะสม ${S.stats.saveMoves} · ฝากประจำ ${S.stats.fdTotal} · ใช้ผ่อน ${S.stats.payLaterUsed} ครั้ง · ทำงาน ${S.stats.worked} · ช้อป ${S.stats.shopped}</div>
   </div>
   <div class="card center">
-    <p class="sub">อยากลองกลยุทธ์ใหม่? หรือชวนเพื่อนเล่นเกมจริง 2–6 คน</p>
+    <h2 style="font-size:16px">แชร์ผลของคุณ</h2>
+    <p class="sub">อวดนิสัยการเงินให้เพื่อน แล้วชวนมาลองเล่น</p>
+    <div class="sharewrap"><canvas id="sharecard" width="500" height="640"></canvas></div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn gold" style="flex:1" onclick="doShare()">📤 แชร์ผล</button>
+      <button class="btn ghost" style="flex:1" onclick="saveShareImage()">💾 บันทึกรูป</button>
+    </div>
+    <button class="btn ghost" style="margin-top:8px" onclick="copyResult()">🔗 คัดลอกลิงก์ชวนเล่น</button>
+  </div>
+  <div class="card center">
     <button class="btn gold" onclick="screenStart()">เล่นอีกครั้ง</button>
     <div style="height:8px"></div>
     <a href="https://wizardsoflearning.com/wishlist-financial-board-game/" target="_blank" style="text-decoration:none"><button class="btn ghost">รู้จักบอร์ดเกมตัวจริง →</button></a>
   </div>`;
   document.getElementById('phasewrap').innerHTML='';
+  drawShareCard();
+}
+
+/* ===== SHARE RESULT ===== */
+const GAME_URL="https://wollab.github.io/WoL_GameLab/wishlist/";
+function shareText(){
+  const r=S.result; const c=r.character?`${r.character.e} ${r.character.nm} · ${r.character.th}\n`:'';
+  return `ผมเล่น Wishlist บอร์ดเกมการเงิน ได้ ${r.total} VP — "${r.tier}"\n`+
+    `นิสัยการเงิน: ${r.persona.name}\n${c}มาลองจัดการเงินดูบ้าง 👇\n${GAME_URL}`;
+}
+function drawShareCard(cb){
+  const cv=document.getElementById('sharecard'); if(!cv) return;
+  const x=cv.getContext('2d'), W=cv.width, H=cv.height, r=S.result;
+  // พื้นหลัง navy + การ์ดครีม
+  const g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#16244d'); g.addColorStop(1,'#21356f');
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.fillStyle='#f6f1e4'; roundRect(x,26,26,W-52,H-52,22); x.fill();
+  const cx=W/2;
+  // โลโก้
+  const logo=new Image();
+  function paint(){
+    if(logo.complete && logo.naturalWidth) x.drawImage(logo, cx-110, 50, 220, 220*logo.naturalHeight/logo.naturalWidth);
+    let ly=logo.naturalWidth? 50+220*logo.naturalHeight/logo.naturalWidth+6 : 70;
+    // ตัวละคร
+    x.textAlign='center';
+    if(r.character){ x.font='44px sans-serif'; x.fillText(r.character.e, cx, ly+44); ly+=58;
+      x.fillStyle='#16244d'; x.font='bold 18px "Segoe UI",sans-serif'; x.fillText(r.character.nm.replace(/"/g,''), cx, ly); ly+=20;
+      x.fillStyle='#6b7280'; x.font='14px "Segoe UI",sans-serif'; x.fillText(r.character.th, cx, ly); ly+=24; }
+    // VP ใหญ่
+    x.fillStyle='#16244d'; x.font='800 78px "Segoe UI",sans-serif'; x.fillText(r.total, cx, ly+66);
+    x.fillStyle='#caa128'; x.font='bold 20px "Segoe UI",sans-serif'; x.fillText('VICTORY POINTS', cx, ly+92);
+    ly+=120;
+    // tier
+    x.fillStyle='#caa128'; x.font='bold 22px "Segoe UI",sans-serif'; x.fillText(r.tier, cx, ly); ly+=34;
+    // persona
+    x.fillStyle='#16244d'; x.font='bold 16px "Segoe UI",sans-serif';
+    wrapText(x, 'นิสัยการเงิน: '+r.persona.name, cx, ly, W-90, 22); ly+=26;
+    x.fillStyle='#6b7280'; x.font='13px "Segoe UI",sans-serif';
+    ly=wrapText(x, r.persona.desc, cx, ly, W-90, 18)+10;
+    // มินิสเตตส์
+    x.fillStyle='#2e9e6b'; x.font='13px "Segoe UI",sans-serif';
+    x.fillText(`Wishlist สำเร็จ ${r.doneCount} ใบ · ทอง ${r.gold} · เงินสุทธิ ${r.net}`, cx, ly); ly+=8;
+    // CTA
+    x.fillStyle='#16244d'; roundRect(x,40,H-92,W-80,42,12); x.fill();
+    x.fillStyle='#e7b53c'; x.font='bold 14px "Segoe UI",sans-serif';
+    x.fillText('▶ ลองเล่น Wishlist · wollab.github.io/WoL_GameLab', cx, H-65);
+    if(cb) cb();
+  }
+  logo.onload=paint; logo.onerror=paint; logo.src='assets/wishlist-logo.png';
+  if(logo.complete) paint();
+}
+function roundRect(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath();}
+function wrapText(x,t,cx,y,maxw,lh){const words=t.split(' ');let line='',yy=y;for(const w of words){const test=line+w+' ';if(x.measureText(test).width>maxw&&line){x.fillText(line.trim(),cx,yy);line=w+' ';yy+=lh;}else line=test;}x.fillText(line.trim(),cx,yy);return yy;}
+function canvasBlob(){return new Promise(res=>document.getElementById('sharecard').toBlob(res,'image/png'));}
+async function doShare(){
+  try{
+    const blob=await canvasBlob();
+    const file=new File([blob],'wishlist-result.png',{type:'image/png'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], text:shareText()}); return;
+    }
+    if(navigator.share){ await navigator.share({text:shareText(), url:GAME_URL}); return; }
+    copyResult();
+  }catch(e){ if(e.name!=='AbortError') copyResult(); }
+}
+function saveShareImage(){
+  const a=document.createElement('a');
+  a.download='wishlist-result.png';
+  a.href=document.getElementById('sharecard').toDataURL('image/png');
+  a.click(); toast('บันทึกรูปผลแล้ว');
+}
+function copyResult(){
+  const t=shareText();
+  if(navigator.clipboard){ navigator.clipboard.writeText(t).then(()=>toast('คัดลอกข้อความ + ลิงก์แล้ว')); }
+  else toast('คัดลอกไม่ได้ในเบราว์เซอร์นี้');
 }
 // นับของที่เคยมี (รวมขายไปแล้วไม่นับ; ใช้ของที่ถือตอนจบ + ธีม)
 function getPersona(){
