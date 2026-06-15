@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wishlist — บอร์ดเกมการเงิน (Web Prototype · Pro)</title>
+<style>
+  :root{
+    --navy:#16244d; --navy2:#21356f; --gold:#e7b53c; --gold2:#caa128;
+    --cream:#f6f1e4; --paper:#fffdf7; --ink:#1c2233; --muted:#6b7280;
+    --green:#2e9e6b; --red:#d2553f; --blue:#3b6fb6; --line:#d8d2c0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI","Sarabun",system-ui,sans-serif;background:var(--navy);color:var(--ink);}
+  .wrap{max-width:560px;margin:0 auto;min-height:100vh;background:var(--cream);box-shadow:0 0 40px rgba(0,0,0,.4);}
+  header{background:var(--navy);color:#fff;padding:12px 16px;position:sticky;top:0;z-index:10;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.5px}
+  .brand .logo{height:34px;width:auto;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+  .brand .brandtag{font-weight:400;font-size:11px;color:#9fb0e0}
+  .brand .avatar{margin-left:auto;font-size:22px;background:var(--navy2);border:1.5px solid var(--gold);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center}
+  .brand .avatar:empty{display:none}
+  .dots{display:flex;gap:5px;align-items:center}
+  .dots i{width:9px;height:9px;border-radius:50%;background:#3a5aa0;display:inline-block}
+  .dots i.on{background:var(--gold)}
+  .dots i.cur{background:var(--gold);box-shadow:0 0 0 3px rgba(231,181,60,.3)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+  .stat{background:var(--navy2);border-radius:8px;padding:6px 8px;text-align:center}
+  .stat .l{font-size:10px;color:#aeb8d6;text-transform:uppercase;letter-spacing:.5px}
+  .stat .v{font-size:17px;font-weight:700;color:#fff}
+  .stat .v small{font-size:11px;color:var(--gold)}
+  .roundbar{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;color:#cdd5ee}
+  .phasewrap{display:flex;gap:4px;margin-top:6px}
+  .ph{flex:1;text-align:center;font-size:10px;padding:4px 2px;border-radius:6px;background:#2b3c74;color:#9fb0e0}
+  .ph.active{background:var(--gold);color:var(--navy);font-weight:700}
+  .ph.done{background:#3a5aa0;color:#dfe6fb}
+  main{padding:16px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 2px 4px rgba(0,0,0,.04)}
+  h2{margin:0 0 4px;font-size:18px;color:var(--navy)}
+  .sub{font-size:13px;color:var(--muted);margin:0 0 12px}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:9px;padding:11px 14px;font-size:14px;font-weight:600;transition:.15s}
+  button:active{transform:translateY(1px)}
+  .btn{background:var(--navy);color:#fff;width:100%}
+  .btn:hover{background:var(--navy2)}
+  .btn.gold{background:var(--gold);color:var(--navy)}
+  .btn.gold:hover{background:var(--gold2)}
+  .btn.ghost{background:transparent;border:1.5px solid var(--navy);color:var(--navy)}
+  .btn.sm{width:auto;padding:7px 12px;font-size:13px}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .shopgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .shop{border:1px solid var(--line);border-radius:10px;padding:8px;background:#fff;text-align:center;position:relative}
+  .shop.sale{outline:2px solid var(--red)}
+  .shop .emoji{font-size:26px}
+  .shop .nm{font-size:12px;font-weight:600;margin:2px 0}
+  .shop .pr{font-size:12px;color:var(--muted)}
+  .shop .pr b{color:var(--navy)}
+  .shop .acts{display:flex;gap:4px;margin-top:6px}
+  .shop .acts button{flex:1;padding:6px 2px;font-size:11px}
+  .saletag{position:absolute;top:-8px;right:-6px;background:var(--red);color:#fff;font-size:9px;padding:2px 6px;border-radius:8px}
+  .wcard{border:1px solid var(--line);border-radius:9px;padding:8px 10px;margin-bottom:7px;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .wcard.job{border-left:5px solid var(--blue)}
+  .wcard.exp{border-left:5px solid var(--gold)}
+  .wcard.done{opacity:.55;background:#eef6f0}
+  .wcard .info{font-size:13px}
+  .wcard .req{font-size:11px;color:var(--muted)}
+  .pill{display:inline-block;background:#eee;border-radius:20px;padding:1px 8px;font-size:11px;margin:1px}
+  .vp{font-weight:700;color:var(--green);font-size:13px;white-space:nowrap}
+  .log{font-size:12px;color:#444;background:#efe9d8;border-radius:10px;padding:10px;max-height:150px;overflow-y:auto}
+  .log div{padding:2px 0;border-bottom:1px dashed #d8cfb5}
+  .log div:last-child{border:none}
+  .note{font-size:12px;background:#fff7df;border:1px solid var(--gold);border-radius:8px;padding:8px 10px;color:#6b5616;margin-bottom:10px}
+  .center{text-align:center}
+  .hero{background:linear-gradient(160deg,#fffdf7,#f3edda);border:1px solid var(--gold)}
+  .herologo{width:78%;max-width:340px;margin:4px auto 10px;display:block;filter:drop-shadow(0 3px 6px rgba(0,0,0,.18))}
+  .shop .emoji{font-size:26px;line-height:1.1}
+  .shop{border-top:3px solid var(--line)}
+  .chipset{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+  .ichip{display:inline-flex;align-items:center;gap:3px;font-size:11px;padding:2px 7px;border-radius:20px;background:#eef0f4;border:1px solid #e0e3ea}
+  .ichip.ok{background:#e4f6ec;border-color:#bfe6cf;color:#1f7a4d}
+  .ichip.miss{background:#fdeee9;border-color:#f3cfc2;color:#b5462f}
+  .iimg{vertical-align:middle;border-radius:5px;object-fit:cover;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+  .ownrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .shop .emoji .iimg{box-shadow:0 2px 4px rgba(0,0,0,.18)}
+  .big{font-size:42px;font-weight:800;color:var(--navy)}
+  .tier{font-size:20px;font-weight:700;color:var(--gold2);margin:6px 0}
+  .inputrow{display:flex;align-items:center;gap:8px;margin:8px 0}
+  .inputrow input{flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:15px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:20px;font-size:13px;opacity:0;transition:.3s;z-index:50;pointer-events:none;max-width:90%}
+  .toast.show{opacity:1}
+  .selcard{cursor:pointer;border:2px solid var(--line)}
+  .selcard.sel{border-color:var(--gold);background:#fff7df}
+  .legend{font-size:11px;color:var(--muted);margin-top:6px}
+  .endscore{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;border-bottom:1px dashed var(--line)}
+  footer{padding:14px 16px;text-align:center;font-size:11px;color:#9aa0ac;background:var(--navy);color:#8893b5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <img src="assets/wishlist-logo.png" alt="Wishlist" class="logo">
+      <span class="brandtag">การเงิน · Pro</span>
+      <span class="avatar" id="avatar"></span>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="roundbar">
+      <span id="roundlbl">รอบ 1 / 5</span>
+      <span class="dots" id="rounddots"></span>
+      <span id="eventlbl"></span>
+    </div>
+    <div class="phasewrap" id="phasewrap"></div>
+  </header>
+  <main id="main"></main>
+  <footer>Prototype การเรียนรู้ · กติกาอ้างอิง Wishlist 2 Rulebook (Pro) · Wizards of Learning</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ DATA (ของจริงจากไฟล์ production Wishlist 2 Retail) ============ */
+// 9 ของจริงในกล่อง · ราคา buy/sell อ่านจาก artwork item board จริง (sell = buy-5; concert & trip ขายไม่ได้)
+const ITEMS = {
+  fashion:  {th:"แฟชั่น",     e:"👗", sellable:true,  buy:[5,6,7,8,10,11,12,13],        sell:[0,1,2,3,5,6,7,8]},
+  headset:  {th:"หูฟัง",      e:"🎧", sellable:true,  buy:[6,7,8,9,11,12,13,14],        sell:[1,2,3,4,6,7,8,9]},
+  concert:  {th:"ตั๋วคอนเสิร์ต",e:"🎫", sellable:false, buy:[7,8,9,10,12,14,14,14],       sell:[0,0,0,0,0,0,0,0]},
+  trip:     {th:"ทริปท่องเที่ยว",e:"✈️", sellable:false, buy:[8,9,10,11,13,15,15,15],      sell:[0,0,0,0,0,0,0,0]},
+  camera:   {th:"กล้อง",      e:"📷", sellable:true,  buy:[12,14,16,18,20,22,23,24],    sell:[7,9,11,13,15,17,18,19]},
+  mobile:   {th:"สมาร์ตโฟน",  e:"📱", sellable:true,  buy:[14,16,18,20,22,24,25,26],    sell:[9,11,13,15,17,19,20,21]},
+  computer: {th:"คอมพิวเตอร์", e:"💻", sellable:true,  buy:[16,18,20,22,24,26,27,28],    sell:[11,13,15,17,19,21,22,23]},
+  motorbike:{th:"มอเตอร์ไซค์", e:"🏍️", sellable:true,  buy:[18,20,23,25,27,30,30,30],    sell:[13,15,18,20,22,25,25,25]},
+};
+const GOLD_LADDER=[20,23,26,29,32]; // ราคาทองจริงต่อรอบ (Round 1-5) จาก Gold board artwork; =5VP/ชิ้น
+const ICOL={fashion:"#e58fb1",headset:"#c66",concert:"#8c5bd6",trip:"#3fae6a",camera:"#3b6fb6",mobile:"#5aa9c9",computer:"#7a5bd6",motorbike:"#d2553f"};
+// ภาพ tile อุปกรณ์จริงจากกล่อง (8.Tokens)
+function pic(t,s){return `<img class="iimg" src="assets/items/${t}.png" alt="" style="width:${s}px;height:${s}px">`;}
+function reqChips(card){
+  return `<div class="chipset">`+Object.entries(card.req).map(([t,n])=>{
+    const have=itemCount(t), ok=have>=n;
+    return `<span class="ichip ${ok?'ok':'miss'}">${pic(t,16)} ${ITEMS[t].th}${n>1?'×'+n:''} ${ok?'✓':have+'/'+n}</span>`;
+  }).join('')+`</div>`;
+}
+// 40 Wishlist cards จริง (ชื่อ TH/EN + VP จริง + งาน/โบนัสจริง) · required items อิงธีมการ์ด
+const WISHLIST=[
+  {id:1, t:"exp", nm:"ดาวโรงเรียน", en:"School Celeb", req:{mobile:1}, vp:1},
+  {id:2, t:"exp", nm:"ฟังเพลงชิวๆ", en:"Music Lover", req:{headset:1}, vp:2},
+  {id:3, t:"exp", nm:"ไปแอ่น", en:"Relaxing Ride", req:{motorbike:1}, vp:2},
+  {id:4, t:"exp", nm:"ขี่มอไซค์เที่ยว", en:"Bike Trip", req:{motorbike:1,trip:1}, vp:3},
+  {id:5, t:"exp", nm:"จัดเต็มคอนเสิร์ต", en:"Gig Boss", req:{concert:1}, vp:4},
+  {id:6, t:"job", nm:"รีวิวเสื้อผ้า", en:"Fashion Review", req:{fashion:1,camera:1}, vp:3, extra:2},
+  {id:7, t:"exp", nm:"ตามติดศิลปิน", en:"Artist Fanatic", req:{concert:1}, vp:2},
+  {id:8, t:"exp", nm:"แฟนมีต", en:"Fandom Fever", req:{concert:1,fashion:1}, vp:3},
+  {id:9, t:"job", nm:"รายการไลฟ์สไตล์", en:"Lifestyle Stream", req:{camera:1,computer:1}, vp:2, extra:2},
+  {id:10,t:"exp", nm:"แดนซ์แบทเทิล", en:"Dance Battle", req:{headset:1,mobile:1}, vp:3},
+  {id:11,t:"job", nm:"ช่องเที่ยวคนเดียว", en:"Travel Soloist", req:{trip:1,camera:1}, vp:2, extra:2},
+  {id:12,t:"job", nm:"ผู้ช่วยศิลปิน", en:"Artist Assistant", req:{computer:1}, vp:2, extra:4},
+  {id:13,t:"exp", nm:"ติ่งออปป้า", en:"K-Pop Fan", req:{concert:1,camera:1,mobile:1}, vp:4},
+  {id:14,t:"job", nm:"ขายของออนไลน์", en:"Online Seller", req:{headset:1,camera:1}, vp:2, extra:4},
+  {id:15,t:"job", nm:"สตรีมเมอร์", en:"Streamer", req:{headset:1,computer:1}, vp:2, extra:4},
+  {id:16,t:"job", nm:"ผู้จัดการส่วนตัว", en:"Personal Manager", req:{mobile:1,motorbike:1}, vp:3, extra:3},
+  {id:17,t:"exp", nm:"แฟชั่นนิสตา", en:"Fashionista", req:{fashion:2,motorbike:1}, vp:5},
+  {id:18,t:"exp", nm:"เต้นคัฟเวอร์", en:"Cover Dancer", req:{headset:1,camera:1,mobile:1}, vp:5},
+  {id:19,t:"job", nm:"นางแบบโซเชียล", en:"Fashion Influencer", req:{fashion:1,camera:1}, vp:2, extra:3},
+  {id:20,t:"exp", nm:"เทศกาลดนตรี", en:"Music Festival", req:{concert:1,trip:1}, vp:6},
+  {id:21,t:"job", nm:"ดีเจ", en:"DJ", req:{headset:1,computer:1}, vp:4, extra:3},
+  {id:22,t:"exp", nm:"ชีวิตสุดเหวี่ยง", en:"Epic Adventure", req:{motorbike:1,camera:1,trip:1}, vp:5},
+  {id:23,t:"exp", nm:"ทริปปิดเทอมใหญ่", en:"Semester Break Trip", req:{trip:1,headset:1,camera:1}, vp:5},
+  {id:24,t:"job", nm:"ช่อง FC ศิลปิน", en:"Fan Club Channel", req:{camera:1,computer:1,concert:1}, vp:4, extra:4},
+  {id:25,t:"job", nm:"รายการพาเที่ยว", en:"Travel Channel", req:{trip:1,camera:1}, vp:4, extra:4},
+  {id:26,t:"exp", nm:"ไปสวนสนุก", en:"Fun Park Trip", req:{fashion:1,mobile:1,motorbike:1}, vp:6},
+  {id:27,t:"exp", nm:"ทริปใหญ่หัวใจว้าวุ่น", en:"Sweet Heart Trip", req:{fashion:1,motorbike:1}, vp:4},
+  {id:28,t:"exp", nm:"ถ่ายหนังสั้น", en:"Short Film", req:{headset:1,camera:1,computer:1}, vp:6},
+  {id:29,t:"exp", nm:"รถเล็กทัวร์ริ่ง", en:"Tiny Touring", req:{motorbike:1,trip:1,camera:1}, vp:7},
+  {id:30,t:"job", nm:"แฮกเกอร์", en:"Hacker", req:{computer:1}, vp:4, extra:5},
+  {id:31,t:"exp", nm:"แอ่นไปคอน", en:"Bike to Concert", req:{motorbike:1,concert:1}, vp:3},
+  {id:32,t:"exp", nm:"เล่นเกม", en:"Game Time", req:{mobile:1,computer:1}, vp:4},
+  {id:33,t:"job", nm:"ดาวโซเชียล", en:"Social Celebrity", req:{camera:1,mobile:1,motorbike:1}, vp:4, extra:4},
+  {id:34,t:"job", nm:"จัดงานแฟร์", en:"Event Organizer", req:{camera:1,trip:1,motorbike:1}, vp:4, extra:3},
+  {id:35,t:"job", nm:"ช่างภาพ", en:"Photo Pro", req:{camera:2,motorbike:1}, vp:5, extra:3},
+  {id:36,t:"exp", nm:"ตั้งทางไกล", en:"Online Concert", req:{camera:1,concert:1}, vp:3},
+  {id:37,t:"exp", nm:"เก็บเกี่ยวประสบการณ์", en:"Memory Maker", req:{camera:1,motorbike:1,trip:1}, vp:6},
+  {id:38,t:"job", nm:"เปิดสตูดิโอ", en:"Creative Studio", req:{camera:1,computer:1}, vp:6, extra:2},
+  {id:39,t:"exp", nm:"แม่ยกตัวยง", en:"Artist Supporter", req:{concert:1,fashion:1,mobile:1}, vp:7},
+  {id:40,t:"exp", nm:"ทัวร์คอนเสิร์ต", en:"Concert Tour", req:{concert:1,headset:1,camera:1}, vp:5},
+];
+// 12 Objective cards จริง = "เงินเก็บจบเกม" (ต้องถือเงินถึงเป้าตอนจบ → VP)
+const OBJECTIVES=[
+  {nm:"กินบุฟเฟ่ต์", en:"Buffet Goal", cost:20, vp:3},
+  {nm:"ตกแต่งห้อง", en:"Room Decor", cost:25, vp:4},
+  {nm:"ช่วยปลดหนี้ทางบ้าน", en:"Debt Freedom", cost:30, vp:5},
+  {nm:"เงินเก็บเรียนต่อ", en:"Education Savings", cost:35, vp:6},
+  {nm:"เงินทำธุรกิจ", en:"Business Startup", cost:40, vp:7},
+  {nm:"เติมเกม", en:"Game Boost", cost:20, vp:3},
+  {nm:"เลี้ยงสัตว์เลี้ยง", en:"Pet Care", cost:25, vp:4},
+  {nm:"เงินเก็บฉุกเฉิน", en:"Safety Net Fund", cost:30, vp:5},
+  {nm:"เงินลงทุน", en:"Investment", cost:35, vp:6},
+  {nm:"เรียนต่อต่างประเทศ", en:"Study Overseas", cost:40, vp:7},
+  {nm:"ท่องเที่ยว", en:"Travel Dreams", cost:30, vp:5},
+  {nm:"เสริมบุคลิกภาพ", en:"Self-Improvement", cost:30, vp:5},
+];
+// 6 ตัวละครจริงจาก Wishlist Personality Quiz
+const CHARACTERS=[
+  {key:"cover", e:"🧭", nm:"\"Cover\" The Explorer", th:"เปิดโลกกว้าง", desc:"ทุ่มเงินกับทริปและประสบการณ์ใหม่ๆ"},
+  {key:"kanom", e:"👗", nm:"\"Kanom-Pung\" The Fashionista", th:"ตัวแม่แฟชั่น", desc:"อัพเดทลุค เสื้อผ้าแอคเซสเซอรี่ตามเทรนด์"},
+  {key:"lumos", e:"🐷", nm:"\"Lumos\" The Saver", th:"ขยันออม", desc:"วางแผนเก็บเงินเพื่อความมั่นคงในอนาคต"},
+  {key:"suga",  e:"🎵", nm:"\"Suga\" The Entertainer", th:"บันเทิงตัวแม่", desc:"คอนเสิร์ต เพลง ซีรีส์ ความบันเทิงมาก่อน"},
+  {key:"gato",  e:"🎮", nm:"\"Gato\" The Gamer", th:"ของไม่แพงไม่มีแรงเล่น", desc:"จัดเต็มเกมโปรดและอุปกรณ์ที่อยากได้"},
+  {key:"haru",  e:"🔥", nm:"\"Haru\" The Extreme", th:"ชีวิตต้องใช้", desc:"กิจกรรมเร้าใจ ท้าทาย หยุดยาวต้องสุดเหวี่ยง"},
+];
+// วงล้อ event (ทอยเต๋าเดิน marker ตามแต้ม)
+const EVENT_WHEEL=["lottery","blank","scam","onsale","badluck","lottery","online","badluck","onsale","scam","blank","online"];
+const EVENT_INFO={
+  lottery:{nm:"ถูกรางวัล 🎉", desc:"รับเงิน +2 เข้าเงินสด"},
+  scam:{nm:"โดนสแกม 😡", desc:"เสียเงิน 3 จากเงินสด"},
+  badluck:{nm:"ซวยนิดหน่อย 😣", desc:"เสียเงิน 1 จากเงินสด"},
+  onsale:{nm:"ลดราคา 🏷️", desc:"เลือก 1 ร้าน ลดราคา 5 เฉพาะจ่ายสดในรอบนี้"},
+  online:{nm:"สั่งของออนไลน์ 📦", desc:"ถ้าเลือกทำงาน รอบนี้ซื้อของได้ 1 ชิ้น"},
+  blank:{nm:"ไม่มีเหตุการณ์ 🌤️", desc:"รอบนี้ปลอดภัย"},
+};
+// ดอกเบี้ยเงินออม (Saving) — ตารางมาตรฐาน
+function savingInterest(b){ if(b>=45)return 5; if(b>=35)return 4; if(b>=24)return 3; if(b>=15)return 2; if(b>=7)return 1; return 0; }
+// ดอกเบี้ยฝากประจำ (Fixed Deposit) — สูงกว่า (rulebook: 7-14→3,15-23→5; ขยายต่อแบบสมเหตุผล)
+function fdInterest(b){ if(b>=45)return 11; if(b>=35)return 9; if(b>=24)return 7; if(b>=15)return 5; if(b>=7)return 3; return 0; }
+
+/* ============ STATE ============ */
+let S;
+function newGame(){
+  S={
+    round:1, phase:0,
+    cash:25, saving:0, fd:0, gold:0,
+    payLater:[], // {type, debt}
+    items:[], // {type, paid:true}  (ของที่จ่ายสดแล้ว) — payLater แยกไว้
+    emergency:0,
+    payTokens:3,
+    markers:{}, // index ราคาปัจจุบันต่อ item
+    goldIdx:0,
+    hand:[], done:[], deck:[],
+    objectives:[], character:null,
+    eventPos:0, event:null, saleShop:null, refilled:false,
+    log:[],
+    stats:{ saveMoves:0, fdTotal:0, payLaterUsed:0, worked:0, shopped:0, sold:0, emergencyUsed:0, lottery:0 }
+  };
+  for(const k in ITEMS) S.markers[k]=0;
+}
+function logit(t){ S.log.unshift(t); }
+
+/* ============ HELPERS ============ */
+function itemCount(type){ // นับของทั้งหมด (รวม pay later) สำหรับเช็คทำ wishlist สำเร็จ
+  let n=S.items.filter(i=>i.type===type).length + S.payLater.filter(p=>p.type===type).length;
+  return n;
+}
+function moneyHeld(){ return S.cash+S.saving+S.fd; }
+function netWorth(){ return moneyHeld()+S.gold*5; }
+// Objective จริง = ต้องถือเงินถึงเป้าตอนจบ; เงินก้อนเดียวใช้ซ้ำไม่ได้ (ทำสำเร็จแบบ greedy)
+function objectiveResult(){
+  let remain=moneyHeld(), vp=0, done=[];
+  [...S.objectives].sort((a,b)=>a.cost-b.cost).forEach(o=>{
+    const ok=remain>=o.cost;
+    if(ok){ remain-=o.cost; vp+=o.vp; }
+    done.push({o,ok});
+  });
+  return {vp, done};
+}
+function estimateVP(){
+  let v=0;
+  S.done.forEach(c=>v+=c.vp);
+  v+=objectiveResult().vp;
+  v+=S.gold*5;
+  v-=S.emergency*5;
+  v-=S.hand.length; // -1 ต่อ wishlist ค้าง
+  S.payLater.forEach(p=>v-=p.debt);
+  return v;
+}
+function buyPrice(type){ let p=ITEMS[type].buy[S.markers[type]]; if(S.saleShop===type) p=Math.max(0,p-5); return p; }
+function checkWishlist(){
+  for(let i=S.hand.length-1;i>=0;i--){
+    const c=S.hand[i];
+    let ok=true;
+    for(const t in c.req){ if(itemCount(t)<c.req[t]) ok=false; }
+    if(ok){ S.done.push(c); S.hand.splice(i,1); toast("✓ ทำ Wishlist สำเร็จ: "+c.nm); }
+  }
+}
+function hasAllItems(card){ for(const t in card.req){ if(itemCount(t)<card.req[t]) return false; } return true; }
+
+/* ============ UI RENDER ============ */
+const PHASES=["รับรายได้","จัดการเงิน","เติม Wishlist","รับมือความเสี่ยง"];
+function renderHeader(){
+  document.getElementById('stats').innerHTML=`
+    <div class="stat"><div class="l">เงินสด</div><div class="v">${S.cash}</div></div>
+    <div class="stat"><div class="l">เงินออม</div><div class="v">${S.saving}</div></div>
+    <div class="stat"><div class="l">ฝากประจำ</div><div class="v">${S.fd}</div></div>
+    <div class="stat"><div class="l">ทอง</div><div class="v">${S.gold}<small> ×5VP</small></div></div>
+    <div class="stat"><div class="l">หนี้ผ่อน</div><div class="v" style="color:${S.payLater.length?'#ffb4a4':'#fff'}">${S.payLater.reduce((a,p)=>a+p.debt,0)}</div></div>
+    <div class="stat"><div class="l">VP ประมาณ</div><div class="v"><small>${estimateVP()}</small></div></div>`;
+  document.getElementById('roundlbl').textContent=`รอบ ${S.round} / 5`;
+  document.getElementById('avatar').textContent=S.character?S.character.e:'';
+  document.getElementById('rounddots').innerHTML=[1,2,3,4,5].map(r=>`<i class="${r<S.round?'on':(r===S.round?'cur':'')}"></i>`).join('');
+  document.getElementById('eventlbl').textContent=S.event?("เหตุการณ์: "+EVENT_INFO[S.event].nm):"";
+  document.getElementById('phasewrap').innerHTML=PHASES.map((p,i)=>{
+    let cls=i===S.phase?'active':(i<S.phase?'done':'');
+    return `<div class="ph ${cls}">${i+1}. ${p}</div>`;
+  }).join('');
+}
+function shopHTML(showActions){
+  let h='<div class="shopgrid">';
+  for(const k in ITEMS){
+    const it=ITEMS[k], maxed=S.markers[k]>=it.buy.length-1 && false;
+    const price=buyPrice(k);
+    const onsale=S.saleShop===k;
+    h+=`<div class="shop ${onsale?'sale':''}" style="border-top-color:${ICOL[k]}">
+      ${onsale?'<span class="saletag">SALE -5</span>':''}
+      <div class="emoji">${pic(k,46)}</div>
+      <div class="nm">${it.th}</div>
+      <div class="pr">ซื้อ <b>${price}</b>${it.sellable?` · ขาย ${it.sell[S.markers[k]]}`:' · ขายไม่ได้'}</div>`;
+    if(showActions){
+      h+=`<div class="acts">
+        <button class="btn gold" onclick="buyCash('${k}')" ${S.cash<price?'disabled':''}>จ่ายสด</button>
+        <button class="btn ghost" onclick="buyLater('${k}')" ${S.payTokens<=0?'disabled':''}>ผ่อน</button>
+      </div>`;
+    }
+    h+='</div>';
+  }
+  h+='</div>';
+  // ทอง
+  const gp=GOLD_LADDER[S.goldIdx];
+  h+=`<div class="shop" style="margin-top:8px;border-top-color:var(--gold)">
+    <div class="emoji">${pic('gold',46)}</div><div class="nm">ทอง (Gold) · 5 VP/ชิ้น</div>
+    <div class="pr">ซื้อ <b>${gp}</b> · มูลค่าคงที่ตอนซื้อ</div>`;
+  if(showActions) h+=`<div class="acts"><button class="btn gold" onclick="buyGold()" ${S.cash<gp?'disabled':''}>จ่ายสด ${gp}</button></div>`;
+  h+=`</div>`;
+  return h;
+}
+function handHTML(){
+  let h='<div style="margin-top:4px">';
+  if(!S.hand.length) h+='<div class="sub">ไม่มี Wishlist ค้าง</div>';
+  S.hand.forEach(c=>{
+    h+=`<div class="wcard ${c.t}">
+      <div class="info">${c.nm} <span style="font-size:10px;color:#9aa0ac">${c.en||''}</span> <span class="pill">${c.t==='job'?'งาน +'+c.extra:'ประสบการณ์'}</span>
+        ${reqChips(c)}</div>
+      <div class="vp">+${c.vp} VP</div></div>`;
+  });
+  if(S.done.length){
+    h+=`<div class="legend">สำเร็จแล้ว: ${S.done.map(c=>c.nm).join(', ')}</div>`;
+  }
+  h+='</div>';
+  return h;
+}
+function ownedHTML(){
+  const counts={};
+  S.items.forEach(i=>counts[i.type]=(counts[i.type]||0)+1);
+  const pl={};
+  S.payLater.forEach(p=>pl[p.type]=(pl[p.type]||0)+1);
+  let parts=[];
+  for(const t in counts) parts.push(pic(t,20)+'×'+counts[t]);
+  for(const t in pl) parts.push(pic(t,20)+'×'+pl[t]+'(ผ่อน)');
+  if(S.gold) parts.push(pic('gold',20)+'×'+S.gold);
+  return parts.length?('<div class="legend ownrow">ของที่มี: '+parts.join('  ')+'</div>'):'<div class="legend">ยังไม่มีของ</div>';
+}
+function logHTML(){ return `<div class="log">${S.log.slice(0,12).map(l=>'<div>'+l+'</div>').join('')||'<div>เริ่มเกม</div>'}</div>`; }
+
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1900); }
+
+/* ============ FLOW ============ */
+function render(){ renderHeader(); window.scrollTo(0,0); }
+const M=()=>document.getElementById('main');
+
+/* ---- START / SETUP ---- */
+function screenStart(){
+  newGame();
+  M().innerHTML=`<div class="card center hero">
+    <img src="assets/wishlist-logo.png" alt="Wishlist" class="herologo">
+    <p class="sub">บอร์ดเกมการเงินที่ช่วยให้คนรุ่นใหม่วางแผนการเงินในแบบของตัวเอง<br>เวอร์ชันเล่นคนเดียว · โหมด Pro เต็มระบบ · เล่น 5 รอบ</p>
+    <div class="note">แต่ละรอบมี 4 ช่วง: รับรายได้ → จัดการเงิน → เติม Wishlist (ทำงาน/ช้อป) → รับมือความเสี่ยง<br>
+    มีเงินออม ดอกเบี้ย ฝากประจำ ผ่อน (Pay Later) และเหตุการณ์สุ่ม — กลไกตามบอร์ดเกมจริง</div>
+    <button class="btn gold" onclick="screenCharacter()">เริ่มเล่น</button>
+  </div>`;
+  document.getElementById('stats').innerHTML='';
+  document.getElementById('phasewrap').innerHTML='';
+  document.getElementById('rounddots').innerHTML='';
+  document.getElementById('avatar').textContent='';
+  document.getElementById('roundlbl').textContent='จัดสรรเงิน เติมความฝัน';
+  document.getElementById('eventlbl').textContent='';
+}
+function screenCharacter(){
+  M().innerHTML=`<div class="card">
+    <h2>เลือกตัวละครของคุณ</h2>
+    <p class="sub">6 บุคลิกการเงินจาก Wishlist Personality Quiz — เลือกแนวที่ใกล้ตัวคุณ (เป็นธีม ไม่มีผลต่อกติกา)</p>
+    ${CHARACTERS.map(c=>`<div class="wcard selcard exp" onclick="pickChar('${c.key}')">
+      <div class="info"><b>${c.e} ${c.nm}</b> · ${c.th}<div class="req">${c.desc}</div></div>
+      <div class="vp" style="color:var(--navy)">›</div></div>`).join('')}
+  </div>`;
+  document.getElementById('roundlbl').textContent='เลือกตัวละคร';
+}
+function pickChar(key){ S.character=CHARACTERS.find(c=>c.key===key); screenSetup(); }
+// Pro setup: deal 6 wishlist keep 4, deal 2 objectives, start 25 + gold 1
+let setupPick=[];
+function screenSetup(){
+  // deck
+  let pool=[...WISHLIST].sort(()=>Math.random()-0.5);
+  S.deck=pool;
+  const six=S.deck.splice(0,6);
+  S._six=six; setupPick=[];
+  // objectives
+  S.objectives=[...OBJECTIVES].sort(()=>Math.random()-0.5).slice(0,2);
+  S.gold=1; logit("เริ่มเกม (Pro): เงิน 25, ทอง 1, Pay Later 3 โทเคน");
+  render();
+  drawSetup();
+}
+function drawSetup(){
+  M().innerHTML=`<div class="card">
+    <h2>เลือก Wishlist 4 ใบ</h2>
+    <p class="sub">โหมด Pro แจก 6 ใบ เก็บไว้ 4 ใบ (เลือกแล้ว ${setupPick.length}/4)</p>
+    <div id="six"></div>
+    <button class="btn gold" onclick="confirmSetup()" ${setupPick.length!==4?'disabled':''}>ยืนยัน 4 ใบนี้</button>
+  </div>
+  <div class="card"><h2 style="font-size:15px">เป้าหมายระยะยาว (Objective)</h2>
+    <p class="sub">"เงินเก็บจบเกม" — ต้อง<b>ถือเงิน</b>ให้ถึงเป้าตอนจบเกม (เงินสด+ออม+ฝากประจำ) ถึงได้ VP</p>
+    ${S.objectives.map(o=>`<div class="wcard exp"><div class="info">${o.nm} <span class="pill">${o.en}</span><div class="req">ถือเงิน ${o.cost} ตอนจบเกม</div></div><div class="vp">+${o.vp} VP</div></div>`).join('')}
+  </div>`;
+  document.getElementById('six').innerHTML=S._six.map((c,idx)=>`
+    <div class="wcard selcard ${setupPick.includes(idx)?'sel':''} ${c.t}" onclick="togglePick(${idx})">
+      <div class="info">${c.nm} <span class="pill">${c.t==='job'?'งาน +'+c.extra:'ประสบการณ์'}</span>
+      ${reqChips(c)}</div>
+      <div class="vp">+${c.vp} VP</div></div>`).join('');
+}
+function togglePick(i){
+  const p=setupPick.indexOf(i);
+  if(p>=0) setupPick.splice(p,1);
+  else if(setupPick.length<4) setupPick.push(i);
+  drawSetup();
+}
+function confirmSetup(){
+  S.hand=setupPick.map(i=>S._six[i]);
+  const rest=S._six.filter((c,i)=>!setupPick.includes(i));
+  S.deck.push(...rest);
+  startRound();
+}
+
+/* ---- ROUND ---- */
+function startRound(){ S.phase=0; S.event=null; S.saleShop=null; S.refilled=false; render(); phase1(); }
+
+/* PHASE 1 — Receive income */
+function phase1(){
+  S.phase=0;
+  // 1 รับเงิน +5
+  S.cash+=5; logit(`รอบ ${S.round}: รับรายได้ +5`);
+  // 2 ดอกเบี้ยเงินออม
+  const si=savingInterest(S.saving); if(si){ S.cash+=si; logit(`ดอกเบี้ยเงินออม +${si} (จากเงินออม ${S.saving})`); }
+  // 2.1 ดอกเบี้ยฝากประจำ
+  const fi=fdInterest(S.fd); if(fi){ S.cash+=fi; logit(`ดอกเบี้ยฝากประจำ +${fi} (จาก FD ${S.fd})`); }
+  // 2.2 จ่ายค่าถือครองผ่อน 1/ชิ้น
+  if(S.payLater.length){ const c=Math.min(S.cash,S.payLater.length); S.cash-=c; logit(`จ่ายดอกผ่อน -${S.payLater.length} (${S.payLater.length} ชิ้น)`); if(c<S.payLater.length) logit('⚠️ เงินสดไม่พอจ่ายดอกผ่อนเต็ม'); }
+  render();
+  M().innerHTML=`<div class="card">
+    <h2>ช่วงที่ 1 · รับรายได้</h2>
+    <p class="sub">รับเงินประจำ + ดอกเบี้ย แล้วเลือกเติม Wishlist</p>
+    ${logHTML()}
+    <div style="margin-top:12px">${handHTML()}</div>
+    <div class="note">โหมด Pro: เลือกจั่ว Wishlist เพิ่มได้ (จั่ว 2 เก็บ 1) — ถือค้างได้ไม่เกิน 5 ใบ · ทุกใบที่ค้างตอนจบ -1 VP</div>
+    <div class="row">
+      <button class="btn ghost sm" onclick="refillDraw()" ${S.refilled||S.hand.length>=5||S.deck.length<1?'disabled':''}>จั่ว 2 เก็บ 1</button>
+      <button class="btn gold" style="flex:1" onclick="phase2()">ไปจัดการเงิน →</button>
+    </div>
+  </div>`;
+}
+let drawChoice=null;
+function refillDraw(){
+  if(S.refilled||S.deck.length<1) return;
+  const two=S.deck.splice(0,2);
+  M().innerHTML=`<div class="card"><h2>จั่ว 2 เก็บ 1</h2><p class="sub">เลือกเก็บ 1 ใบ อีกใบกลับลงกอง</p>
+  ${two.map((c,i)=>`<div class="wcard selcard ${c.t}" onclick="keepDraw(${i})">
+    <div class="info">${c.nm} <span class="pill">${c.t==='job'?'งาน +'+c.extra:'ประสบการณ์'}</span>
+    ${reqChips(c)}</div>
+    <div class="vp">+${c.vp} VP</div></div>`).join('')}</div>`;
+  S._two=two;
+}
+function keepDraw(i){
+  const keep=S._two[i], back=S._two[1-i];
+  S.hand.push(keep); S.deck.push(back); S.refilled=true;
+  logit('จั่ว Wishlist เพิ่ม: '+keep.nm);
+  render(); phase1();
+}
+
+/* PHASE 2 — Manage money */
+function phase2(){
+  S.phase=1; render();
+  drawPhase2();
+}
+function drawPhase2(){
+  M().innerHTML=`<div class="card">
+    <h2>ช่วงที่ 2 · จัดการเงิน</h2>
+    <p class="sub">ย้ายเงินเข้า/ออกเงินออม · ฝากประจำ (ถอนไม่ได้จนจบเกม แต่ดอกสูง) · ทำ Objective</p>
+    <div class="legend">เงินสด ${S.cash} · เงินออม ${S.saving} · ฝากประจำ ${S.fd}</div>
+    <div class="inputrow"><span style="font-size:13px;width:120px">เงินสด → ออม</span><input type="number" id="toSave" min="0" value="0"><button class="btn sm" onclick="moveMoney('save')">ย้าย</button></div>
+    <div class="inputrow"><span style="font-size:13px;width:120px">ออม → เงินสด</span><input type="number" id="fromSave" min="0" value="0"><button class="btn sm" onclick="moveMoney('unsave')">ย้าย</button></div>
+    <div class="inputrow"><span style="font-size:13px;width:120px">เงินสด → ฝากประจำ 🔒</span><input type="number" id="toFd" min="0" value="0"><button class="btn sm gold" onclick="moveMoney('fd')">ฝาก</button></div>
+    <div class="legend">ดอกเบี้ย: ออม 7-14→1 …45+→5 · ฝากประจำ 7-14→3, 15-23→5 (สูงกว่า)</div>
+  </div>
+  <div class="card"><h2 style="font-size:15px">เป้าหมายระยะยาว (Objective)</h2>
+    <p class="sub">ถือเงินให้ถึงเป้าตอนจบเกม · ตอนนี้ถือ ${moneyHeld()} (เงินก้อนเดียวใช้ทำหลายเป้าพร้อมกันไม่ได้)</p>
+    ${objectiveResult().done.map(({o,ok})=>`<div class="wcard exp ${ok?'done':''}">
+      <div class="info">${o.nm} <span class="pill">${o.en}</span><div class="req">ถือเงิน ${o.cost} ตอนจบ ${ok?' ✓ ถึงแล้ว':''}</div></div>
+      <div class="vp">+${o.vp} VP</div></div>`).join('')}
+  </div>
+  <div class="card center">
+    <p class="sub">พร้อมแล้วทอยเต๋าเดินวงล้อเหตุการณ์ของรอบนี้</p>
+    <button class="btn gold" onclick="rollEvent()">🎲 ทอยเต๋า เดินเหตุการณ์</button>
+  </div>`;
+}
+function moveMoney(kind){
+  if(kind==='save'){ let v=Math.min(+document.getElementById('toSave').value||0,S.cash); S.cash-=v; S.saving+=v; if(v){S.stats.saveMoves+=v; logit(`ย้ายเข้าเงินออม ${v}`);} }
+  if(kind==='unsave'){ let v=Math.min(+document.getElementById('fromSave').value||0,S.saving); S.saving-=v; S.cash+=v; if(v) logit(`ถอนเงินออม ${v}`); }
+  if(kind==='fd'){ let v=Math.min(+document.getElementById('toFd').value||0,S.cash); S.cash-=v; S.fd+=v; if(v){S.stats.fdTotal+=v; logit(`ฝากประจำ ${v} 🔒`);} }
+  render(); drawPhase2();
+}
+function rollEvent(){
+  const d=1+Math.floor(Math.random()*6);
+  S.eventPos=(S.eventPos+d)%EVENT_WHEEL.length;
+  S.event=EVENT_WHEEL[S.eventPos];
+  let msg=`🎲 ทอยได้ ${d} · เดินไปช่อง: ${EVENT_INFO[S.event].nm}`;
+  // ผลทันที
+  if(S.event==='lottery'){ S.cash+=2; S.stats.lottery++; msg+=' (+2)'; }
+  if(S.event==='scam'){ const c=Math.min(S.cash,3); S.cash-=c; msg+=' (-3)'; }
+  if(S.event==='badluck'){ const c=Math.min(S.cash,1); S.cash-=c; msg+=' (-1)'; }
+  logit(msg); render();
+  if(S.event==='onsale'){ chooseSale(); }
+  else phase3();
+}
+function chooseSale(){
+  M().innerHTML=`<div class="card"><h2>🏷️ ลดราคา</h2><p class="sub">เลือก 1 ร้านที่จะลดราคา 5 (เฉพาะจ่ายสดในรอบนี้)</p>
+  <div class="shopgrid">${Object.keys(ITEMS).map(k=>`<div class="shop" style="border-top-color:${ICOL[k]}"><div class="emoji">${pic(k,40)}</div><div class="nm">${ITEMS[k].th}</div>
+    <button class="btn sm gold" style="width:100%;margin-top:6px" onclick="setSale('${k}')">ลดร้านนี้</button></div>`).join('')}</div></div>`;
+}
+function setSale(k){ S.saleShop=k; logit('ลดราคาร้าน '+ITEMS[k].th+' -5 (จ่ายสด)'); phase3(); }
+
+/* PHASE 3 — Fulfill Wishlist : Working หรือ Shopping */
+function phase3(){
+  S.phase=2; render();
+  M().innerHTML=`<div class="card">
+    <h2>ช่วงที่ 3 · เติม Wishlist</h2>
+    <p class="sub">เลือกอย่างใดอย่างหนึ่งในรอบนี้</p>
+    <div class="row">
+      <button class="btn" style="flex:1" onclick="chooseWork()">🛠️ ทำงาน<br><small style="font-weight:400">รับ +10 + โบนัสการ์ดงาน</small></button>
+      <button class="btn gold" style="flex:1" onclick="chooseShop()">🛍️ ช้อปปิ้ง<br><small style="font-weight:400">ซื้อของจ่ายสด/ผ่อน</small></button>
+    </div>
+    ${S.event==='online'?'<div class="note">📦 สั่งของออนไลน์: ถ้าเลือกทำงาน รอบนี้ซื้อของได้ 1 ชิ้น</div>':''}
+    <div style="margin-top:10px">${handHTML()}</div>
+    ${ownedHTML()}
+  </div>`;
+}
+function chooseWork(){
+  S.stats.worked++;
+  let extra=0, details=[];
+  S.done.forEach(c=>{ if(c.t==='job' && hasAllItems(c)){ extra+=c.extra; details.push(c.nm+' +'+c.extra); } });
+  S.cash+=10+extra;
+  logit(`ทำงาน +10${extra?(' + โบนัสงาน +'+extra+' ('+details.join(', ')+')'):''}`);
+  render();
+  if(S.event==='online'){ // ทำงานแล้วซื้อได้ 1 ชิ้น
+    onlineBuyMode=true; toast('สั่งออนไลน์: ซื้อได้ 1 ชิ้น'); shoppingScreen(true);
+  } else phase4();
+}
+let shopCount=0, onlineBuyMode=false;
+function chooseShop(){ S.stats.shopped++; shopCount=0; onlineBuyMode=false; shoppingScreen(false); }
+function shoppingScreen(online){
+  S.phase=2; render();
+  M().innerHTML=`<div class="card">
+    <h2>${online?'📦 สั่งของออนไลน์ (1 ชิ้น)':'🛍️ ช้อปปิ้ง'}</h2>
+    <p class="sub">${online?'เลือกซื้อได้ 1 ชิ้นแล้วจบช่วงนี้':'ซื้อได้หลายชิ้น (ทีละชิ้น) จ่ายสดหรือผ่อน · ซื้อแล้วราคาขึ้น'}</p>
+    <div class="legend">เงินสด ${S.cash} · Pay Later เหลือ ${S.payTokens} โทเคน</div>
+    ${shopHTML(true)}
+    <div style="margin-top:12px">${handHTML()}</div>${ownedHTML()}
+    <button class="btn gold" style="margin-top:12px" onclick="phase4()">จบการซื้อ → รับมือความเสี่ยง</button>
+  </div>`;
+}
+function buyCash(type){
+  const p=buyPrice(type); if(S.cash<p) return;
+  S.cash-=p; S.items.push({type}); if(type!=='gold' && S.markers[type]<ITEMS[type].buy.length-1) S.markers[type]++;
+  logit(`ซื้อ ${ITEMS[type].th} จ่ายสด ${p}`);
+  S.saleShop=(S.saleShop===type)?null:S.saleShop; // sale ใช้ได้เรื่อยๆในรอบ? rulebook: ทั้งรอบ — คงไว้
+  S.saleShop=S.saleShop; // keep
+  checkWishlist(); afterBuy();
+}
+function buyLater(type){
+  if(S.payTokens<=0) return;
+  const p=ITEMS[type].buy[S.markers[type]]; // ผ่อนไม่ได้ส่วนลด sale
+  S.payTokens--; S.payLater.push({type,debt:p}); S.stats.payLaterUsed++;
+  if(S.markers[type]<ITEMS[type].buy.length-1) S.markers[type]++;
+  logit(`ซื้อ ${ITEMS[type].th} แบบผ่อน (หนี้ ${p})`);
+  checkWishlist(); afterBuy();
+}
+function buyGold(){
+  const gp=GOLD_LADDER[S.goldIdx]; if(S.cash<gp) return;
+  S.cash-=gp; S.gold++; logit(`ซื้อทอง จ่ายสด ${gp}`); afterBuy();
+}
+function afterBuy(){
+  render();
+  if(onlineBuyMode){ onlineBuyMode=false; phase4(); return; }
+  shoppingScreen(false);
+}
+
+/* PHASE 4 — Confront risks */
+function phase4(){
+  S.phase=3; render();
+  // 1 ค่าครองชีพ ทอยเต๋า
+  M().innerHTML=`<div class="card center">
+    <h2>ช่วงที่ 4 · รับมือความเสี่ยง</h2>
+    <p class="sub">ทอยเต๋าค่าครองชีพ แล้วจ่ายตามแต้ม</p>
+    <button class="btn gold" onclick="rollCost()">🎲 ทอยค่าครองชีพ</button>
+  </div>`;
+}
+function rollCost(){
+  const d=1+Math.floor(Math.random()*6);
+  logit(`ค่าครองชีพรอบนี้: ${d}`);
+  if(S.cash>=d){ S.cash-=d; logit(`จ่ายค่าครองชีพ -${d}`); render(); riskScreen(); }
+  else { costShortfall(d); }
+}
+function costShortfall(d){
+  render();
+  const need=d-S.cash;
+  M().innerHTML=`<div class="card">
+    <h2>เงินสดไม่พอจ่ายค่าครองชีพ (${d})</h2>
+    <p class="sub">มีเงินสด ${S.cash} ขาดอีก ${need} · เลือกวิธีจัดการ</p>
+    <button class="btn" onclick="payFromSaving(${d})" ${S.saving+S.cash<d?'disabled':''}>ดึงจากเงินออม + เสียค่าปรับ 2</button>
+    <div style="height:8px"></div>
+    <button class="btn ghost" onclick="takeLoan(${d})">กู้ฉุกเฉิน (รับ 5 ทันที · -5 VP ตอนจบ)</button>
+  </div>`;
+}
+function payFromSaving(d){
+  S.cash-=Math.min(S.cash,d); let rem=d-Math.min(S.cash+0,d);
+  // simpler: pay all cash then rest from saving + fine 2
+  // recompute cleanly:
+  let pay=d; let fromCash=Math.min(S.cash,pay); S.cash-=fromCash; pay-=fromCash;
+  S.saving-=pay; S.saving-=2; if(S.saving<0)S.saving=0;
+  logit(`จ่ายค่าครองชีพจากเงินออม + ค่าปรับ 2`);
+  render(); riskScreen();
+}
+function takeLoan(d){
+  S.cash+=5; S.emergency++; S.stats.emergencyUsed++;
+  let fromCash=Math.min(S.cash,d); S.cash-=fromCash;
+  logit(`กู้ฉุกเฉิน +5 (-5 VP) แล้วจ่ายค่าครองชีพ`);
+  render(); riskScreen();
+}
+let soldThisRound=0;
+function riskScreen(){
+  S.phase=3; soldThisRound=soldThisRound; render();
+  // ของที่ขายได้ (จ่ายสดแล้ว + sellable)
+  const sellable=S.items.filter(i=>ITEMS[i.type].sellable);
+  const counts={}; sellable.forEach(i=>counts[i.type]=(counts[i.type]||0)+1);
+  M().innerHTML=`<div class="card">
+    <h2>ขายของ & จ่ายค่างวด</h2>
+    <p class="sub">ขายได้ไม่เกิน 2 ชิ้น/รอบ (ขายแล้วราคาบนกระดานไม่เปลี่ยน · ของผ่อน/ตั๋ว/ทริป ขายไม่ได้)</p>
+    <div class="legend">ขายไปแล้วรอบนี้: ${soldThisRound}/2</div>
+    ${Object.keys(counts).length?`<div class="shopgrid">${Object.keys(counts).map(t=>`
+      <div class="shop" style="border-top-color:${ICOL[t]}"><div class="emoji">${pic(t,40)}</div><div class="nm">${ITEMS[t].th} ×${counts[t]}</div>
+      <div class="pr">ขายได้ ${ITEMS[t].sell[S.markers[t]]}</div>
+      <button class="btn sm ghost" style="width:100%;margin-top:6px" onclick="sellItem('${t}')" ${soldThisRound>=2?'disabled':''}>ขาย</button></div>`).join('')}</div>`
+      :'<div class="legend">ไม่มีของที่ขายได้</div>'}
+  </div>
+  ${S.payLater.length?`<div class="card"><h2 style="font-size:15px">จ่ายค่างวด (ปิดหนี้ผ่อน)</h2>
+    <p class="sub">จ่ายเต็มเพื่อปิดหนี้ คืนโทเคน · หนี้ที่ค้างตอนจบ = -VP เท่าราคา</p>
+    ${S.payLater.map((p,i)=>`<div class="wcard"><div class="info">${pic(p.type,20)} ${ITEMS[p.type].th} · หนี้ ${p.debt}</div>
+      <button class="btn sm gold" onclick="payInstall(${i})" ${S.cash<p.debt?'disabled':''}>จ่าย ${p.debt}</button></div>`).join('')}
+  </div>`:''}
+  <button class="btn gold" onclick="endRound()">จบรอบ ${S.round} →</button>`;
+}
+function sellItem(type){
+  if(soldThisRound>=2) return;
+  const idx=S.items.findIndex(i=>i.type===type); if(idx<0) return;
+  const get=ITEMS[type].sell[S.markers[type]];
+  S.items.splice(idx,1); S.cash+=get; soldThisRound++; S.stats.sold++;
+  logit(`ขาย ${ITEMS[type].th} ได้ ${get}`);
+  render(); riskScreen();
+}
+function payInstall(i){
+  const p=S.payLater[i]; if(S.cash<p.debt) return;
+  S.cash-=p.debt; S.payTokens++; S.payLater.splice(i,1);
+  S.items.push({type:p.type}); // กลายเป็นของจ่ายเต็ม (ขายได้รอบหน้า)
+  logit(`ปิดหนี้ผ่อน ${ITEMS[p.type].th} จ่าย ${p.debt}`);
+  render(); riskScreen();
+}
+function endRound(){
+  // ทองราคาขึ้นทุกจบรอบ
+  if(S.goldIdx<GOLD_LADDER.length-1) S.goldIdx++;
+  soldThisRound=0;
+  if(S.round>=5){ endGame(); return; }
+  S.round++; logit(`— จบรอบ เริ่มรอบ ${S.round} —`);
+  startRound();
+}
+
+/* ---- END GAME ---- */
+function endGame(){
+  // จบเกม: เก็บดอกครั้งสุดท้าย + จ่ายดอกผ่อนครั้งสุดท้าย (ตาม rulebook)
+  const si=savingInterest(S.saving), fi=fdInterest(S.fd);
+  if(si){S.cash+=si;} if(fi){S.cash+=fi;}
+  if(S.payLater.length){ S.cash-=Math.min(S.cash,S.payLater.length); }
+  // VP
+  let wl=S.done.reduce((a,c)=>a+c.vp,0);
+  const objR=objectiveResult();
+  let obj=objR.vp;
+  let gold=S.gold*5;
+  let emg=-S.emergency*5;
+  let unc=-S.hand.length;
+  let debt=-S.payLater.reduce((a,p)=>a+p.debt,0);
+  let total=wl+obj+gold+emg+unc+debt;
+  let tier = total<6?"ลองใหม่อีกครั้ง!" : total<16?"มีพื้นฐานการเงินแล้ว!" : total<26?"นักบริหารเงินตัวจริง" : "ทำฝันสำเร็จขั้นเทพ!";
+  const persona=getPersona();
+  S.phase=3; render();
+  M().innerHTML=`<div class="card center">
+    <h2>จบเกม! สรุปผล 5 รอบ</h2>
+    <div class="big">${total} <small style="font-size:18px">VP</small></div>
+    <div class="tier">${tier}</div>
+    <div style="text-align:left;margin-top:12px">
+      <div class="endscore"><span>Wishlist สำเร็จ (${S.done.length} ใบ)</span><b>+${wl}</b></div>
+      <div class="endscore"><span>Objective สำเร็จ (${objR.done.filter(d=>d.ok).length}/${S.objectives.length} · เงินเก็บ ${moneyHeld()})</span><b>+${obj}</b></div>
+      <div class="endscore"><span>ทอง ${S.gold} ×5</span><b>+${gold}</b></div>
+      <div class="endscore"><span>กู้ฉุกเฉิน ${S.emergency} ใบ</span><b style="color:var(--red)">${emg}</b></div>
+      <div class="endscore"><span>Wishlist ค้าง ${S.hand.length} ใบ</span><b style="color:var(--red)">${unc}</b></div>
+      <div class="endscore"><span>หนี้ผ่อนค้าง</span><b style="color:var(--red)">${debt}</b></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2 style="font-size:16px">นิสัยการเงินของคุณ</h2>
+    ${S.character?`<div class="legend">เลือกเล่นเป็น: ${S.character.e} ${S.character.nm} · ${S.character.th}</div>`:''}
+    <div class="tier" style="font-size:18px">${persona.name}</div>
+    <p class="sub">${persona.desc}</p>
+    <div class="legend">เงินคงเหลือสุทธิ: ${netWorth()} · ออมสะสม ${S.stats.saveMoves} · ฝากประจำ ${S.stats.fdTotal} · ใช้ผ่อน ${S.stats.payLaterUsed} ครั้ง · ทำงาน ${S.stats.worked} · ช้อป ${S.stats.shopped}</div>
+  </div>
+  <div class="card center">
+    <p class="sub">อยากลองกลยุทธ์ใหม่? หรือชวนเพื่อนเล่นเกมจริง 2–6 คน</p>
+    <button class="btn gold" onclick="screenStart()">เล่นอีกครั้ง</button>
+    <div style="height:8px"></div>
+    <a href="https://wizardsoflearning.com/wishlist-financial-board-game/" target="_blank" style="text-decoration:none"><button class="btn ghost">รู้จักบอร์ดเกมตัวจริง →</button></a>
+  </div>`;
+  document.getElementById('phasewrap').innerHTML='';
+}
+// นับของที่เคยมี (รวมขายไปแล้วไม่นับ; ใช้ของที่ถือตอนจบ + ธีม)
+function getPersona(){
+  const s=S.stats;
+  // นับของถือตอนจบตามธีม
+  const own=t=>S.items.filter(i=>i.type===t).length+S.payLater.filter(p=>p.type===t).length;
+  const map={
+    lumos: s.fdTotal+s.saveMoves,
+    cover: (own('trip'))*3,
+    kanom: (own('fashion'))*3,
+    suga:  (own('concert')+own('headset'))*3,
+    gato:  (own('computer'))*3,
+    haru:  (own('motorbike'))*3 + s.emergencyUsed*4,
+  };
+  let best="lumos", bv=-1;
+  for(const k in map){ if(map[k]>bv){bv=map[k];best=k;} }
+  const ch=CHARACTERS.find(c=>c.key===best);
+  const tips={
+    lumos:"ออมและลงทุนมีวินัย มองยาวเป็น — ระวังเก็บจนพลาดโอกาสทำฝัน",
+    cover:"ทุ่มกับทริปและประสบการณ์ — ลองตั้งงบทริปต่อปีจะเที่ยวได้สบายใจ",
+    kanom:"สายแฟชั่นตัวจริง — ตั้งงบช้อปรายเดือน เลือกของที่ใช้คุ้ม",
+    suga:"คอนเสิร์ตและความบันเทิงมาก่อน — กันเงินสำรองไว้ก่อนเปย์",
+    gato:"จัดเต็มเกมและอุปกรณ์ — บาลานซ์ระหว่างของอยากได้กับเงินเก็บ",
+    haru:"สายลุยสุดเหวี่ยง — เผื่อเงินรับมือเหตุไม่คาดฝันไว้เสมอ",
+  };
+  return {name:`${ch.e} ${ch.nm} · ${ch.th}`, desc:tips[best]};
+}
+
+/* ============ GO ============ */
+screenStart();
+</script>
+</body>
+</html>
