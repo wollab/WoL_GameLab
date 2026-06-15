@@ -80,6 +80,14 @@
   .ichip.miss{background:#fdeee9;border-color:#f3cfc2;color:#b5462f}
   .iimg{vertical-align:middle;border-radius:5px;object-fit:cover;box-shadow:0 1px 2px rgba(0,0,0,.15)}
   .ownrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .itable{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}
+  .itable th{background:var(--navy);color:#fff;font-weight:600;font-size:11px;padding:5px 4px;text-align:center;line-height:1.2}
+  .itable th span{font-weight:400;color:#aeb8d6;font-size:10px}
+  .itable td{border:1px solid var(--line);padding:6px 4px;text-align:center;background:#fff}
+  .itable td:first-child{font-weight:600;color:var(--navy);background:#faf7ec}
+  .itable td.fdcol{color:var(--gold2)}
+  .itable td.cur{background:#e4f6ec;font-weight:700;color:var(--green)}
+  .itable td.fdcol.cur{background:#fff5d8;color:var(--gold2)}
   .sharewrap{margin-top:8px}
   #sharecard{width:100%;max-width:340px;height:auto;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
   .handbar{position:sticky;bottom:0;z-index:20;background:#1b2a55;border-top:2px solid var(--gold);padding:6px 8px 7px;box-shadow:0 -4px 14px rgba(0,0,0,.28)}
@@ -239,6 +247,24 @@ const EVENT_INFO={
 function savingInterest(b){ if(b>=45)return 5; if(b>=35)return 4; if(b>=24)return 3; if(b>=15)return 2; if(b>=7)return 1; return 0; }
 // ดอกเบี้ยฝากประจำ (Fixed Deposit) — สูงกว่า (rulebook: 7-14→3,15-23→5; ขยายต่อแบบสมเหตุผล)
 function fdInterest(b){ if(b>=45)return 11; if(b>=35)return 9; if(b>=24)return 7; if(b>=15)return 5; if(b>=7)return 3; return 0; }
+// ตารางดอกเบี้ยแสดงในหน้าจัดการเงิน (ไฮไลต์ช่วงของยอดปัจจุบัน)
+const INT_BRACKETS=[[0,6],[7,14],[15,23],[24,34],[35,44],[45,Infinity]];
+function interestTable(){
+  const inb=(v,[lo,hi])=>v>=lo&&v<=hi;
+  const rows=INT_BRACKETS.map(b=>{
+    const label=b[1]===Infinity?`${b[0]}+`:`${b[0]}–${b[1]}`;
+    const sv=savingInterest(b[0]), fd=fdInterest(b[0]);
+    const curS=inb(S.saving,b), curF=inb(S.fd,b);
+    return `<tr>
+      <td>${label}</td>
+      <td class="${curS?'cur':''}">+${sv}${curS?' ◀':''}</td>
+      <td class="fdcol ${curF?'cur':''}">+${fd}${curF?' ◀':''}</td></tr>`;
+  }).join('');
+  return `<table class="itable">
+    <thead><tr><th>ยอดที่ฝากไว้</th><th>ดอกเบี้ยเงินออม<br><span>(รอบหน้า)</span></th><th>ดอกฝากประจำ<br><span>🔒 (สูงกว่า)</span></th></tr></thead>
+    <tbody>${rows}</tbody></table>
+    <div class="legend">ดอกเบี้ยคิดจาก<b>ยอดที่ฝากไว้ตอนนี้</b> แล้วได้รับ<b>รอบถัดไป</b> · แถวไฮไลต์ = ช่วงของคุณตอนนี้ (ออม ${S.saving} / ฝากประจำ ${S.fd})</div>`;
+}
 
 /* ============ STATE ============ */
 let S;
@@ -533,7 +559,7 @@ function drawPhase2(){
     <div class="inputrow"><span style="font-size:13px;width:120px">เงินสด → ออม</span><input type="number" id="toSave" min="0" value="0"><button class="btn sm" onclick="moveMoney('save')">ย้าย</button></div>
     <div class="inputrow"><span style="font-size:13px;width:120px">ออม → เงินสด</span><input type="number" id="fromSave" min="0" value="0"><button class="btn sm" onclick="moveMoney('unsave')">ย้าย</button></div>
     <div class="inputrow"><span style="font-size:13px;width:120px">เงินสด → ฝากประจำ 🔒</span><input type="number" id="toFd" min="0" value="0"><button class="btn sm gold" onclick="moveMoney('fd')">ฝาก</button></div>
-    <div class="legend">ดอกเบี้ย: ออม 7-14→1 …45+→5 · ฝากประจำ 7-14→3, 15-23→5 (สูงกว่า)</div>
+    ${interestTable()}
   </div>
   <div class="card"><h2 style="font-size:15px">เป้าหมายระยะยาว (Objective)</h2>
     <p class="sub">ถือเงินให้ถึงเป้าตอนจบเกม · ตอนนี้ถือ ${moneyHeld()} (เงินก้อนเดียวใช้ทำหลายเป้าพร้อมกันไม่ได้)</p>
