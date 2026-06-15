@@ -82,6 +82,23 @@
   .ownrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
   .sharewrap{margin-top:8px}
   #sharecard{width:100%;max-width:340px;height:auto;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+  .handbar{position:sticky;bottom:0;z-index:20;background:#1b2a55;border-top:2px solid var(--gold);padding:6px 8px 7px;box-shadow:0 -4px 14px rgba(0,0,0,.28)}
+  .hbhead{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#cdd5ee;font-weight:700;padding:0 2px 5px}
+  .hbhead .x{color:#9fb0e0;font-weight:400}
+  .hbhead button{background:transparent;color:var(--gold);border:none;font-size:12px;padding:2px 8px;cursor:pointer;font-weight:700}
+  .hbrow{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+  .mcard{flex:0 0 auto;min-width:92px;max-width:140px;background:#fffdf7;border-radius:8px;padding:5px 7px;border-left:4px solid var(--gold)}
+  .mcard.job{border-left-color:var(--blue)}
+  .mcard.ready{box-shadow:0 0 0 2px var(--green)}
+  .mt{font-size:11px;font-weight:600;color:var(--navy);display:flex;justify-content:space-between;gap:6px;align-items:center;white-space:nowrap}
+  .mt span{overflow:hidden;text-overflow:ellipsis}
+  .mvp{color:var(--green);font-weight:700;flex:0 0 auto}
+  .mis{display:flex;gap:4px;margin-top:4px}
+  .mi{position:relative;line-height:0}
+  .mi img{display:block;border-radius:5px}
+  .mi:not(.ok) img{filter:grayscale(.85);opacity:.45}
+  .mi.ok img{outline:2px solid var(--green);outline-offset:1px}
+  .mi b{position:absolute;right:-4px;bottom:-4px;background:var(--navy);color:#fff;font-size:9px;line-height:1;border-radius:8px;padding:1px 3px}
   .shop .emoji .iimg{box-shadow:0 2px 4px rgba(0,0,0,.18)}
   .big{font-size:42px;font-weight:800;color:var(--navy)}
   .tier{font-size:20px;font-weight:700;color:var(--gold2);margin:6px 0}
@@ -113,6 +130,7 @@
     <div class="phasewrap" id="phasewrap"></div>
   </header>
   <main id="main"></main>
+  <div id="handbar" class="handbar" style="display:none"></div>
   <footer>Prototype การเรียนรู้ · กติกาอ้างอิง Wishlist 2 Rulebook (Pro) · Wizards of Learning</footer>
 </div>
 <div class="toast" id="toast"></div>
@@ -237,6 +255,7 @@ function newGame(){
     hand:[], done:[], deck:[],
     objectives:[], character:null,
     eventPos:0, event:null, saleShop:null, refilled:false,
+    showHand:false, handCollapsed:false,
     log:[],
     stats:{ saveMoves:0, fdTotal:0, payLaterUsed:0, worked:0, shopped:0, sold:0, emergencyUsed:0, lottery:0 }
   };
@@ -361,7 +380,27 @@ function logHTML(){ return `<div class="log">${S.log.slice(0,12).map(l=>'<div>'+
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1900); }
 
 /* ============ FLOW ============ */
-function render(){ renderHeader(); window.scrollTo(0,0); }
+function render(){ renderHeader(); renderHandBar(); window.scrollTo(0,0); }
+function toggleHand(){ S.handCollapsed=!S.handCollapsed; renderHandBar(); }
+function miniCard(c){
+  const ready=Object.entries(c.req).every(([t,n])=>itemCount(t)>=n);
+  const items=Object.entries(c.req).map(([t,n])=>{
+    const ok=itemCount(t)>=n;
+    return `<span class="mi ${ok?'ok':''}">${pic(t,22)}${n>1?'<b>'+n+'</b>':''}</span>`;
+  }).join('');
+  return `<div class="mcard ${c.t} ${ready?'ready':''}">
+    <div class="mt"><span>${c.nm}</span><span class="mvp">+${c.vp}${c.t==='job'?' ·💼'+c.extra:''}</span></div>
+    <div class="mis">${items}</div></div>`;
+}
+function renderHandBar(){
+  const hb=document.getElementById('handbar'); if(!hb) return;
+  if(!S || !S.showHand || !S.hand || !S.hand.length){ hb.style.display='none'; hb.innerHTML=''; return; }
+  hb.style.display='block';
+  const doneTxt=S.done.length?` · <span class="x">สำเร็จ ${S.done.length}</span>`:'';
+  hb.innerHTML=`<div class="hbhead"><span>🎯 Wishlist ของคุณ (${S.hand.length})${doneTxt}</span>
+      <button onclick="toggleHand()">${S.handCollapsed?'แสดง ▲':'ซ่อน ▼'}</button></div>
+    ${S.handCollapsed?'':`<div class="hbrow">${S.hand.map(miniCard).join('')}</div>`}`;
+}
 const M=()=>document.getElementById('main');
 
 /* ---- START / SETUP ---- */
@@ -437,7 +476,7 @@ function confirmSetup(){
 }
 
 /* ---- ROUND ---- */
-function startRound(){ S.phase=0; S.event=null; S.saleShop=null; S.refilled=false; render(); phase1(); }
+function startRound(){ S.phase=0; S.event=null; S.saleShop=null; S.refilled=false; S.showHand=true; render(); phase1(); }
 
 /* PHASE 1 — Receive income */
 function phase1(){
@@ -704,6 +743,7 @@ function endGame(){
   let total=wl+obj+gold+emg+unc+debt;
   let tier = total<6?"ลองใหม่อีกครั้ง!" : total<16?"มีพื้นฐานการเงินแล้ว!" : total<26?"นักบริหารเงินตัวจริง" : "ทำฝันสำเร็จขั้นเทพ!";
   const persona=getPersona();
+  S.showHand=false;
   S.result={total,tier,persona,doneCount:S.done.length,gold:S.gold,net:netWorth(),
     character:S.character, breakdown:{wl,obj,gold,emg,unc,debt}};
   S.phase=3; render();
