@@ -959,7 +959,7 @@ function getPersona(){
 
 /* ============ LEADERBOARD ============ */
 // ตั้งค่า Supabase ที่นี่เพื่อเปิดโหมด "แชร์ทุกคน" (ว่าง = เก็บในเครื่อง localStorage)
-const LB_CONFIG={ url:"", key:"", table:"scores" };
+const LB_CONFIG={ url:"https://ogxjhyysevcjljjmjham.supabase.co", key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9neGpoeXlzZXZjamxqam1qaGFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NDQxMzIsImV4cCI6MjA5NzEyMDEzMn0.m8ucxizELASG_6wQig7M4Gz4fwOsQP8etvPoRcBB6jI", table:"scores" };
 function lbRemote(){ return !!(LB_CONFIG.url && LB_CONFIG.key); }
 let lbTab='daily', lbHighlight=null;
 function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -968,11 +968,11 @@ function lbLocal(){ try{return JSON.parse(localStorage.getItem('wishlist_scores_
 function lbLocalSave(a){ try{localStorage.setItem('wishlist_scores_v1',JSON.stringify(a.slice(-300)));}catch(e){} }
 async function lbFetch(mode){
   if(lbRemote()){
-    let q=`${LB_CONFIG.url}/rest/v1/${LB_CONFIG.table}?select=name,score,char,created_at&order=score.desc&limit=50`;
+    let q=`${LB_CONFIG.url}/rest/v1/${LB_CONFIG.table}?select=name,score,emoji,created_at&order=score.desc&limit=50`;
     if(mode==='daily'){ const t=new Date(); t.setHours(0,0,0,0); q+=`&created_at=gte.${encodeURIComponent(t.toISOString())}`; }
     const r=await fetch(q,{headers:{apikey:LB_CONFIG.key,Authorization:'Bearer '+LB_CONFIG.key}});
     if(!r.ok) throw new Error('HTTP '+r.status);
-    return (await r.json()).sort((a,b)=>b.score-a.score);
+    return (await r.json()).map(e=>({name:e.name,score:e.score,char:e.emoji})).sort((a,b)=>b.score-a.score);
   }
   let all=lbLocal(); if(mode==='daily') all=all.filter(e=>e.date===todayStr());
   return all.sort((a,b)=>b.score-a.score);
@@ -981,7 +981,7 @@ async function lbAdd(entry){
   if(lbRemote()){
     const r=await fetch(`${LB_CONFIG.url}/rest/v1/${LB_CONFIG.table}`,{method:'POST',
       headers:{apikey:LB_CONFIG.key,Authorization:'Bearer '+LB_CONFIG.key,'Content-Type':'application/json',Prefer:'return=minimal'},
-      body:JSON.stringify({name:entry.name,score:entry.score,char:entry.char})});
+      body:JSON.stringify({name:entry.name,score:entry.score,emoji:entry.char})});
     if(!r.ok) throw new Error('HTTP '+r.status);
     return;
   }
