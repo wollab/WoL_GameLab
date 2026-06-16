@@ -102,6 +102,20 @@
   .mcard.cdone{background:#eef6f0;border-left-color:var(--green);opacity:.92}
   .mcard.cdone .mt{color:#1f7a4d}
   .hbsub{font-size:10px;color:#9fb0e0;padding:6px 2px 3px;border-top:1px dashed #3a5aa0;margin-top:6px}
+  .lbtabs{display:flex;gap:6px;margin:6px 0 10px}
+  .lbtabs button{flex:1;background:#eef0f4;color:var(--navy);border:1px solid var(--line);font-size:13px;padding:8px 4px}
+  .lbtabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .lblist{display:flex;flex-direction:column;gap:4px}
+  .lbrow{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;background:#fff;border:1px solid var(--line)}
+  .lbrow.top{background:#fffaf0;border-color:#f0e0b8}
+  .lbrow.me{outline:2px solid var(--green);background:#eef9f2}
+  .lbc{width:26px;display:flex;justify-content:center;flex:0 0 auto}
+  .lbrk{font-weight:700;color:var(--muted);font-size:13px}
+  .lbnm{flex:1;font-size:14px;font-weight:600;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lbnm b{color:var(--green);font-size:11px}
+  .lbsc{font-weight:800;color:var(--navy2);font-size:16px;flex:0 0 auto}
+  .lbrow.top .lbsc{color:var(--gold2)}
+  .crown{filter:drop-shadow(0 1px 1px rgba(0,0,0,.2))}
   .mt{font-size:11px;font-weight:600;color:var(--navy);display:flex;justify-content:space-between;gap:6px;align-items:center;white-space:nowrap}
   .mt span{overflow:hidden;text-overflow:ellipsis}
   .mvp{color:var(--green);font-weight:700;flex:0 0 auto}
@@ -445,6 +459,7 @@ function screenStart(){
     <div class="note">แต่ละรอบมี 4 ช่วง: รับรายได้ → จัดการเงิน → เติม Wishlist (ทำงาน/ช้อป) → รับมือความเสี่ยง<br>
     มีเงินออม ดอกเบี้ย ฝากประจำ ผ่อน (Pay Later) และเหตุการณ์สุ่ม — กลไกตามบอร์ดเกมจริง</div>
     <button class="btn gold" onclick="screenCharacter()">เริ่มเล่น</button>
+    <button class="btn ghost" style="margin-top:8px" onclick="screenLeaderboard()">🏆 ดูกระดานอันดับ</button>
   </div>`;
   document.getElementById('stats').innerHTML='';
   document.getElementById('phasewrap').innerHTML='';
@@ -801,6 +816,14 @@ function endGame(){
     <p class="sub">${persona.desc}</p>
     <div class="legend">เงินคงเหลือสุทธิ: ${netWorth()} · ออมสะสม ${S.stats.saveMoves} · ฝากประจำ ${S.stats.fdTotal} · ใช้ผ่อน ${S.stats.payLaterUsed} ครั้ง · ทำงาน ${S.stats.worked} · ช้อป ${S.stats.shopped}</div>
   </div>
+  <div class="card">
+    <h2 style="font-size:16px">🏆 กระดานอันดับ</h2>
+    <div id="lbsave">
+      <p class="sub">บันทึก ${total} VP ขึ้นกระดานอันดับ</p>
+      <div class="inputrow"><input id="lbname" maxlength="16" placeholder="ชื่อของคุณ" value="${escapeHtml((function(){try{return localStorage.getItem('wishlist_name')||''}catch(e){return''}})())}"><button class="btn sm gold" onclick="saveScore()">บันทึกคะแนน</button></div>
+    </div>
+    <div id="lbbox"></div>
+  </div>
   <div class="card center">
     <h2 style="font-size:16px">แชร์ผลของคุณ</h2>
     <p class="sub">อวดนิสัยการเงินให้เพื่อน แล้วชวนมาลองเล่น</p>
@@ -818,6 +841,7 @@ function endGame(){
   </div>`;
   document.getElementById('phasewrap').innerHTML='';
   drawShareCard();
+  lbHighlight=null; lbTab='daily'; renderLbBox();
 }
 
 /* ===== SHARE RESULT ===== */
@@ -931,6 +955,96 @@ function getPersona(){
   ];
   let best=styles[0]; styles.forEach(st=>{ if(st.score>best.score) best=st; });
   return {name:best.name, desc:best.desc};
+}
+
+/* ============ LEADERBOARD ============ */
+// ตั้งค่า Supabase ที่นี่เพื่อเปิดโหมด "แชร์ทุกคน" (ว่าง = เก็บในเครื่อง localStorage)
+const LB_CONFIG={ url:"", key:"", table:"scores" };
+function lbRemote(){ return !!(LB_CONFIG.url && LB_CONFIG.key); }
+let lbTab='daily', lbHighlight=null;
+function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function lbLocal(){ try{return JSON.parse(localStorage.getItem('wishlist_scores_v1'))||[];}catch(e){return[];} }
+function lbLocalSave(a){ try{localStorage.setItem('wishlist_scores_v1',JSON.stringify(a.slice(-300)));}catch(e){} }
+async function lbFetch(mode){
+  if(lbRemote()){
+    let q=`${LB_CONFIG.url}/rest/v1/${LB_CONFIG.table}?select=name,score,char,created_at&order=score.desc&limit=50`;
+    if(mode==='daily'){ const t=new Date(); t.setHours(0,0,0,0); q+=`&created_at=gte.${encodeURIComponent(t.toISOString())}`; }
+    const r=await fetch(q,{headers:{apikey:LB_CONFIG.key,Authorization:'Bearer '+LB_CONFIG.key}});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return (await r.json()).sort((a,b)=>b.score-a.score);
+  }
+  let all=lbLocal(); if(mode==='daily') all=all.filter(e=>e.date===todayStr());
+  return all.sort((a,b)=>b.score-a.score);
+}
+async function lbAdd(entry){
+  if(lbRemote()){
+    const r=await fetch(`${LB_CONFIG.url}/rest/v1/${LB_CONFIG.table}`,{method:'POST',
+      headers:{apikey:LB_CONFIG.key,Authorization:'Bearer '+LB_CONFIG.key,'Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify({name:entry.name,score:entry.score,char:entry.char})});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return;
+  }
+  const all=lbLocal(); all.push(entry); lbLocalSave(all);
+}
+function crown(rank){
+  const col={1:'#e7b53c',2:'#aab4c2',3:'#c0814e'}[rank];
+  if(!col) return `<span class="lbrk">${rank}</span>`;
+  return `<svg class="crown" viewBox="0 0 24 22" width="20" height="18"><path d="M2 19h20l-1.6-11.5-5.4 4.2L12 4l-3 7.7-5.4-4.2z" fill="${col}" stroke="rgba(0,0,0,.25)" stroke-width=".7" stroke-linejoin="round"/><rect x="2" y="19" width="20" height="2.4" rx="1" fill="${col}"/></svg>`;
+}
+function lbTableHTML(list, hi){
+  if(!list || !list.length) return `<div class="legend" style="text-align:center;padding:14px">ยังไม่มีคะแนน — เป็นคนแรกบนกระดานเลย! 🏆</div>`;
+  const matchHi=(e)=> hi && e.name===hi.name && e.score===hi.score;
+  let myRank=-1; list.forEach((e,i)=>{ if(myRank<0 && matchHi(e)) myRank=i+1; });
+  const rows=list.slice(0,15).map((e,i)=>{
+    const rank=i+1, me=matchHi(e)&&(rank===myRank);
+    return `<div class="lbrow ${rank<=3?'top':''} ${me?'me':''}">
+      <span class="lbc">${crown(rank)}</span>
+      <span class="lbnm">${e.char||'🎮'} ${escapeHtml(e.name)}${me?' <b>(คุณ)</b>':''}</span>
+      <span class="lbsc">${e.score}</span></div>`;
+  }).join('');
+  const extra=(myRank>15)?`<div class="lbrow me"><span class="lbc"><span class="lbrk">${myRank}</span></span><span class="lbnm">${escapeHtml(hi.name)} <b>(คุณ)</b></span><span class="lbsc">${hi.score}</span></div>`:'';
+  return `<div class="lblist">${rows}${extra}</div>`;
+}
+function lbTabsHTML(){
+  return `<div class="lbtabs">
+    <button class="${lbTab==='daily'?'on':''}" onclick="setLbTab('daily')">📅 อันดับวันนี้</button>
+    <button class="${lbTab==='all'?'on':''}" onclick="setLbTab('all')">👑 สูงสุดตลอดกาล</button></div>`;
+}
+function setLbTab(t){ lbTab=t; renderLbBox(); }
+async function renderLbBox(){
+  const el=document.getElementById('lbbox'); if(!el) return;
+  el.innerHTML=lbTabsHTML()+`<div class="legend" style="text-align:center;padding:12px">กำลังโหลด…</div>`;
+  try{ const list=await lbFetch(lbTab); el.innerHTML=lbTabsHTML()+lbTableHTML(list,lbHighlight); }
+  catch(e){ el.innerHTML=lbTabsHTML()+`<div class="legend" style="text-align:center;padding:10px">โหลดอันดับไม่ได้ (${escapeHtml(e.message)})</div>`; }
+  const mode=lbRemote()?'':'<div class="legend" style="margin-top:6px">📱 โหมดเก็บในเครื่อง (ยังไม่ได้ต่อ backend แชร์)</div>';
+  el.insertAdjacentHTML('beforeend',mode);
+}
+async function saveScore(){
+  const inp=document.getElementById('lbname'); if(!inp) return;
+  const nm=(inp.value||'ผู้เล่น').trim().slice(0,16)||'ผู้เล่น';
+  try{ localStorage.setItem('wishlist_name',nm); }catch(e){}
+  const entry={name:nm, score:S.result.total, char:S.character?S.character.e:'🎮', date:todayStr()};
+  const btn=document.querySelector('#lbsave button'); if(btn){btn.disabled=true;btn.textContent='กำลังบันทึก…';}
+  try{ await lbAdd(entry); lbHighlight={name:nm,score:entry.score}; }
+  catch(e){ if(btn){btn.disabled=false;btn.textContent='ลองใหม่';} toast('บันทึกไม่สำเร็จ: '+e.message); return; }
+  const sv=document.getElementById('lbsave'); if(sv) sv.innerHTML=`<div class="legend" style="color:var(--green)">✓ บันทึก ${entry.score} VP เป็น "${escapeHtml(nm)}" แล้ว</div>`;
+  renderLbBox();
+}
+function screenLeaderboard(){
+  M().innerHTML=`<div class="card">
+    <h2>🏆 กระดานอันดับ</h2>
+    <p class="sub">คะแนนสูงสุดของผู้เล่น Wishlist</p>
+    <div id="lbbox"></div>
+    <button class="btn ghost" style="margin-top:12px" onclick="screenStart()">← กลับหน้าแรก</button>
+  </div>`;
+  document.getElementById('stats').innerHTML='';
+  document.getElementById('phasewrap').innerHTML='';
+  document.getElementById('rounddots').innerHTML='';
+  document.getElementById('avatar').textContent='';
+  document.getElementById('roundlbl').textContent='กระดานอันดับ';
+  document.getElementById('eventlbl').textContent='';
+  lbHighlight=null; renderLbBox();
 }
 
 /* ============ GO ============ */
