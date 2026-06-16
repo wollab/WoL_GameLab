@@ -613,9 +613,9 @@ function drawPhase2(){
       <div class="pool arr">→</div>
       <div class="pool fd"><div class="pl">ฝากประจำ 🔒</div><div class="pv">${S.fd}</div></div>
     </div>
-    <div class="movegrp"><div class="mglabel">💰 เงินสด → เงินออม <span>(ถอนคืนได้)</span></div><div class="chips">${moveChips('save',[5,10,20])}</div></div>
-    <div class="movegrp"><div class="mglabel">↩️ เงินออม → เงินสด</div><div class="chips">${moveChips('unsave',[5,10,20])}</div></div>
-    <div class="movegrp"><div class="mglabel">🔒 เงินสด → ฝากประจำ <span>(ดอกสูง · ถอนไม่ได้จนจบเกม)</span></div><div class="chips">${moveChips('fd',[5,10,20])}</div></div>
+    <div class="movegrp"><div class="mglabel">💰 เงินสด → เงินออม <span>(ถอนคืนได้)</span></div><div class="chips">${moveChips('save',[1,5,10])}</div></div>
+    <div class="movegrp"><div class="mglabel">↩️ เงินออม → เงินสด</div><div class="chips">${moveChips('unsave',[1,5,10])}</div></div>
+    <div class="movegrp"><div class="mglabel">🔒 เงินสด → ฝากประจำ <span>(ดอกสูง · ถอนไม่ได้จนจบเกม)</span></div><div class="chips">${moveChips('fd',[1,5,10])}</div></div>
     ${undoN?`<button class="btn ghost sm" style="margin-top:8px" onclick="undoMove()">↩️ เลิกทำล่าสุด (${undoN})</button>`:''}
     ${interestTable()}
   </div>
