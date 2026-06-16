@@ -88,6 +88,22 @@
   .itable td.fdcol{color:var(--gold2)}
   .itable td.cur{background:#e4f6ec;font-weight:700;color:var(--green)}
   .itable td.fdcol.cur{background:#fff5d8;color:var(--gold2)}
+  .pools{display:flex;align-items:stretch;gap:6px;margin:6px 0 14px}
+  .pool{flex:1;background:#f3eeda;border:1px solid var(--line);border-radius:10px;padding:8px 4px;text-align:center}
+  .pool.save{background:#e9f5ee;border-color:#bfe6cf}
+  .pool.fd{background:#fff5d8;border-color:#f0e0b8}
+  .pool.arr{flex:0 0 auto;background:none;border:none;display:flex;align-items:center;color:var(--muted);font-weight:700;padding:0}
+  .pool .pl{font-size:10px;color:var(--muted)}
+  .pool .pv{font-size:20px;font-weight:800;color:var(--navy)}
+  .movegrp{margin:8px 0}
+  .mglabel{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+  .mglabel span{font-weight:400;font-size:11px;color:var(--muted)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{flex:1;min-width:54px;background:#fff;border:1.5px solid var(--navy);color:var(--navy);border-radius:9px;padding:10px 6px;font-size:15px;font-weight:700;cursor:pointer}
+  .chip:hover:not(:disabled){background:var(--navy);color:#fff}
+  .chip.all{border-color:var(--gold2);color:var(--gold2)}
+  .chip.all:hover:not(:disabled){background:var(--gold);color:var(--navy)}
+  .chip:disabled{opacity:.3;cursor:not-allowed}
   .itable td.fddim{color:#b9b08e;background:#f7f4ea}
   .sharewrap{margin-top:8px}
   #sharecard{width:100%;max-width:340px;height:auto;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
@@ -314,7 +330,7 @@ function itemCount(type){ // นับของทั้งหมด (รวม 
   return n;
 }
 function moneyHeld(){ return S.cash+S.saving+S.fd; }
-function netWorth(){ return moneyHeld()+S.gold*5; }
+function netWorth(){ return moneyHeld()+goldHeld()*5; }
 // Objective จริง = ต้องถือเงินถึงเป้าตอนจบ; เงินก้อนเดียวใช้ซ้ำไม่ได้ (ทำสำเร็จแบบ greedy)
 function objectiveResult(){
   let remain=moneyHeld(), vp=0, done=[];
@@ -329,7 +345,7 @@ function estimateVP(){
   let v=0;
   S.done.forEach(c=>v+=c.vp);
   v+=objectiveResult().vp;
-  v+=S.gold*5;
+  v+=goldHeld()*5;
   v-=S.emergency*5;
   v-=S.hand.length; // -1 ต่อ wishlist ค้าง
   S.payLater.forEach(p=>v-=p.debt);
@@ -353,7 +369,7 @@ function renderHeader(){
     <div class="stat"><div class="l">เงินสด</div><div class="v">${S.cash}</div></div>
     <div class="stat"><div class="l">เงินออม</div><div class="v">${S.saving}</div></div>
     <div class="stat"><div class="l">ฝากประจำ</div><div class="v">${S.fd}</div></div>
-    <div class="stat"><div class="l">ทอง</div><div class="v">${S.gold}<small> ×5VP</small></div></div>
+    <div class="stat"><div class="l">ทอง</div><div class="v">${goldHeld()}<small> ×5VP</small></div></div>
     <div class="stat"><div class="l">หนี้ผ่อน</div><div class="v" style="color:${S.payLater.length?'#ffb4a4':'#fff'}">${S.payLater.reduce((a,p)=>a+p.debt,0)}</div></div>
     <div class="stat"><div class="l">VP ประมาณ</div><div class="v"><small>${estimateVP()}</small></div></div>`;
   document.getElementById('roundlbl').textContent=`รอบ ${S.round} / 5`;
@@ -389,11 +405,17 @@ function shopHTML(showActions){
   const gp=GOLD_LADDER[S.goldIdx];
   h+=`<div class="shop" style="margin-top:8px;border-top-color:var(--gold)">
     <div class="emoji">${pic('gold',46)}</div><div class="nm">ทอง (Gold) · 5 VP/ชิ้น</div>
-    <div class="pr">ซื้อ <b>${gp}</b> · มูลค่าคงที่ตอนซื้อ</div>`;
-  if(showActions) h+=`<div class="acts"><button class="btn gold" onclick="buyGold()" ${S.cash<gp?'disabled':''}>จ่ายสด ${gp}</button></div>`;
+    <div class="pr">ซื้อ <b>${gp}</b> · ขาย ${goldSellPrice()}</div>`;
+  if(showActions) h+=`<div class="acts">
+    <button class="btn gold" onclick="buyGold()" ${S.cash<gp?'disabled':''}>จ่ายสด</button>
+    <button class="btn ghost" onclick="buyGoldLater()" ${S.payTokens<=0?'disabled':''}>ผ่อน</button>
+  </div>`;
   h+=`</div>`;
   return h;
 }
+function goldSellPrice(){ return Math.max(0, GOLD_LADDER[S.goldIdx]-2); }
+function goldHeld(){ return S.gold + S.payLater.filter(p=>p.type==='gold').length; }
+function tName(t){ return t==='gold' ? 'ทอง' : ITEMS[t].th; }
 function handHTML(){
   let h='<div style="margin-top:4px">';
   if(!S.hand.length) h+='<div class="sub">ไม่มี Wishlist ค้าง</div>';
@@ -570,17 +592,31 @@ function keepDraw(i){
 
 /* PHASE 2 — Manage money */
 function phase2(){
-  S.phase=1; render();
+  S.phase=1; S._undo=[]; render();
   drawPhase2();
 }
+function moveChips(kind, amounts){
+  const src = kind==='unsave'? S.saving : S.cash;
+  let h = amounts.map(a=>`<button class="chip" onclick="moveQuick('${kind}',${a})" ${src<a?'disabled':''}>+${a}</button>`).join('');
+  h += `<button class="chip all" onclick="moveQuick('${kind}','all')" ${src<=0?'disabled':''}>ทั้งหมด</button>`;
+  return h;
+}
 function drawPhase2(){
+  const undoN=(S._undo||[]).length;
   M().innerHTML=`<div class="card">
     <h2>ช่วงที่ 2 · จัดการเงิน</h2>
-    <p class="sub">ย้ายเงินเข้า/ออกเงินออม · ฝากประจำ (ถอนไม่ได้จนจบเกม แต่ดอกสูง) · ทำ Objective</p>
-    <div class="legend">เงินสด ${S.cash} · เงินออม ${S.saving} · ฝากประจำ ${S.fd}</div>
-    <div class="inputrow"><span style="font-size:13px;width:120px">เงินสด → ออม</span><input type="number" id="toSave" min="0" value="0"><button class="btn sm" onclick="moveMoney('save')">ย้าย</button></div>
-    <div class="inputrow"><span style="font-size:13px;width:120px">ออม → เงินสด</span><input type="number" id="fromSave" min="0" value="0"><button class="btn sm" onclick="moveMoney('unsave')">ย้าย</button></div>
-    <div class="inputrow"><span style="font-size:13px;width:120px">เงินสด → ฝากประจำ 🔒</span><input type="number" id="toFd" min="0" value="0"><button class="btn sm gold" onclick="moveMoney('fd')">ฝาก</button></div>
+    <p class="sub">แตะปุ่มเพื่อย้ายเงินได้เลย (ไม่ต้องพิมพ์) · ออมไว้รับดอกเบี้ยรอบหน้า</p>
+    <div class="pools">
+      <div class="pool"><div class="pl">เงินสด</div><div class="pv">${S.cash}</div></div>
+      <div class="pool arr">→</div>
+      <div class="pool save"><div class="pl">เงินออม</div><div class="pv">${S.saving}</div></div>
+      <div class="pool arr">→</div>
+      <div class="pool fd"><div class="pl">ฝากประจำ 🔒</div><div class="pv">${S.fd}</div></div>
+    </div>
+    <div class="movegrp"><div class="mglabel">💰 เงินสด → เงินออม <span>(ถอนคืนได้)</span></div><div class="chips">${moveChips('save',[5,10,20])}</div></div>
+    <div class="movegrp"><div class="mglabel">↩️ เงินออม → เงินสด</div><div class="chips">${moveChips('unsave',[5,10,20])}</div></div>
+    <div class="movegrp"><div class="mglabel">🔒 เงินสด → ฝากประจำ <span>(ดอกสูง · ถอนไม่ได้จนจบเกม)</span></div><div class="chips">${moveChips('fd',[5,10,20])}</div></div>
+    ${undoN?`<button class="btn ghost sm" style="margin-top:8px" onclick="undoMove()">↩️ เลิกทำล่าสุด (${undoN})</button>`:''}
     ${interestTable()}
   </div>
   <div class="card"><h2 style="font-size:15px">เป้าหมายระยะยาว (Objective)</h2>
@@ -594,10 +630,21 @@ function drawPhase2(){
     <button class="btn gold" onclick="rollEvent()">🎲 ทอยเต๋า เดินเหตุการณ์</button>
   </div>`;
 }
-function moveMoney(kind){
-  if(kind==='save'){ let v=Math.min(+document.getElementById('toSave').value||0,S.cash); S.cash-=v; S.saving+=v; if(v){S.stats.saveMoves+=v; logit(`ย้ายเข้าเงินออม ${v}`);} }
-  if(kind==='unsave'){ let v=Math.min(+document.getElementById('fromSave').value||0,S.saving); S.saving-=v; S.cash+=v; if(v) logit(`ถอนเงินออม ${v}`); }
-  if(kind==='fd'){ let v=Math.min(+document.getElementById('toFd').value||0,S.cash); S.cash-=v; S.fd+=v; if(v){S.stats.fdTotal+=v; logit(`ฝากประจำ ${v} 🔒`);} }
+function moveQuick(kind, amtArg){
+  const src = kind==='unsave'? S.saving : S.cash;
+  let amt = amtArg==='all'? src : Math.min(amtArg, src);
+  if(amt<=0) return;
+  if(kind==='save'){ S.cash-=amt; S.saving+=amt; S.stats.saveMoves+=amt; }
+  else if(kind==='unsave'){ S.saving-=amt; S.cash+=amt; }
+  else if(kind==='fd'){ S.cash-=amt; S.fd+=amt; S.stats.fdTotal+=amt; }
+  (S._undo=S._undo||[]).push({kind,amt});
+  render(); drawPhase2();
+}
+function undoMove(){
+  const m=(S._undo||[]).pop(); if(!m) return;
+  if(m.kind==='save'){ S.saving-=m.amt; S.cash+=m.amt; S.stats.saveMoves-=m.amt; }
+  else if(m.kind==='unsave'){ S.cash-=m.amt; S.saving+=m.amt; }
+  else if(m.kind==='fd'){ S.fd-=m.amt; S.cash+=m.amt; S.stats.fdTotal-=m.amt; }
   render(); drawPhase2();
 }
 function rollEvent(){
@@ -679,6 +726,12 @@ function buyGold(){
   const gp=GOLD_LADDER[S.goldIdx]; if(S.cash<gp) return;
   S.cash-=gp; S.gold++; logit(`ซื้อทอง จ่ายสด ${gp}`); afterBuy();
 }
+function buyGoldLater(){
+  if(S.payTokens<=0) return;
+  const gp=GOLD_LADDER[S.goldIdx];
+  S.payTokens--; S.payLater.push({type:'gold',debt:gp}); S.stats.payLaterUsed++;
+  logit(`ซื้อทอง แบบผ่อน (หนี้ ${gp})`); afterBuy();
+}
 function afterBuy(){
   render();
   if(onlineBuyMode){ onlineBuyMode=false; phase4(); return; }
@@ -737,15 +790,19 @@ function riskScreen(){
     <h2>ขายของ & จ่ายค่างวด</h2>
     <p class="sub">ขายได้ไม่เกิน 2 ชิ้น/รอบ (ขายแล้วราคาบนกระดานไม่เปลี่ยน · ของผ่อน/ตั๋ว/ทริป ขายไม่ได้)</p>
     <div class="legend">ขายไปแล้วรอบนี้: ${soldThisRound}/2</div>
-    ${Object.keys(counts).length?`<div class="shopgrid">${Object.keys(counts).map(t=>`
+    ${(Object.keys(counts).length||S.gold)?`<div class="shopgrid">${Object.keys(counts).map(t=>`
       <div class="shop" style="border-top-color:${ICOL[t]}"><div class="emoji">${pic(t,40)}</div><div class="nm">${ITEMS[t].th} ×${counts[t]}</div>
       <div class="pr">ขายได้ ${ITEMS[t].sell[S.markers[t]]}</div>
-      <button class="btn sm ghost" style="width:100%;margin-top:6px" onclick="sellItem('${t}')" ${soldThisRound>=2?'disabled':''}>ขาย</button></div>`).join('')}</div>`
+      <button class="btn sm ghost" style="width:100%;margin-top:6px" onclick="sellItem('${t}')" ${soldThisRound>=2?'disabled':''}>ขาย</button></div>`).join('')}
+      ${S.gold?`<div class="shop" style="border-top-color:var(--gold)"><div class="emoji">${pic('gold',40)}</div><div class="nm">ทอง ×${S.gold}</div>
+      <div class="pr">ขายได้ ${goldSellPrice()} <span style="color:var(--red)">(-5 VP)</span></div>
+      <button class="btn sm ghost" style="width:100%;margin-top:6px" onclick="sellGold()" ${soldThisRound>=2?'disabled':''}>ขาย</button></div>`:''}
+      </div>`
       :'<div class="legend">ไม่มีของที่ขายได้</div>'}
   </div>
   ${S.payLater.length?`<div class="card"><h2 style="font-size:15px">จ่ายค่างวด (ปิดหนี้ผ่อน)</h2>
     <p class="sub">จ่ายเต็มเพื่อปิดหนี้ คืนโทเคน · หนี้ที่ค้างตอนจบ = -VP เท่าราคา</p>
-    ${S.payLater.map((p,i)=>`<div class="wcard"><div class="info">${pic(p.type,20)} ${ITEMS[p.type].th} · หนี้ ${p.debt}</div>
+    ${S.payLater.map((p,i)=>`<div class="wcard"><div class="info">${pic(p.type,20)} ${tName(p.type)} · หนี้ ${p.debt}</div>
       <button class="btn sm gold" onclick="payInstall(${i})" ${S.cash<p.debt?'disabled':''}>จ่าย ${p.debt}</button></div>`).join('')}
   </div>`:''}
   <button class="btn gold" onclick="endRound()">จบรอบ ${S.round} →</button>`;
@@ -758,11 +815,19 @@ function sellItem(type){
   logit(`ขาย ${ITEMS[type].th} ได้ ${get}`);
   render(); riskScreen();
 }
+function sellGold(){
+  if(soldThisRound>=2 || S.gold<=0) return;
+  const get=goldSellPrice();
+  S.gold--; S.cash+=get; soldThisRound++; S.stats.sold++;
+  logit(`ขายทอง ได้ ${get} (เสีย 5 VP)`);
+  render(); riskScreen();
+}
 function payInstall(i){
   const p=S.payLater[i]; if(S.cash<p.debt) return;
   S.cash-=p.debt; S.payTokens++; S.payLater.splice(i,1);
-  S.items.push({type:p.type}); // กลายเป็นของจ่ายเต็ม (ขายได้รอบหน้า)
-  logit(`ปิดหนี้ผ่อน ${ITEMS[p.type].th} จ่าย ${p.debt}`);
+  if(p.type==='gold') S.gold++;            // ทองที่ผ่อน → กลายเป็นทองจ่ายเต็ม
+  else S.items.push({type:p.type});         // ของจ่ายเต็ม (ขายได้รอบหน้า)
+  logit(`ปิดหนี้ผ่อน ${tName(p.type)} จ่าย ${p.debt}`);
   render(); riskScreen();
 }
 function endRound(){
@@ -785,7 +850,7 @@ function endGame(){
   let wl=S.done.reduce((a,c)=>a+c.vp,0);
   const objR=objectiveResult();
   let obj=objR.vp;
-  let gold=S.gold*5;
+  let gold=goldHeld()*5;
   let emg=-S.emergency*5;
   let unc=-S.hand.length;
   let debt=-S.payLater.reduce((a,p)=>a+p.debt,0);
@@ -803,7 +868,7 @@ function endGame(){
     <div style="text-align:left;margin-top:12px">
       <div class="endscore"><span>Wishlist สำเร็จ (${S.done.length} ใบ)</span><b>+${wl}</b></div>
       <div class="endscore"><span>Objective สำเร็จ (${objR.done.filter(d=>d.ok).length}/${S.objectives.length} · เงินเก็บ ${moneyHeld()})</span><b>+${obj}</b></div>
-      <div class="endscore"><span>ทอง ${S.gold} ×5</span><b>+${gold}</b></div>
+      <div class="endscore"><span>ทอง ${goldHeld()} ×5</span><b>+${gold}</b></div>
       <div class="endscore"><span>กู้ฉุกเฉิน ${S.emergency} ใบ</span><b style="color:var(--red)">${emg}</b></div>
       <div class="endscore"><span>Wishlist ค้าง ${S.hand.length} ใบ</span><b style="color:var(--red)">${unc}</b></div>
       <div class="endscore"><span>หนี้ผ่อนค้าง</span><b style="color:var(--red)">${debt}</b></div>
