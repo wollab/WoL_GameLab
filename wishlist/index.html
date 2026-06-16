@@ -88,6 +88,7 @@
   .itable td.fdcol{color:var(--gold2)}
   .itable td.cur{background:#e4f6ec;font-weight:700;color:var(--green)}
   .itable td.fdcol.cur{background:#fff5d8;color:var(--gold2)}
+  .itable td.fddim{color:#b9b08e;background:#f7f4ea}
   .sharewrap{margin-top:8px}
   #sharecard{width:100%;max-width:340px;height:auto;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
   .handbar{position:sticky;bottom:0;z-index:20;background:#1b2a55;border-top:2px solid var(--gold);padding:6px 8px 7px;box-shadow:0 -4px 14px rgba(0,0,0,.28)}
@@ -98,6 +99,9 @@
   .mcard{flex:0 0 auto;min-width:92px;max-width:140px;background:#fffdf7;border-radius:8px;padding:5px 7px;border-left:4px solid var(--gold)}
   .mcard.job{border-left-color:var(--blue)}
   .mcard.ready{box-shadow:0 0 0 2px var(--green)}
+  .mcard.cdone{background:#eef6f0;border-left-color:var(--green);opacity:.92}
+  .mcard.cdone .mt{color:#1f7a4d}
+  .hbsub{font-size:10px;color:#9fb0e0;padding:6px 2px 3px;border-top:1px dashed #3a5aa0;margin-top:6px}
   .mt{font-size:11px;font-weight:600;color:var(--navy);display:flex;justify-content:space-between;gap:6px;align-items:center;white-space:nowrap}
   .mt span{overflow:hidden;text-overflow:ellipsis}
   .mvp{color:var(--green);font-weight:700;flex:0 0 auto}
@@ -245,8 +249,8 @@ const EVENT_INFO={
 };
 // ดอกเบี้ยเงินออม (Saving) — ตารางมาตรฐาน
 function savingInterest(b){ if(b>=45)return 5; if(b>=35)return 4; if(b>=24)return 3; if(b>=15)return 2; if(b>=7)return 1; return 0; }
-// ดอกเบี้ยฝากประจำ (Fixed Deposit) — สูงกว่า (rulebook: 7-14→3,15-23→5; ขยายต่อแบบสมเหตุผล)
-function fdInterest(b){ if(b>=45)return 11; if(b>=35)return 9; if(b>=24)return 7; if(b>=15)return 5; if(b>=7)return 3; return 0; }
+// ดอกเบี้ยฝากประจำ (Fixed Deposit) — กติกาจริง: 7-14→3, 15-23→5 และ 15-23 คือขั้นสูงสุด (สูงกว่านี้ยังได้ +5)
+function fdInterest(b){ if(b>=15)return 5; if(b>=7)return 3; return 0; }
 // ตารางดอกเบี้ยแสดงในหน้าจัดการเงิน (ไฮไลต์ช่วงของยอดปัจจุบัน)
 const INT_BRACKETS=[[0,6],[7,14],[15,23],[24,34],[35,44],[45,Infinity]];
 function interestTable(){
@@ -255,15 +259,16 @@ function interestTable(){
     const label=b[1]===Infinity?`${b[0]}+`:`${b[0]}–${b[1]}`;
     const sv=savingInterest(b[0]), fd=fdInterest(b[0]);
     const curS=inb(S.saving,b), curF=inb(S.fd,b);
+    const fdTop=b[0]>=24; // เกินขั้นสูงสุดของฝากประจำ (15-23) แล้ว
     return `<tr>
       <td>${label}</td>
       <td class="${curS?'cur':''}">+${sv}${curS?' ◀':''}</td>
-      <td class="fdcol ${curF?'cur':''}">+${fd}${curF?' ◀':''}</td></tr>`;
+      <td class="fdcol ${curF?'cur':''} ${fdTop?'fddim':''}">${fdTop?'+5':'+'+fd}${curF?' ◀':''}</td></tr>`;
   }).join('');
   return `<table class="itable">
     <thead><tr><th>ยอดที่ฝากไว้</th><th>ดอกเบี้ยเงินออม<br><span>(รอบหน้า)</span></th><th>ดอกฝากประจำ<br><span>🔒 (สูงกว่า)</span></th></tr></thead>
     <tbody>${rows}</tbody></table>
-    <div class="legend">ดอกเบี้ยคิดจาก<b>ยอดที่ฝากไว้ตอนนี้</b> แล้วได้รับ<b>รอบถัดไป</b> · แถวไฮไลต์ = ช่วงของคุณตอนนี้ (ออม ${S.saving} / ฝากประจำ ${S.fd})</div>`;
+    <div class="legend">ดอกเบี้ยคิดจาก<b>ยอดที่ฝากไว้ตอนนี้</b> แล้วได้รับ<b>รอบถัดไป</b> · แถวไฮไลต์ = ช่วงของคุณตอนนี้ (ออม ${S.saving} / ฝากประจำ ${S.fd})<br><b>ฝากประจำมีแค่ 2 ขั้น</b> (7–14→+3, 15–23→+5) · ยอด 15 ขึ้นไปได้ +5 สูงสุด (ไม่มีขั้นสูงกว่า)</div>`;
 }
 
 /* ============ STATE ============ */
@@ -406,26 +411,28 @@ function logHTML(){ return `<div class="log">${S.log.slice(0,12).map(l=>'<div>'+
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1900); }
 
 /* ============ FLOW ============ */
-function render(){ renderHeader(); renderHandBar(); window.scrollTo(0,0); }
+function render(){ if(S&&S.hand) checkWishlist(); renderHeader(); renderHandBar(); window.scrollTo(0,0); }
 function toggleHand(){ S.handCollapsed=!S.handCollapsed; renderHandBar(); }
-function miniCard(c){
+function miniCard(c,done){
   const ready=Object.entries(c.req).every(([t,n])=>itemCount(t)>=n);
   const items=Object.entries(c.req).map(([t,n])=>{
-    const ok=itemCount(t)>=n;
+    const ok=done||itemCount(t)>=n;
     return `<span class="mi ${ok?'ok':''}">${pic(t,22)}${n>1?'<b>'+n+'</b>':''}</span>`;
   }).join('');
-  return `<div class="mcard ${c.t} ${ready?'ready':''}">
-    <div class="mt"><span>${c.nm}</span><span class="mvp">+${c.vp}${c.t==='job'?' ·💼'+c.extra:''}</span></div>
+  return `<div class="mcard ${c.t} ${done?'cdone':(ready?'ready':'')}">
+    <div class="mt"><span>${done?'✓ ':''}${c.nm}</span><span class="mvp">+${c.vp}${c.t==='job'?' ·💼'+c.extra:''}</span></div>
     <div class="mis">${items}</div></div>`;
 }
 function renderHandBar(){
   const hb=document.getElementById('handbar'); if(!hb) return;
-  if(!S || !S.showHand || !S.hand || !S.hand.length){ hb.style.display='none'; hb.innerHTML=''; return; }
+  if(!S || !S.showHand || (!S.hand.length && !S.done.length)){ hb.style.display='none'; hb.innerHTML=''; return; }
   hb.style.display='block';
-  const doneTxt=S.done.length?` · <span class="x">สำเร็จ ${S.done.length}</span>`:'';
-  hb.innerHTML=`<div class="hbhead"><span>🎯 Wishlist ของคุณ (${S.hand.length})${doneTxt}</span>
+  const handRow=S.hand.length?`<div class="hbrow">${S.hand.map(c=>miniCard(c,false)).join('')}</div>`:'<div class="legend" style="color:#9fb0e0;padding:2px">ทำ Wishlist ครบทุกใบแล้ว 🎉</div>';
+  const doneRow=S.done.length?`<div class="hbsub">✅ สำเร็จแล้ว ${S.done.length} ใบ (ได้คะแนนแล้ว · ของที่ไม่ได้ใช้กับการ์ดงาน ขายคืนเป็นเงินได้)</div>
+      <div class="hbrow">${S.done.map(c=>miniCard(c,true)).join('')}</div>`:'';
+  hb.innerHTML=`<div class="hbhead"><span>🎯 Wishlist ที่ยังไม่สำเร็จ (${S.hand.length})</span>
       <button onclick="toggleHand()">${S.handCollapsed?'แสดง ▲':'ซ่อน ▼'}</button></div>
-    ${S.handCollapsed?'':`<div class="hbrow">${S.hand.map(miniCard).join('')}</div>`}`;
+    ${S.handCollapsed?'':handRow+doneRow}`;
 }
 const M=()=>document.getElementById('main');
 
@@ -754,6 +761,7 @@ function endRound(){
 
 /* ---- END GAME ---- */
 function endGame(){
+  checkWishlist(); // กันการ์ดที่ของครบแล้วยังค้างในมือ ให้สำเร็จก่อนคิดคะแนน
   // จบเกม: เก็บดอกครั้งสุดท้าย + จ่ายดอกผ่อนครั้งสุดท้าย (ตาม rulebook)
   const si=savingInterest(S.saving), fi=fdInterest(S.fd);
   if(si){S.cash+=si;} if(fi){S.cash+=fi;}
@@ -787,8 +795,8 @@ function endGame(){
     </div>
   </div>
   <div class="card">
-    <h2 style="font-size:16px">นิสัยการเงินของคุณ</h2>
-    ${S.character?`<div class="legend">เลือกเล่นเป็น: ${S.character.e} ${S.character.nm} · ${S.character.th}</div>`:''}
+    ${S.character?`<div class="legend">ตัวละครที่คุณเลือกเล่น: <b>${S.character.e} ${S.character.nm} · ${S.character.th}</b></div>`:''}
+    <h2 style="font-size:15px;margin-top:4px">สไตล์การเล่นรอบนี้ <span style="font-weight:400;font-size:12px;color:var(--muted)">(วิเคราะห์จากวิธีเล่นจริง)</span></h2>
     <div class="tier" style="font-size:18px">${persona.name}</div>
     <p class="sub">${persona.desc}</p>
     <div class="legend">เงินคงเหลือสุทธิ: ${netWorth()} · ออมสะสม ${S.stats.saveMoves} · ฝากประจำ ${S.stats.fdTotal} · ใช้ผ่อน ${S.stats.payLaterUsed} ครั้ง · ทำงาน ${S.stats.worked} · ช้อป ${S.stats.shopped}</div>
@@ -796,7 +804,7 @@ function endGame(){
   <div class="card center">
     <h2 style="font-size:16px">แชร์ผลของคุณ</h2>
     <p class="sub">อวดนิสัยการเงินให้เพื่อน แล้วชวนมาลองเล่น</p>
-    <div class="sharewrap"><canvas id="sharecard" width="500" height="640"></canvas></div>
+    <div class="sharewrap"><canvas id="sharecard" width="500" height="800"></canvas></div>
     <div class="row" style="margin-top:10px">
       <button class="btn gold" style="flex:1" onclick="doShare()">📤 แชร์ผล</button>
       <button class="btn ghost" style="flex:1" onclick="saveShareImage()">💾 บันทึกรูป</button>
@@ -815,9 +823,12 @@ function endGame(){
 /* ===== SHARE RESULT ===== */
 const GAME_URL="https://wollab.github.io/WoL_GameLab/wishlist/";
 function shareText(){
-  const r=S.result; const c=r.character?`${r.character.e} ${r.character.nm} · ${r.character.th}\n`:'';
+  const r=S.result; const b=r.breakdown;
+  const c=r.character?`ตัวละคร: ${r.character.e} ${r.character.nm} · ${r.character.th}\n`:'';
   return `ผมเล่น Wishlist บอร์ดเกมการเงิน ได้ ${r.total} VP — "${r.tier}"\n`+
-    `นิสัยการเงิน: ${r.persona.name}\n${c}มาลองจัดการเงินดูบ้าง 👇\n${GAME_URL}`;
+    `สไตล์การเล่น: ${r.persona.name}\n${c}`+
+    `• Wishlist สำเร็จ ${r.doneCount} ใบ (+${b.wl})  • Objective +${b.obj}  • ทอง +${b.gold}\n`+
+    `มาลองจัดการเงินดูบ้าง 👇\n${GAME_URL}`;
 }
 function drawShareCard(cb){
   const cv=document.getElementById('sharecard'); if(!cv) return;
@@ -845,12 +856,30 @@ function drawShareCard(cb){
     x.fillStyle='#caa128'; x.font='bold 22px "Segoe UI",sans-serif'; x.fillText(r.tier, cx, ly); ly+=34;
     // persona
     x.fillStyle='#16244d'; x.font='bold 16px "Segoe UI",sans-serif';
-    wrapText(x, 'นิสัยการเงิน: '+r.persona.name, cx, ly, W-90, 22); ly+=26;
+    wrapText(x, 'สไตล์การเล่น: '+r.persona.name, cx, ly, W-90, 22); ly+=26;
     x.fillStyle='#6b7280'; x.font='13px "Segoe UI",sans-serif';
-    ly=wrapText(x, r.persona.desc, cx, ly, W-90, 18)+10;
-    // มินิสเตตส์
-    x.fillStyle='#2e9e6b'; x.font='13px "Segoe UI",sans-serif';
-    x.fillText(`Wishlist สำเร็จ ${r.doneCount} ใบ · ทอง ${r.gold} · เงินสุทธิ ${r.net}`, cx, ly); ly+=8;
+    ly=wrapText(x, r.persona.desc, cx, ly, W-90, 18)+16;
+    // ตารางคะแนนละเอียด
+    const b=r.breakdown;
+    const rows=[
+      ['Wishlist สำเร็จ '+r.doneCount+' ใบ', b.wl, false],
+      ['Objective สำเร็จ', b.obj, false],
+      ['ทอง '+r.gold+' ×5', b.gold, false],
+      ['กู้ฉุกเฉิน', b.emg, true],
+      ['Wishlist ค้าง', b.unc, true],
+      ['หนี้ผ่อนค้าง', b.debt, true],
+    ];
+    const lx=58, rx=W-58, rh=22;
+    rows.forEach(([lab,val,neg])=>{
+      x.textAlign='left'; x.fillStyle='#444'; x.font='13px "Segoe UI",sans-serif'; x.fillText(lab, lx, ly);
+      x.textAlign='right'; x.fillStyle=(val<0?'#d2553f':'#2e9e6b'); x.font='bold 13px "Segoe UI",sans-serif';
+      x.fillText((val>0?'+':'')+val, rx, ly);
+      x.strokeStyle='#e5dfc9'; x.lineWidth=1; x.beginPath(); x.moveTo(lx,ly+6); x.lineTo(rx,ly+6); x.stroke();
+      ly+=rh;
+    });
+    x.textAlign='left'; x.fillStyle='#16244d'; x.font='bold 14px "Segoe UI",sans-serif'; x.fillText('รวม', lx, ly+4);
+    x.textAlign='right'; x.fillStyle='#16244d'; x.font='bold 15px "Segoe UI",sans-serif'; x.fillText(r.total+' VP', rx, ly+4); ly+=20;
+    x.textAlign='center';
     // CTA
     x.fillStyle='#16244d'; roundRect(x,40,H-92,W-80,42,12); x.fill();
     x.fillStyle='#e7b53c'; x.font='bold 14px "Segoe UI",sans-serif';
@@ -885,31 +914,23 @@ function copyResult(){
   if(navigator.clipboard){ navigator.clipboard.writeText(t).then(()=>toast('คัดลอกข้อความ + ลิงก์แล้ว')); }
   else toast('คัดลอกไม่ได้ในเบราว์เซอร์นี้');
 }
-// นับของที่เคยมี (รวมขายไปแล้วไม่นับ; ใช้ของที่ถือตอนจบ + ธีม)
+// "สไตล์การเล่นรอบนี้" — คำนวณจากพฤติกรรมจริง (คนละชุดกับตัวละครที่เลือก เพื่อไม่ให้สับสน)
 function getPersona(){
   const s=S.stats;
-  // นับของถือตอนจบตามธีม
-  const own=t=>S.items.filter(i=>i.type===t).length+S.payLater.filter(p=>p.type===t).length;
-  const map={
-    lumos: s.fdTotal+s.saveMoves,
-    cover: (own('trip'))*3,
-    kanom: (own('fashion'))*3,
-    suga:  (own('concert')+own('headset'))*3,
-    gato:  (own('computer'))*3,
-    haru:  (own('motorbike'))*3 + s.emergencyUsed*4,
-  };
-  let best="lumos", bv=-1;
-  for(const k in map){ if(map[k]>bv){bv=map[k];best=k;} }
-  const ch=CHARACTERS.find(c=>c.key===best);
-  const tips={
-    lumos:"ออมและลงทุนมีวินัย มองยาวเป็น — ระวังเก็บจนพลาดโอกาสทำฝัน",
-    cover:"ทุ่มกับทริปและประสบการณ์ — ลองตั้งงบทริปต่อปีจะเที่ยวได้สบายใจ",
-    kanom:"สายแฟชั่นตัวจริง — ตั้งงบช้อปรายเดือน เลือกของที่ใช้คุ้ม",
-    suga:"คอนเสิร์ตและความบันเทิงมาก่อน — กันเงินสำรองไว้ก่อนเปย์",
-    gato:"จัดเต็มเกมและอุปกรณ์ — บาลานซ์ระหว่างของอยากได้กับเงินเก็บ",
-    haru:"สายลุยสุดเหวี่ยง — เผื่อเงินรับมือเหตุไม่คาดฝันไว้เสมอ",
-  };
-  return {name:`${ch.e} ${ch.nm} · ${ch.th}`, desc:tips[best]};
+  const styles=[
+    {score:(s.fdTotal+s.saveMoves), name:"💰 สายวางแผนเก็บออม",
+      desc:"ออมและลงทุนอย่างมีวินัย มองยาวเป็น — ระวังเก็บจนพลาดโอกาสทำฝัน"},
+    {score:s.payLaterUsed*6 + (s.payLaterUsed && S.payLater.length===0 ? 8 : 0), name:"💳 นักบริหารหนี้",
+      desc:"กล้าใช้เครื่องมือผ่อนและปิดหนี้ได้ทัน — ใช้หนี้เป็นเครื่องมือ"},
+    {score:s.emergencyUsed*7, name:"🎢 สายผจญภัยการเงิน",
+      desc:"กล้าเสี่ยง เจอค่าใช้จ่ายฉุกเฉินบ้าง — ลองกันเงินสำรองเพิ่มอีกหน่อย"},
+    {score:S.done.length*4, name:"🌟 นักเติมฝัน",
+      desc:"ไล่ทำ Wishlist ได้เยอะ — เก่งเรื่องจัดลำดับความสำคัญของเป้าหมาย"},
+    {score:s.shopped*3, name:"🛍️ นักช้อปตัวจริง",
+      desc:"เปลี่ยนเงินเป็นของที่อยากได้บ่อย — อย่าลืมกันเงินเก็บไว้ด้วย"},
+  ];
+  let best=styles[0]; styles.forEach(st=>{ if(st.score>best.score) best=st; });
+  return {name:best.name, desc:best.desc};
 }
 
 /* ============ GO ============ */
