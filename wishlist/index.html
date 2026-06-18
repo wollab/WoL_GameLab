@@ -189,7 +189,7 @@
   </header>
   <main id="main"></main>
   <div id="handbar" class="handbar" style="display:none"></div>
-  <footer>Prototype การเรียนรู้ · กติกาอ้างอิง Wishlist 2 Rulebook (Pro) · Wizards of Learning · <b style="color:#aeb8d6">v0.9.2</b></footer>
+  <footer>Prototype การเรียนรู้ · กติกาอ้างอิง Wishlist 2 Rulebook (Pro) · Wizards of Learning · <b style="color:#aeb8d6">v0.9.3</b></footer>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -333,6 +333,7 @@ function newGame(){
     objectives:[], character:null,
     eventPos:0, event:null, saleShop:null, refilled:false,
     showHand:false, handCollapsed:false, priceUp:{},
+    session:(self.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2)),
     log:[],
     stats:{ saveMoves:0, fdTotal:0, payLaterUsed:0, worked:0, shopped:0, sold:0, emergencyUsed:0, lottery:0 }
   };
@@ -373,7 +374,7 @@ function checkWishlist(){
     const c=S.hand[i];
     let ok=true;
     for(const t in c.req){ if(itemCount(t)<c.req[t]) ok=false; }
-    if(ok){ S.done.push(c); S.hand.splice(i,1); toast("✓ ทำ Wishlist สำเร็จ: "+c.nm); }
+    if(ok){ S.done.push(c); S.hand.splice(i,1); toast("✓ ทำ Wishlist สำเร็จ: "+c.nm); track('wishlist_done',{id:c.id,type:c.t,vp:c.vp}); }
   }
 }
 function hasAllItems(card){ for(const t in card.req){ if(itemCount(t)<card.req[t]) return false; } return true; }
@@ -494,7 +495,7 @@ function renderHandBar(){
     ${S.handCollapsed?'':handRow+doneRow}`;
 }
 const M=()=>document.getElementById('main');
-const VERSION='0.9.2';
+const VERSION='0.9.3';
 const SHOP_URL='https://wizardsoflearning.com/wishlist-financial-board-game/';
 function boxPromo(){
   return `<div class="boxpromo">
@@ -534,7 +535,7 @@ function screenCharacter(){
   </div>`;
   document.getElementById('roundlbl').textContent='เลือกตัวละคร';
 }
-function pickChar(key){ S.character=CHARACTERS.find(c=>c.key===key); screenSetup(); }
+function pickChar(key){ S.character=CHARACTERS.find(c=>c.key===key); track('char_pick',{char:key}); screenSetup(); }
 // Pro setup: deal 6 wishlist keep 4, deal 2 objectives, start 25 + gold 1
 let setupPick=[];
 function screenSetup(){
@@ -576,11 +577,13 @@ function confirmSetup(){
   S.hand=setupPick.map(i=>S._six[i]);
   const rest=S._six.filter((c,i)=>!setupPick.includes(i));
   S.deck.push(...rest);
+  track('wishlist_keep',{kept:S.hand.map(c=>c.id), discarded:rest.map(c=>c.id),
+    objectives:S.objectives.map(o=>({nm:o.en,cost:o.cost,vp:o.vp}))});
   startRound();
 }
 
 /* ---- ROUND ---- */
-function startRound(){ S.phase=0; S.event=null; S.saleShop=null; S.refilled=false; S.showHand=true; render(); phase1(); }
+function startRound(){ S.phase=0; S.event=null; S.saleShop=null; S.refilled=false; S.showHand=true; track('round_start',{round:S.round}); render(); phase1(); }
 // ขึ้นราคาสินค้า 1 ระดับ (คืน true ถ้าขึ้นจริง) + ทำเครื่องหมายว่า "ราคาเพิ่ม"
 function raisePrice(type){
   if(type!=='gold' && S.markers[type]<ITEMS[type].buy.length-1){ S.markers[type]++; S.priceUp[type]=true; return true; }
@@ -696,10 +699,12 @@ function moveQuick(kind, amtArg){
   else if(kind==='unsave'){ S.saving-=amt; S.cash+=amt; }
   else if(kind==='fd'){ S.cash-=amt; S.fd+=amt; S.stats.fdTotal+=amt; }
   (S._undo=S._undo||[]).push({kind,amt});
+  track('money_move',{kind,amt});
   render(); drawPhase2();
 }
 function undoMove(){
   const m=(S._undo||[]).pop(); if(!m) return;
+  track('money_undo',{kind:m.kind,amt:m.amt});
   if(m.kind==='save'){ S.saving-=m.amt; S.cash+=m.amt; S.stats.saveMoves-=m.amt; }
   else if(m.kind==='unsave'){ S.cash-=m.amt; S.saving+=m.amt; }
   else if(m.kind==='fd'){ S.fd-=m.amt; S.cash+=m.amt; S.stats.fdTotal-=m.amt; }
@@ -714,7 +719,7 @@ function rollEvent(){
   if(S.event==='lottery'){ S.cash+=2; S.stats.lottery++; msg+=' (+2)'; }
   if(S.event==='scam'){ const c=Math.min(S.cash,3); S.cash-=c; msg+=' (-3)'; }
   if(S.event==='badluck'){ const c=Math.min(S.cash,1); S.cash-=c; msg+=' (-1)'; }
-  logit(msg); render();
+  logit(msg); track('event_roll',{die:d,event:S.event}); render();
   if(S.event==='onsale'){ chooseSale(); }
   else phase3();
 }
@@ -723,7 +728,7 @@ function chooseSale(){
   <div class="shopgrid">${Object.keys(ITEMS).map(k=>`<div class="shop" style="border-top-color:${ICOL[k]}"><div class="emoji">${pic(k,40)}</div><div class="nm">${ITEMS[k].th}</div>
     <button class="btn sm gold" style="width:100%;margin-top:6px" onclick="setSale('${k}')">ลดร้านนี้</button></div>`).join('')}</div></div>`;
 }
-function setSale(k){ S.saleShop=k; logit('ลดราคาร้าน '+ITEMS[k].th+' -5 (จ่ายสด)'); phase3(); }
+function setSale(k){ S.saleShop=k; logit('ลดราคาร้าน '+ITEMS[k].th+' -5 (จ่ายสด)'); track('onsale_pick',{shop:k}); phase3(); }
 
 /* PHASE 3 — Fulfill Wishlist : Working หรือ Shopping */
 function phase3(){
@@ -745,6 +750,7 @@ function chooseWork(){
   let extra=0, details=[];
   S.done.forEach(c=>{ if(c.t==='job' && hasAllItems(c)){ extra+=c.extra; details.push(c.nm+' +'+c.extra); } });
   S.cash+=10+extra;
+  track('choose_action',{action:'work',extra});
   logit(`ทำงาน +10${extra?(' + โบนัสงาน +'+extra+' ('+details.join(', ')+')'):''}`);
   // ระหว่างทำงาน ตลาดยังขยับ — สุ่มขึ้นราคา 2 ชิ้น
   S.priceUp={}; bumpRandomPrice(null); bumpRandomPrice(null);
@@ -754,7 +760,7 @@ function chooseWork(){
   } else phase4();
 }
 let shopCount=0, onlineBuyMode=false;
-function chooseShop(){ S.stats.shopped++; shopCount=0; onlineBuyMode=false; shoppingScreen(false); }
+function chooseShop(){ S.stats.shopped++; shopCount=0; onlineBuyMode=false; track('choose_action',{action:'shop'}); shoppingScreen(false); }
 function shoppingScreen(online){
   S.phase=2; render();
   M().innerHTML=`<div class="card">
@@ -771,6 +777,7 @@ function buyCash(type){
   S.cash-=p; S.items.push({type});
   S.priceUp={}; raisePrice(type); bumpRandomPrice(type);
   logit(`ซื้อ ${ITEMS[type].th} จ่ายสด ${p}`);
+  track('buy',{type,mode:'cash',price:p,sale:S.saleShop===type});
   checkWishlist(); afterBuy();
 }
 function buyLater(type){
@@ -779,17 +786,18 @@ function buyLater(type){
   S.payTokens--; S.payLater.push({type,debt:p}); S.stats.payLaterUsed++;
   S.priceUp={}; raisePrice(type); bumpRandomPrice(type);
   logit(`ซื้อ ${ITEMS[type].th} แบบผ่อน (หนี้ ${p})`);
+  track('buy',{type,mode:'later',price:p});
   checkWishlist(); afterBuy();
 }
 function buyGold(){
   const gp=GOLD_LADDER[S.goldIdx]; if(S.cash<gp) return;
-  S.cash-=gp; S.gold++; logit(`ซื้อทอง จ่ายสด ${gp}`); afterBuy();
+  S.cash-=gp; S.gold++; logit(`ซื้อทอง จ่ายสด ${gp}`); track('gold_buy',{mode:'cash',price:gp}); afterBuy();
 }
 function buyGoldLater(){
   if(S.payTokens<=0) return;
   const gp=GOLD_LADDER[S.goldIdx];
   S.payTokens--; S.payLater.push({type:'gold',debt:gp}); S.stats.payLaterUsed++;
-  logit(`ซื้อทอง แบบผ่อน (หนี้ ${gp})`); afterBuy();
+  logit(`ซื้อทอง แบบผ่อน (หนี้ ${gp})`); track('gold_buy',{mode:'later',price:gp}); afterBuy();
 }
 function afterBuy(){
   render();
@@ -810,6 +818,7 @@ function phase4(){
 function rollCost(){
   const d=1+Math.floor(Math.random()*6);
   logit(`ค่าครองชีพรอบนี้: ${d}`);
+  track('cost_roll',{die:d,enough:S.cash>=d});
   if(S.cash>=d){ S.cash-=d; logit(`จ่ายค่าครองชีพ -${d}`); render(); riskScreen(); }
   else { costShortfall(d); }
 }
@@ -831,12 +840,14 @@ function payFromSaving(d){
   let pay=d; let fromCash=Math.min(S.cash,pay); S.cash-=fromCash; pay-=fromCash;
   S.saving-=pay; S.saving-=2; if(S.saving<0)S.saving=0;
   logit(`จ่ายค่าครองชีพจากเงินออม + ค่าปรับ 2`);
+  track('cost_pay',{method:'saving_fine',cost:d});
   render(); riskScreen();
 }
 function takeLoan(d){
   S.cash+=5; S.emergency++; S.stats.emergencyUsed++;
   let fromCash=Math.min(S.cash,d); S.cash-=fromCash;
   logit(`กู้ฉุกเฉิน +5 (-5 VP) แล้วจ่ายค่าครองชีพ`);
+  track('cost_pay',{method:'loan',cost:d});
   render(); riskScreen();
 }
 let soldThisRound=0;
@@ -872,6 +883,7 @@ function sellItem(type){
   const get=ITEMS[type].sell[S.markers[type]];
   S.items.splice(idx,1); S.cash+=get; soldThisRound++; S.stats.sold++;
   logit(`ขาย ${ITEMS[type].th} ได้ ${get}`);
+  track('sell',{type,price:get});
   render(); riskScreen();
 }
 function sellGold(){
@@ -879,6 +891,7 @@ function sellGold(){
   const get=goldSellPrice();
   S.gold--; S.cash+=get; soldThisRound++; S.stats.sold++;
   logit(`ขายทอง ได้ ${get} (เสีย 5 VP)`);
+  track('sell',{type:'gold',price:get});
   render(); riskScreen();
 }
 function payInstall(i){
@@ -887,9 +900,11 @@ function payInstall(i){
   if(p.type==='gold') S.gold++;            // ทองที่ผ่อน → กลายเป็นทองจ่ายเต็ม
   else S.items.push({type:p.type});         // ของจ่ายเต็ม (ขายได้รอบหน้า)
   logit(`ปิดหนี้ผ่อน ${tName(p.type)} จ่าย ${p.debt}`);
+  track('pay_install',{type:p.type,debt:p.debt});
   render(); riskScreen();
 }
 function endRound(){
+  track('round_end',{round:S.round});
   // ทองราคาขึ้นทุกจบรอบ
   if(S.goldIdx<GOLD_LADDER.length-1) S.goldIdx++;
   soldThisRound=0;
@@ -919,6 +934,10 @@ function endGame(){
   S.showHand=false;
   S.result={total,tier,persona,doneCount:S.done.length,gold:S.gold,net:netWorth(),
     character:S.character, breakdown:{wl,obj,gold,emg,unc,debt}};
+  track('game_end',{total,tier,persona:persona.name,breakdown:{wl,obj,gold,emg,unc,debt},
+    character:S.character?S.character.key:null, doneCount:S.done.length, handLeft:S.hand.length,
+    objectivesDone:objR.done.filter(d=>d.ok).length, net:netWorth(), stats:S.stats});
+  flushEvents();
   S.phase=3; render();
   M().innerHTML=`<div class="card center">
     <h2>จบเกม! สรุปผล 5 รอบ</h2>
@@ -1088,6 +1107,34 @@ const LB_CONFIG={ url:"https://ogxjhyysevcjljjmjham.supabase.co", key:"eyJhbGciO
   seasonStart:"2026-06-18T07:00:00+00:00", seasonLabel:"v0.9.2", resetDate:"18 มิ.ย. 2026" };
 function lbRemote(){ return !!(LB_CONFIG.url && LB_CONFIG.key); }
 let lbTab='daily', lbHighlight=null;
+
+/* ===== ANALYTICS (เก็บ log การตัดสินใจ/สถานการณ์เพื่อวิจัย) ===== */
+const ANALYTICS_TABLE='game_events';
+let _evq=[], _flushT=null;
+function stateSnapshot(){
+  if(!S) return {};
+  return { cash:S.cash, saving:S.saving, fd:S.fd, gold:goldHeld(),
+    debt:S.payLater.reduce((a,p)=>a+p.debt,0), items:S.items.length, payLater:S.payLater.length,
+    hand:S.hand.length, done:S.done.length, money:moneyHeld(), vpEst:estimateVP(),
+    emergency:S.emergency, payTokens:S.payTokens };
+}
+function track(action, detail){
+  if(!lbRemote() || !S || !S.session) return;
+  _evq.push({ session:S.session, version:VERSION, round:S.round||0,
+    phase:(typeof S.phase==='number'?S.phase:null), action,
+    detail:detail||{}, state:stateSnapshot(), client_ts:new Date().toISOString() });
+  if(_evq.length>=8) flushEvents(); else { clearTimeout(_flushT); _flushT=setTimeout(flushEvents,1500); }
+}
+function flushEvents(){
+  if(!lbRemote() || !_evq.length) return;
+  const batch=_evq.splice(0,_evq.length);
+  fetch(`${LB_CONFIG.url}/rest/v1/${ANALYTICS_TABLE}`,{ method:'POST', keepalive:true,
+    headers:{apikey:LB_CONFIG.key,Authorization:'Bearer '+LB_CONFIG.key,'Content-Type':'application/json',Prefer:'return=minimal'},
+    body:JSON.stringify(batch)
+  }).catch(()=>{ _evq.unshift(...batch); }); // ส่งไม่ได้ → เก็บไว้ลองใหม่
+}
+window.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') flushEvents(); });
+window.addEventListener('pagehide',flushEvents);
 function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function lbLocal(){ try{return JSON.parse(localStorage.getItem('wishlist_scores_v1'))||[];}catch(e){return[];} }
