@@ -57,6 +57,10 @@
   .shop .acts{display:flex;gap:4px;margin-top:6px}
   .shop .acts button{flex:1;padding:6px 2px;font-size:11px}
   .saletag{position:absolute;top:-8px;right:-6px;background:var(--red);color:#fff;font-size:9px;padding:2px 6px;border-radius:8px}
+  .uptag{position:absolute;top:-8px;left:-6px;background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .shop.priceup{border-color:var(--red)}
+  .pr.up{color:var(--red)}
+  .pr.up b{color:var(--red)!important}
   .wcard{border:1px solid var(--line);border-radius:9px;padding:8px 10px;margin-bottom:7px;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px}
   .wcard.job{border-left:5px solid var(--blue)}
   .wcard.exp{border-left:5px solid var(--gold)}
@@ -118,6 +122,11 @@
   .mcard.cdone{background:#eef6f0;border-left-color:var(--green);opacity:.92}
   .mcard.cdone .mt{color:#1f7a4d}
   .hbsub{font-size:10px;color:#9fb0e0;padding:6px 2px 3px;border-top:1px dashed #3a5aa0;margin-top:6px}
+  .hbobj{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:5px 2px 7px;margin-bottom:4px;border-bottom:1px dashed #3a5aa0}
+  .hbobj .ol{font-size:11px;color:var(--gold);font-weight:700}
+  .ochip{font-size:11px;background:#2b3c74;color:#dfe6fb;border-radius:20px;padding:2px 9px}
+  .ochip b{color:#fff}
+  .ochip.ok{background:#1f7a4d;color:#fff}
   .lbtabs{display:flex;gap:6px;margin:6px 0 10px}
   .lbtabs button{flex:1;background:#eef0f4;color:var(--navy);border:1px solid var(--line);font-size:13px;padding:8px 4px}
   .lbtabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
@@ -316,7 +325,7 @@ function newGame(){
     hand:[], done:[], deck:[],
     objectives:[], character:null,
     eventPos:0, event:null, saleShop:null, refilled:false,
-    showHand:false, handCollapsed:false,
+    showHand:false, handCollapsed:false, priceUp:{},
     log:[],
     stats:{ saveMoves:0, fdTotal:0, payLaterUsed:0, worked:0, shopped:0, sold:0, emergencyUsed:0, lottery:0 }
   };
@@ -387,11 +396,13 @@ function shopHTML(showActions){
     const it=ITEMS[k], maxed=S.markers[k]>=it.buy.length-1 && false;
     const price=buyPrice(k);
     const onsale=S.saleShop===k;
-    h+=`<div class="shop ${onsale?'sale':''}" style="border-top-color:${ICOL[k]}">
+    const up=S.priceUp[k];
+    h+=`<div class="shop ${onsale?'sale':''} ${up?'priceup':''}" style="border-top-color:${ICOL[k]}">
       ${onsale?'<span class="saletag">SALE -5</span>':''}
+      ${up?'<span class="uptag">📈 ราคาเพิ่ม</span>':''}
       <div class="emoji">${pic(k,46)}</div>
       <div class="nm">${it.th}</div>
-      <div class="pr">ซื้อ <b>${price}</b>${it.sellable?` · ขาย ${it.sell[S.markers[k]]}`:' · ขายไม่ได้'}</div>`;
+      <div class="pr ${up?'up':''}">ซื้อ <b>${price}</b>${it.sellable?` · ขาย ${it.sell[S.markers[k]]}`:' · ขายไม่ได้'}</div>`;
     if(showActions){
       h+=`<div class="acts">
         <button class="btn gold" onclick="buyCash('${k}')" ${S.cash<price?'disabled':''}>จ่ายสด</button>
@@ -466,8 +477,13 @@ function renderHandBar(){
   const handRow=S.hand.length?`<div class="hbrow">${S.hand.map(c=>miniCard(c,false)).join('')}</div>`:'<div class="legend" style="color:#9fb0e0;padding:2px">ทำ Wishlist ครบทุกใบแล้ว 🎉</div>';
   const doneRow=S.done.length?`<div class="hbsub">✅ สำเร็จแล้ว ${S.done.length} ใบ (ได้คะแนนแล้ว · ของที่ไม่ได้ใช้กับการ์ดงาน ขายคืนเป็นเงินได้)</div>
       <div class="hbrow">${S.done.map(c=>miniCard(c,true)).join('')}</div>`:'';
+  const objRow=(S.objectives&&S.objectives.length)?`<div class="hbobj">
+      <span class="ol">💰 เป้าเก็บเงินจบเกม · ถือ ${moneyHeld()}</span>
+      ${objectiveResult().done.map(({o,ok})=>`<span class="ochip ${ok?'ok':''}">${o.nm} <b>${o.cost}</b> ${ok?'✓':'+'+o.vp+'VP'}</span>`).join('')}
+    </div>`:'';
   hb.innerHTML=`<div class="hbhead"><span>🎯 Wishlist ที่ยังไม่สำเร็จ (${S.hand.length})</span>
       <button onclick="toggleHand()">${S.handCollapsed?'แสดง ▲':'ซ่อน ▼'}</button></div>
+    ${objRow}
     ${S.handCollapsed?'':handRow+doneRow}`;
 }
 const M=()=>document.getElementById('main');
@@ -546,7 +562,20 @@ function confirmSetup(){
 }
 
 /* ---- ROUND ---- */
-function startRound(){ S.phase=0; S.event=null; S.saleShop=null; S.refilled=false; S.showHand=true; render(); phase1(); }
+function startRound(){ S.phase=0; S.event=null; S.saleShop=null; S.refilled=false; S.showHand=true; S.priceUp={}; render(); phase1(); }
+// ขึ้นราคาสินค้า 1 ระดับ (คืน true ถ้าขึ้นจริง) + ทำเครื่องหมายว่า "ราคาเพิ่ม"
+function raisePrice(type){
+  if(type!=='gold' && S.markers[type]<ITEMS[type].buy.length-1){ S.markers[type]++; S.priceUp[type]=true; return true; }
+  return false;
+}
+// สุ่มขึ้นราคาสินค้าอีก 1 ชิ้น (ดีมานด์) ยกเว้นทองและตัวที่เพิ่งซื้อ
+function bumpRandomPrice(exclude){
+  const cands=Object.keys(ITEMS).filter(k=>k!==exclude && S.markers[k]<ITEMS[k].buy.length-1);
+  if(!cands.length) return;
+  const k=cands[Math.floor(Math.random()*cands.length)];
+  S.markers[k]++; S.priceUp[k]=true;
+  logit(`📈 ดีมานด์เพิ่ม: ราคา ${ITEMS[k].th} ขยับขึ้น 1 ระดับ`);
+}
 
 /* PHASE 1 — Receive income */
 function phase1(){
@@ -708,17 +737,16 @@ function shoppingScreen(online){
 }
 function buyCash(type){
   const p=buyPrice(type); if(S.cash<p) return;
-  S.cash-=p; S.items.push({type}); if(type!=='gold' && S.markers[type]<ITEMS[type].buy.length-1) S.markers[type]++;
+  S.cash-=p; S.items.push({type});
+  raisePrice(type); bumpRandomPrice(type);
   logit(`ซื้อ ${ITEMS[type].th} จ่ายสด ${p}`);
-  S.saleShop=(S.saleShop===type)?null:S.saleShop; // sale ใช้ได้เรื่อยๆในรอบ? rulebook: ทั้งรอบ — คงไว้
-  S.saleShop=S.saleShop; // keep
   checkWishlist(); afterBuy();
 }
 function buyLater(type){
   if(S.payTokens<=0) return;
   const p=ITEMS[type].buy[S.markers[type]]; // ผ่อนไม่ได้ส่วนลด sale
   S.payTokens--; S.payLater.push({type,debt:p}); S.stats.payLaterUsed++;
-  if(S.markers[type]<ITEMS[type].buy.length-1) S.markers[type]++;
+  raisePrice(type); bumpRandomPrice(type);
   logit(`ซื้อ ${ITEMS[type].th} แบบผ่อน (หนี้ ${p})`);
   checkWishlist(); afterBuy();
 }
