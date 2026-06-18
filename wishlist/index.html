@@ -76,6 +76,7 @@
   .center{text-align:center}
   .hero{background:linear-gradient(160deg,#fffdf7,#f3edda);border:1px solid var(--gold)}
   .herologo{width:78%;max-width:340px;margin:4px auto 10px;display:block;filter:drop-shadow(0 3px 6px rgba(0,0,0,.18))}
+  .boxpromo .boximg{width:88%;max-width:300px;display:block;margin:0 auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.2));cursor:pointer}
   .shop .emoji{font-size:26px;line-height:1.1}
   .shop{border-top:3px solid var(--line)}
   .chipset{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
@@ -108,6 +109,12 @@
   .chip.all{border-color:var(--gold2);color:var(--gold2)}
   .chip.all:hover:not(:disabled){background:var(--gold);color:var(--navy)}
   .chip:disabled{opacity:.3;cursor:not-allowed}
+  .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
+  .pchip{display:flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:5px 8px}
+  .pchip b{font-size:16px;font-weight:800;color:var(--navy)}
+  .pchip.up{border-color:var(--red);background:#fdeee9}
+  .pchip.up b{color:var(--red)}
+  .pchip .pup{font-size:11px}
   .itable td.fddim{color:#b9b08e;background:#f7f4ea}
   .sharewrap{margin-top:8px}
   #sharecard{width:100%;max-width:340px;height:auto;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
@@ -182,7 +189,7 @@
   </header>
   <main id="main"></main>
   <div id="handbar" class="handbar" style="display:none"></div>
-  <footer>Prototype การเรียนรู้ · กติกาอ้างอิง Wishlist 2 Rulebook (Pro) · Wizards of Learning</footer>
+  <footer>Prototype การเรียนรู้ · กติกาอ้างอิง Wishlist 2 Rulebook (Pro) · Wizards of Learning · <b style="color:#aeb8d6">v0.9.2</b></footer>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -487,6 +494,15 @@ function renderHandBar(){
     ${S.handCollapsed?'':handRow+doneRow}`;
 }
 const M=()=>document.getElementById('main');
+const VERSION='0.9.2';
+const SHOP_URL='https://wizardsoflearning.com/wishlist-financial-board-game/';
+function boxPromo(){
+  return `<div class="boxpromo">
+    <a href="${SHOP_URL}" target="_blank" rel="noopener"><img src="assets/box.png" alt="กล่องเกม Wishlist" class="boximg"></a>
+    <p class="sub" style="margin:8px 0 6px">ชอบเกมนี้? Wishlist มีเป็นบอร์ดเกมจริง เล่นได้ 2–6 คน</p>
+    <a href="${SHOP_URL}" target="_blank" rel="noopener" style="text-decoration:none"><button class="btn gold">🛒 ดูข้อมูล / สั่งซื้อบอร์ดเกมจริง →</button></a>
+  </div>`;
+}
 
 /* ---- START / SETUP ---- */
 function screenStart(){
@@ -498,6 +514,8 @@ function screenStart(){
     มีเงินออม ดอกเบี้ย ฝากประจำ ผ่อน (Pay Later) และเหตุการณ์สุ่ม — กลไกตามบอร์ดเกมจริง</div>
     <button class="btn gold" onclick="screenCharacter()">เริ่มเล่น</button>
     <button class="btn ghost" style="margin-top:8px" onclick="screenLeaderboard()">🏆 ดูกระดานอันดับ</button>
+    <hr style="border:none;border-top:1px solid var(--line);margin:14px 0">
+    ${boxPromo()}
   </div>`;
   document.getElementById('stats').innerHTML='';
   document.getElementById('phasewrap').innerHTML='';
@@ -562,7 +580,7 @@ function confirmSetup(){
 }
 
 /* ---- ROUND ---- */
-function startRound(){ S.phase=0; S.event=null; S.saleShop=null; S.refilled=false; S.showHand=true; S.priceUp={}; render(); phase1(); }
+function startRound(){ S.phase=0; S.event=null; S.saleShop=null; S.refilled=false; S.showHand=true; render(); phase1(); }
 // ขึ้นราคาสินค้า 1 ระดับ (คืน true ถ้าขึ้นจริง) + ทำเครื่องหมายว่า "ราคาเพิ่ม"
 function raisePrice(type){
   if(type!=='gold' && S.markers[type]<ITEMS[type].buy.length-1){ S.markers[type]++; S.priceUp[type]=true; return true; }
@@ -630,6 +648,16 @@ function moveChips(kind, amounts){
   h += `<button class="chip all" onclick="moveQuick('${kind}','all')" ${src<=0?'disabled':''}>ทั้งหมด</button>`;
   return h;
 }
+function priceList(){
+  const items=Object.keys(ITEMS).map(k=>{
+    const up=S.priceUp[k];
+    return `<div class="pchip ${up?'up':''}">${pic(k,24)}<b>${buyPrice(k)}</b>${up?'<span class="pup">📈</span>':''}</div>`;
+  }).join('');
+  const gold=`<div class="pchip">${pic('gold',24)}<b>${GOLD_LADDER[S.goldIdx]}</b></div>`;
+  return `<div class="card"><h2 style="font-size:15px">📊 ราคาสินค้าปัจจุบัน</h2>
+    <p class="sub">ดูราคาก่อนวางแผนแบ่งเงิน · 📈 = ราคาเพิ่งขึ้น (สีแดง)</p>
+    <div class="pgrid">${items}${gold}</div></div>`;
+}
 function drawPhase2(){
   const undoN=(S._undo||[]).length;
   M().innerHTML=`<div class="card">
@@ -648,6 +676,7 @@ function drawPhase2(){
     ${undoN?`<button class="btn ghost sm" style="margin-top:8px" onclick="undoMove()">↩️ เลิกทำล่าสุด (${undoN})</button>`:''}
     ${interestTable()}
   </div>
+  ${priceList()}
   <div class="card"><h2 style="font-size:15px">เป้าหมายระยะยาว (Objective)</h2>
     <p class="sub">ถือเงินให้ถึงเป้าตอนจบเกม · ตอนนี้ถือ ${moneyHeld()} (เงินก้อนเดียวใช้ทำหลายเป้าพร้อมกันไม่ได้)</p>
     ${objectiveResult().done.map(({o,ok})=>`<div class="wcard exp ${ok?'done':''}">
@@ -717,6 +746,8 @@ function chooseWork(){
   S.done.forEach(c=>{ if(c.t==='job' && hasAllItems(c)){ extra+=c.extra; details.push(c.nm+' +'+c.extra); } });
   S.cash+=10+extra;
   logit(`ทำงาน +10${extra?(' + โบนัสงาน +'+extra+' ('+details.join(', ')+')'):''}`);
+  // ระหว่างทำงาน ตลาดยังขยับ — สุ่มขึ้นราคา 2 ชิ้น
+  S.priceUp={}; bumpRandomPrice(null); bumpRandomPrice(null);
   render();
   if(S.event==='online'){ // ทำงานแล้วซื้อได้ 1 ชิ้น
     onlineBuyMode=true; toast('สั่งออนไลน์: ซื้อได้ 1 ชิ้น'); shoppingScreen(true);
@@ -929,8 +960,8 @@ function endGame(){
   </div>
   <div class="card center">
     <button class="btn gold" onclick="screenStart()">เล่นอีกครั้ง</button>
-    <div style="height:8px"></div>
-    <a href="https://wizardsoflearning.com/wishlist-financial-board-game/" target="_blank" style="text-decoration:none"><button class="btn ghost">รู้จักบอร์ดเกมตัวจริง →</button></a>
+    <hr style="border:none;border-top:1px solid var(--line);margin:14px 0">
+    ${boxPromo()}
   </div>`;
   document.getElementById('phasewrap').innerHTML='';
   drawShareCard();
@@ -1052,7 +1083,9 @@ function getPersona(){
 
 /* ============ LEADERBOARD ============ */
 // ตั้งค่า Supabase ที่นี่เพื่อเปิดโหมด "แชร์ทุกคน" (ว่าง = เก็บในเครื่อง localStorage)
-const LB_CONFIG={ url:"https://ogxjhyysevcjljjmjham.supabase.co", key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9neGpoeXlzZXZjamxqam1qaGFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NDQxMzIsImV4cCI6MjA5NzEyMDEzMn0.m8ucxizELASG_6wQig7M4Gz4fwOsQP8etvPoRcBB6jI", table:"scores" };
+const LB_CONFIG={ url:"https://ogxjhyysevcjljjmjham.supabase.co", key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9neGpoeXlzZXZjamxqam1qaGFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NDQxMzIsImV4cCI6MjA5NzEyMDEzMn0.m8ucxizELASG_6wQig7M4Gz4fwOsQP8etvPoRcBB6jI", table:"scores",
+  // ฤดูกาลปัจจุบัน: แสดงเฉพาะคะแนนตั้งแต่ reset ล่าสุด (ของเก่าถูกสำรองไว้ใน DB + ไฟล์ leaderboard-backups/)
+  seasonStart:"2026-06-18T07:00:00+00:00", seasonLabel:"v0.9.2", resetDate:"18 มิ.ย. 2026" };
 function lbRemote(){ return !!(LB_CONFIG.url && LB_CONFIG.key); }
 let lbTab='daily', lbHighlight=null;
 function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -1062,6 +1095,8 @@ function lbLocalSave(a){ try{localStorage.setItem('wishlist_scores_v1',JSON.stri
 async function lbFetch(mode){
   if(lbRemote()){
     let q=`${LB_CONFIG.url}/rest/v1/${LB_CONFIG.table}?select=name,score,emoji,created_at&order=score.desc&limit=50`;
+    // ฤดูกาลนี้: เฉพาะคะแนนหลัง reset ล่าสุด
+    if(LB_CONFIG.seasonStart) q+=`&created_at=gte.${encodeURIComponent(LB_CONFIG.seasonStart)}`;
     if(mode==='daily'){ const t=new Date(); t.setHours(0,0,0,0); q+=`&created_at=gte.${encodeURIComponent(t.toISOString())}`; }
     const r=await fetch(q,{headers:{apikey:LB_CONFIG.key,Authorization:'Bearer '+LB_CONFIG.key}});
     if(!r.ok) throw new Error('HTTP '+r.status);
@@ -1110,8 +1145,9 @@ async function renderLbBox(){
   el.innerHTML=lbTabsHTML()+`<div class="legend" style="text-align:center;padding:12px">กำลังโหลด…</div>`;
   try{ const list=await lbFetch(lbTab); el.innerHTML=lbTabsHTML()+lbTableHTML(list,lbHighlight); }
   catch(e){ el.innerHTML=lbTabsHTML()+`<div class="legend" style="text-align:center;padding:10px">โหลดอันดับไม่ได้ (${escapeHtml(e.message)})</div>`; }
+  const season=(lbRemote()&&LB_CONFIG.seasonStart)?`<div class="legend" style="margin-top:6px;text-align:center">🔄 รีเซ็ตล่าสุด ${LB_CONFIG.resetDate} (${LB_CONFIG.seasonLabel}) · คะแนนก่อนหน้าถูกสำรองไว้</div>`:'';
   const mode=lbRemote()?'':'<div class="legend" style="margin-top:6px">📱 โหมดเก็บในเครื่อง (ยังไม่ได้ต่อ backend แชร์)</div>';
-  el.insertAdjacentHTML('beforeend',mode);
+  el.insertAdjacentHTML('beforeend',season+mode);
 }
 async function saveScore(){
   const inp=document.getElementById('lbname'); if(!inp) return;
