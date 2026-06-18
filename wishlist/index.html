@@ -738,7 +738,7 @@ function shoppingScreen(online){
 function buyCash(type){
   const p=buyPrice(type); if(S.cash<p) return;
   S.cash-=p; S.items.push({type});
-  raisePrice(type); bumpRandomPrice(type);
+  S.priceUp={}; raisePrice(type); bumpRandomPrice(type);
   logit(`ซื้อ ${ITEMS[type].th} จ่ายสด ${p}`);
   checkWishlist(); afterBuy();
 }
@@ -746,7 +746,7 @@ function buyLater(type){
   if(S.payTokens<=0) return;
   const p=ITEMS[type].buy[S.markers[type]]; // ผ่อนไม่ได้ส่วนลด sale
   S.payTokens--; S.payLater.push({type,debt:p}); S.stats.payLaterUsed++;
-  raisePrice(type); bumpRandomPrice(type);
+  S.priceUp={}; raisePrice(type); bumpRandomPrice(type);
   logit(`ซื้อ ${ITEMS[type].th} แบบผ่อน (หนี้ ${p})`);
   checkWishlist(); afterBuy();
 }
