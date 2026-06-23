@@ -4,15 +4,22 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>9 Learning Angles — รู้จัก Learning Move ของตัวเอง</title>
+<meta name="description" content="ตอบ 7 คำถามสั้น ๆ เพื่อดูว่าตอนเรียนรู้สิ่งใหม่ คุณถนัดมุมไหนที่สุด โดย Wizards of Learning" />
+<meta property="og:title" content="9 Learning Angles — รู้จัก Learning Move ของตัวเอง" />
+<meta property="og:description" content="ตอบ 7 คำถามสั้น ๆ เพื่อดูว่าตอนเรียนรู้สิ่งใหม่ คุณถนัดมุมไหนที่สุด" />
+<meta property="og:image" content="assets/og-cover.png" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
 
     <header class="app-header">
-      <div class="brand">Wizards of Learning · 9 Learning Angles</div>
+      <img class="brand-logo" src="assets/wol-logo.png" alt="Wizards of Learning" />
+      <div class="brand">9 Learning Angles</div>
       <h1>รู้จัก Learning Move ของตัวเอง</h1>
-      <p class="subtitle">ตอบ 7 คำถามสั้น ๆ เพื่อดูว่าตอนเรียนรู้สิ่งใหม่ คุณมักขยับผ่าน move ไหนบ่อยที่สุด</p>
+      <p class="subtitle">ตอบ 7 คำถามสั้น ๆ เพื่อดูว่าตอนเรียนรู้สิ่งใหม่ คุณถนัดมุมไหนที่สุด</p>
     </header>
 
     <main id="screen-intro" class="screen active">
@@ -33,33 +40,34 @@
 
     <main id="screen-results" class="screen">
       <div class="card results-summary">
-        <h2>ผลลัพธ์ของคุณ</h2>
+        <h2>ความถนัดของคุณ</h2>
         <p id="top-moves-text"></p>
       </div>
 
-      <div class="results-grid">
-        <div class="card chart-card">
-          <h3>กราฟแมงมุม</h3>
-          <div id="radar-wrap"></div>
-        </div>
-        <div class="card chart-card">
-          <h3>Matrix สัดส่วน Learning Move</h3>
-          <div id="matrix-wrap"></div>
-        </div>
+      <div class="card matrix-card">
+        <div id="matrix-wrap"></div>
+        <p class="matrix-hint">ตัวที่มีสีและกรอบทอง คือมุมที่คุณถนัดที่สุด · ตัวสีเทาคือมุมที่ยังไม่ค่อยได้ใช้ตอนนี้</p>
       </div>
 
-      <div class="card breakdown-card">
-        <h3>สัดส่วนแต่ละ Move</h3>
-        <div id="breakdown-list"></div>
+      <div class="card" id="top-detail-card">
+        <h3>จุดแข็งของคุณ</h3>
+        <div id="top-detail-list"></div>
       </div>
 
-      <div class="card reflect-card">
-        <h3>ชวนคิดต่อ</h3>
-        <ol>
-          <li>จาก move ที่คะแนนสูงสุด — มีสถานการณ์ไหนช่วงที่ผ่านมาที่คุณใช้ move นั้นแบบเห็นชัด?</li>
-          <li>move ที่คะแนนต่ำที่สุด — คุณคิดว่าทำไมถึงไม่ค่อยได้ใช้ move นี้?</li>
-          <li>ถ้าจะลองฝึก move ที่คะแนนต่ำที่สุดสัก 1 อัน สัปดาห์หน้าจะลองทำอะไรเล็ก ๆ ดู?</li>
-        </ol>
+      <div class="card" id="growth-detail-card">
+        <h3>ลองฝึกเพิ่ม</h3>
+        <div id="growth-detail-list"></div>
+      </div>
+
+      <div class="card center">
+        <h3>แชร์ผลของคุณ</h3>
+        <p class="sub">อวด Learning Move ของคุณให้เพื่อน แล้วชวนมาลองทำ</p>
+        <div class="sharewrap"><canvas id="sharecard" width="600" height="800"></canvas></div>
+        <div class="share-actions">
+          <button class="btn-primary" id="btn-share">📤 แชร์ผล</button>
+          <button class="btn-secondary" id="btn-save-image">💾 บันทึกรูป</button>
+        </div>
+        <button class="btn-link" id="btn-copy-link">🔗 คัดลอกลิงก์ชวนทำ</button>
       </div>
 
       <button id="btn-restart" class="btn-secondary">ทำแบบสอบถามใหม่</button>
