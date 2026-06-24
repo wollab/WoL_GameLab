@@ -242,47 +242,42 @@
     ctx.drawImage(img, x + (w - iw) / 2, y + (h - ih) / 2, iw, ih);
   }
 
-  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-    const words = text.split(" ");
-    let line = "", lines = 0;
-    for (const w of words) {
-      const test = line + w + " ";
-      if (ctx.measureText(test).width > maxWidth && line) {
-        ctx.fillText(line.trim(), x, y + lines * lineHeight);
-        line = w + " ";
-        lines++;
+  // Char-based wrap — Thai text has no spaces between most words, so word-split
+  // wrapping leaves unbreakable runs that overflow narrow boxes.
+  function wrapTextLines(ctx, text, maxWidth) {
+    const lines = [];
+    let current = "";
+    for (const ch of text) {
+      const test = current + ch;
+      if (ctx.measureText(test).width > maxWidth && current) {
+        lines.push(current);
+        current = ch;
       } else {
-        line = test;
+        current = test;
       }
     }
-    if (line.trim()) {
-      ctx.fillText(line.trim(), x, y + lines * lineHeight);
-      lines++;
-    }
+    if (current) lines.push(current);
     return lines;
   }
 
-  function countWrapLines(ctx, text, maxWidth) {
-    const words = text.split(" ");
-    let line = "", lines = 0;
-    for (const w of words) {
-      const test = line + w + " ";
-      if (ctx.measureText(test).width > maxWidth && line) {
-        line = w + " ";
-        lines++;
-      } else {
-        line = test;
-      }
-    }
-    if (line.trim()) lines++;
-    return lines;
+  function drawLines(ctx, lines, x, y, lineHeight) {
+    lines.forEach((line, i) => ctx.fillText(line, x, y + i * lineHeight));
   }
 
   const CARD_PAD = 12;
-  const CARD_THUMB = 56;
+  const CARD_THUMB = 40;
   const CARD_NAME_FONT = "600 14px Kanit, sans-serif";
   const CARD_BODY_FONT = "400 12px Kanit, sans-serif";
   const CARD_LINE_H = 16;
+
+  function cardBodyLines(ctx, m, bodyWidth) {
+    ctx.font = CARD_BODY_FONT;
+    return wrapTextLines(ctx, m.guide, bodyWidth);
+  }
+
+  function cardHeight(lineCount) {
+    return CARD_PAD * 2 + CARD_THUMB + 10 + lineCount * CARD_LINE_H;
+  }
 
   function drawMoveCard(ctx, x, y, w, h, m, img) {
     roundRect(ctx, x, y, w, h, 14);
@@ -292,31 +287,32 @@
     ctx.strokeStyle = m.color;
     ctx.stroke();
 
-    const innerX = x + w / 2;
-    let cy = y + CARD_PAD;
-    drawContain(ctx, img, innerX - CARD_THUMB / 2, cy, CARD_THUMB, CARD_THUMB);
-    cy += CARD_THUMB + 10;
+    drawContain(ctx, img, x + CARD_PAD, y + CARD_PAD, CARD_THUMB, CARD_THUMB);
 
-    ctx.textAlign = "center";
+    ctx.textAlign = "left";
     ctx.fillStyle = "#1c4b4b";
     ctx.font = CARD_NAME_FONT;
-    ctx.fillText(m.thai, innerX, cy + 12);
-    cy += 18 + 6;
+    ctx.fillText(m.thai, x + CARD_PAD + CARD_THUMB + 10, y + CARD_PAD + CARD_THUMB / 2 + 5);
 
+    const bodyTop = y + CARD_PAD + CARD_THUMB + 10;
     ctx.font = CARD_BODY_FONT;
     ctx.fillStyle = "#3f6e6d";
-    wrapText(ctx, m.guide, innerX, cy + 11, w - CARD_PAD * 2, CARD_LINE_H);
+    const lines = cardBodyLines(ctx, m, w - CARD_PAD * 2);
+    drawLines(ctx, lines, x + CARD_PAD, bodyTop + 12, CARD_LINE_H);
   }
 
   async function buildShareCanvas() {
     const W = 640;
     const headerH = 198;
     const gridCell = 152;
-    const gridH = gridCell * 3;
+    const rowLabelW = 64;
+    const colLabelH = 28;
+    const gridH = colLabelH + gridCell * 3;
     const footerH = 60;
 
     const moveIds = Object.keys(MOVES);
-    const [logoImg, ...charImgArr] = await Promise.all([
+    const [, logoImg, ...charImgArr] = await Promise.all([
+      document.fonts.ready,
       loadImg("assets/wol-logo.png"),
       ...moveIds.map((id) => loadImg(MOVES[id].img)),
     ]);
@@ -325,23 +321,22 @@
 
     // Measure card layout before sizing the real canvas
     const mctx = document.createElement("canvas").getContext("2d");
-    mctx.font = CARD_BODY_FONT;
 
     const strengthGap = 12;
     const strengthCols = lastTopMoves.length;
     const strengthBoxW = (W - 80 - (strengthCols - 1) * strengthGap) / strengthCols;
     const strengthBodyW = strengthBoxW - CARD_PAD * 2;
-    const strengthLineCounts = lastTopMoves.map((id) => countWrapLines(mctx, MOVES[id].guide, strengthBodyW));
-    const strengthBoxH = CARD_PAD * 2 + CARD_THUMB + 10 + 18 + 6 + Math.max(...strengthLineCounts) * CARD_LINE_H;
+    const strengthLineCounts = lastTopMoves.map((id) => cardBodyLines(mctx, MOVES[id], strengthBodyW).length);
+    const strengthBoxH = cardHeight(Math.max(...strengthLineCounts));
     const strengthsH = 36 + strengthBoxH;
 
     const growthBoxW = 300;
     const growthBodyW = growthBoxW - CARD_PAD * 2;
-    const growthLineCount = countWrapLines(mctx, MOVES[lastGrowthMove].guide, growthBodyW);
-    const growthBoxH = CARD_PAD * 2 + CARD_THUMB + 10 + 18 + 6 + growthLineCount * CARD_LINE_H;
+    const growthLineCount = cardBodyLines(mctx, MOVES[lastGrowthMove], growthBodyW).length;
+    const growthBoxH = cardHeight(growthLineCount);
     const growthH = 36 + growthBoxH;
 
-    const H = headerH + gridH + 30 + strengthsH + 24 + growthH + footerH;
+    const H = headerH + gridH + 30 + strengthsH + 36 + growthH + footerH;
 
     const canvas = document.createElement("canvas");
     canvas.width = W;
@@ -378,9 +373,29 @@
     ctx.fillText("ผลสำรวจ Learning Move ของฉัน", cx, y);
     y += 22;
 
-    // 3x3 grid
-    const gridLeft = cx - (gridCell * 3) / 2;
-    const gridTop = y;
+    // 3x3 grid with axis labels — mirrors the on-page matrix
+    const gridBlockW = rowLabelW + gridCell * 3;
+    const blockLeft = cx - gridBlockW / 2;
+    const rowLabelCenterX = blockLeft + rowLabelW / 2;
+    const gridLeft = blockLeft + rowLabelW;
+    const colLabelTop = y;
+    const gridTop = colLabelTop + colLabelH;
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#6b6b6b";
+    ctx.font = "700 11px Kanit, sans-serif";
+    MATRIX_COLS.forEach((col, ci) => {
+      const labelX = gridLeft + ci * gridCell + gridCell / 2;
+      const lines = wrapTextLines(ctx, COL_LABELS[col], gridCell - 10);
+      const startY = colLabelTop + (colLabelH - lines.length * 13) / 2 + 10;
+      drawLines(ctx, lines, labelX, startY, 13);
+    });
+    MATRIX_ROWS.forEach((row, ri) => {
+      const labelCenterY = gridTop + ri * gridCell + gridCell / 2;
+      const lines = wrapTextLines(ctx, ROW_LABELS[row], rowLabelW - 8);
+      const startY = labelCenterY - (lines.length * 13) / 2 + 9;
+      drawLines(ctx, lines, rowLabelCenterX, startY, 13);
+    });
 
     MATRIX_ROWS.forEach((row, ri) => {
       MATRIX_COLS.forEach((col, ci) => {
@@ -393,13 +408,21 @@
         const by = gridTop + ri * gridCell;
         const pad = 9;
         const boxW = gridCell - pad * 2;
-        const boxH = gridCell - pad * 2 - 18;
+        const boxH = gridCell - pad * 2; // full cell height — card covers image AND name label
+        const imgH = boxH - 26;
+
+        if (isTop) {
+          roundRect(ctx, bx + pad - 3, by + pad - 3, boxW + 6, boxH + 6, 17);
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = "rgba(254,197,102,0.55)";
+          ctx.stroke();
+        }
 
         roundRect(ctx, bx + pad, by + pad, boxW, boxH, 14);
         ctx.fillStyle = "#ffffff";
         ctx.fill();
         ctx.lineWidth = isTop ? 4 : 2.5;
-        ctx.strokeStyle = isTop ? "#fec566" : isZero ? "#d9d4c8" : m.color;
+        ctx.strokeStyle = isZero ? "#d9d4c8" : m.color;
         ctx.stroke();
 
         if (isZero) {
@@ -407,10 +430,10 @@
           ctx.filter = "grayscale(1)";
           ctx.globalAlpha = 0.45;
         }
-        drawContain(ctx, charImgs[moveId], bx + pad + 6, by + pad + 4, boxW - 12, boxH - 8);
+        drawContain(ctx, charImgs[moveId], bx + pad + 6, by + pad + 4, boxW - 12, imgH - 8);
         if (isZero) {
           ctx.restore();
-          roundRect(ctx, bx + pad, by + pad, boxW, boxH, 14);
+          roundRect(ctx, bx + pad, by + pad, boxW, imgH, 14);
           ctx.fillStyle = "rgba(150,148,140,0.38)";
           ctx.fill();
         }
@@ -421,7 +444,7 @@
           ctx.fillStyle = "#fec566";
           ctx.fill();
           ctx.fillStyle = "#fff";
-          ctx.font = "700 13px sans-serif";
+          ctx.font = "700 13px Kanit, sans-serif";
           ctx.textAlign = "center";
           ctx.fillText("★", bx + gridCell - pad - 4, by + pad + 8);
         }
@@ -429,16 +452,16 @@
         ctx.fillStyle = "#3f6e6d";
         ctx.font = "600 13px Kanit, sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText(m.thai, bx + gridCell / 2, by + gridCell - 6);
+        ctx.fillText(m.thai, bx + gridCell / 2, by + pad + boxH - 9);
       });
     });
 
-    y = gridTop + gridH + 26;
+    y = colLabelTop + gridH + 26;
 
-    ctx.textAlign = "left";
+    ctx.textAlign = "center";
     ctx.fillStyle = "#1a8586";
     ctx.font = "700 19px Kanit, sans-serif";
-    ctx.fillText("✨ จุดเด่นของคุณ", 40, y);
+    ctx.fillText("✨ จุดเด่นของคุณ", cx, y);
     y += 28;
 
     let cardX = 40;
@@ -446,12 +469,12 @@
       drawMoveCard(ctx, cardX, y, strengthBoxW, strengthBoxH, MOVES[id], charImgs[id]);
       cardX += strengthBoxW + strengthGap;
     });
-    y += strengthBoxH + 24;
+    y += strengthBoxH + 36;
 
-    ctx.textAlign = "left";
+    ctx.textAlign = "center";
     ctx.fillStyle = "#d78600";
     ctx.font = "700 19px Kanit, sans-serif";
-    ctx.fillText("🌱 ลองฝึกเพิ่ม", 40, y);
+    ctx.fillText("🌱 ลองฝึกเพิ่ม", cx, y);
     y += 28;
 
     drawMoveCard(ctx, cx - growthBoxW / 2, y, growthBoxW, growthBoxH, MOVES[lastGrowthMove], charImgs[lastGrowthMove]);
