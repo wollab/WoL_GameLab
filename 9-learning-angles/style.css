@@ -156,12 +156,14 @@ body {
 .matrix-table { border-collapse: collapse; }
 .matrix-table th { font-size: 11px; color: var(--muted); font-weight: 700; padding: 8px 4px; }
 .matrix-row-label { font-size: 11px; color: var(--muted); font-weight: 700; padding: 4px 8px; max-width: 70px; }
-.matrix-cell { width: 108px; height: 108px; padding: 6px; vertical-align: middle; }
+.matrix-cell { width: 108px; padding: 6px; vertical-align: top; text-align: center; }
+
+.matrix-name { font-size: 11px; color: var(--muted); font-weight: 600; margin: 5px 0 0; }
 
 .matrix-bubble {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 108px;
   border-radius: 16px;
   background: #fff;
   border: 3px solid #d9d4c8;
