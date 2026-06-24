@@ -1,5 +1,4 @@
 // WoL 9 Learning Angles — Quiz Logic & Results Rendering
-// Matrix-only results with share feature
 
 (function () {
   let currentQ = 0;
@@ -73,18 +72,12 @@
     return pct;
   }
 
-  // Top moves = highest score tier(s), including ties, capped at top-3 distinct tiers.
-  // Zero-scored moves are never considered "top", even if everything is zero.
+  // Strictly the top 3 moves by score (zero-score moves never count as "top").
   function getTopMoves(pct) {
-    const ids = Object.keys(pct);
-    const distinct = [...new Set(ids.map((id) => pct[id]))]
-      .filter((s) => s > 0)
-      .sort((a, b) => b - a);
-    if (distinct.length === 0) return [];
-    const cutoff = distinct[Math.min(2, distinct.length - 1)];
-    return ids
-      .filter((id) => pct[id] >= cutoff)
-      .sort((a, b) => pct[b] - pct[a]);
+    return Object.keys(pct)
+      .filter((id) => pct[id] > 0)
+      .sort((a, b) => pct[b] - pct[a])
+      .slice(0, 3);
   }
 
   function getGrowthMove(pct) {
@@ -92,30 +85,26 @@
     return ids[0];
   }
 
-  let showResultsBusy = false;
+  let lastPct = null;
+  let lastTopMoves = [];
+  let lastGrowthMove = null;
 
   function showResults() {
-    if (showResultsBusy) return;
-    showResultsBusy = true;
-
-    const pct = getPercentages();
-    const topMoves = getTopMoves(pct);
-    const growthMove = getGrowthMove(pct);
+    lastPct = getPercentages();
+    lastTopMoves = getTopMoves(lastPct);
+    lastGrowthMove = getGrowthMove(lastPct);
     showScreen("results");
 
-    const topNames = topMoves.map((id) => MOVES[id].thai).join(" · ");
+    const topNames = lastTopMoves.map((id) => MOVES[id].thai).join(" · ");
     document.getElementById("top-moves-text").textContent =
       `ความถนัดของคุณคือ: ${topNames}`;
 
-    renderMatrix(pct, topMoves);
-    renderDetailSections(topMoves, growthMove);
-    renderShareCard(pct, topMoves, growthMove);
+    renderMatrix(lastPct, lastTopMoves);
+    renderDetailSections(lastTopMoves, lastGrowthMove);
 
     document.getElementById("btn-share").onclick = doShare;
-    document.getElementById("btn-save-image").onclick = saveShareImage;
-    document.getElementById("btn-copy-link").onclick = copyResultLink;
-
-    showResultsBusy = false;
+    document.getElementById("btn-save-image").onclick = doSaveImage;
+    document.getElementById("btn-copy-link").onclick = doCopyCaption;
   }
 
   function renderMatrix(pct, topMoves) {
@@ -186,17 +175,26 @@
     `;
   }
 
-  /* ===== SHARE CANVAS ===== */
-  const GAME_URL = "https://wollab.github.io/WoL_GameLab/9-learning-angles/";
+  /* ===== SHARE: build canvas on demand (same pattern as Tarot of Learning) ===== */
+  const SITE_URL = "https://wollab.github.io/WoL_GameLab/9-learning-angles/";
 
-  function shareText(topMoves) {
-    const top3 = topMoves.slice(0, 3).map((id) => MOVES[id].thai).join(" · ");
-    return `ผมทำแบบสอบถาม 9 Learning Angles แล้ว 🧙‍♂️\n\n` +
-      `ความถนัดของผมคือ: ${top3}\n\n` +
-      `มาลองรู้จักตัวเองจากมุมการเรียนรู้ของคุณดูบ้าง 👇\n${GAME_URL}`;
+  function buildShareCaption() {
+    const top3 = lastTopMoves.map((id) => MOVES[id].thai).join(" · ");
+    const gm = MOVES[lastGrowthMove];
+    return [
+      "🧙‍♂️ เพิ่งรู้จัก Learning Move ของตัวเองจาก 9 Learning Angles!",
+      "",
+      `✨ ความถนัดของฉัน: ${top3}`,
+      `🌱 มุมที่อยากลองฝึกเพิ่ม: ${gm.thai}`,
+      "",
+      "อยากรู้ว่าตัวเองถนัดมุมไหน ลองทำดูเลย 👇",
+      `🔗 ${SITE_URL}`,
+      "",
+      "🪄 9 Learning Angles — by Wizards of Learning",
+    ].join("\n");
   }
 
-  function loadImage(src) {
+  function loadImg(src) {
     return new Promise((resolve) => {
       const img = new Image();
       img.onload = () => resolve(img);
@@ -205,13 +203,13 @@
     });
   }
 
-  function roundRect(ctx, a, b, w, h, r) {
+  function roundRect(ctx, x, y, w, h, r) {
     ctx.beginPath();
-    ctx.moveTo(a + r, b);
-    ctx.arcTo(a + w, b, a + w, b + h, r);
-    ctx.arcTo(a + w, b + h, a, b + h, r);
-    ctx.arcTo(a, b + h, a, b, r);
-    ctx.arcTo(a, b, a + w, b, r);
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
     ctx.closePath();
   }
 
@@ -222,230 +220,239 @@
     ctx.drawImage(img, x + (w - iw) / 2, y + (h - ih) / 2, iw, ih);
   }
 
-  // Wraps text and returns the y position after the last line.
-  function wrapText(ctx, text, x, y, maxw, lh) {
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     const words = text.split(" ");
-    let line = "", yy = y;
+    let line = "", lines = 0;
     for (const w of words) {
       const test = line + w + " ";
-      if (ctx.measureText(test).width > maxw && line) {
-        ctx.fillText(line.trim(), x, yy);
+      if (ctx.measureText(test).width > maxWidth && line) {
+        ctx.fillText(line.trim(), x, y + lines * lineHeight);
         line = w + " ";
-        yy += lh;
+        lines++;
       } else {
         line = test;
       }
     }
     if (line.trim()) {
-      ctx.fillText(line.trim(), x, yy);
-      yy += lh;
+      ctx.fillText(line.trim(), x, y + lines * lineHeight);
+      lines++;
     }
-    return yy;
+    return lines;
   }
 
-  let shareCardReady = null;
+  async function buildShareCanvas() {
+    const W = 640;
+    const headerH = 150;
+    const gridCell = 152;
+    const gridH = gridCell * 3;
+    const strengthsH = 36 + lastTopMoves.length * 42;
+    const growthH = 36 + 42;
+    const footerH = 90;
+    const H = headerH + gridH + 30 + strengthsH + growthH + footerH;
 
-  function renderShareCard(pct, topMoves, growthMove) {
-    const cv = document.getElementById("sharecard");
-    if (!cv) return;
-    const x = cv.getContext("2d");
-    const W = cv.width, H = cv.height;
-
-    // Placeholder while images load
-    x.clearRect(0, 0, W, H);
-    x.fillStyle = "#faf7f2";
-    x.fillRect(0, 0, W, H);
-    x.fillStyle = "#999";
-    x.font = "16px sans-serif";
-    x.textAlign = "center";
-    x.fillText("กำลังสร้างภาพผล...", W / 2, H / 2);
+    const canvas = document.createElement("canvas");
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext("2d");
 
     const moveIds = Object.keys(MOVES);
-    shareCardReady = Promise.all([
-      loadImage("assets/wol-logo.png"),
-      ...moveIds.map((id) => loadImage(MOVES[id].img)),
-    ]).then(([logoImg, ...charImgArr]) => {
-      const charImgs = {};
-      moveIds.forEach((id, i) => (charImgs[id] = charImgArr[i]));
-      paint(x, W, H, logoImg, charImgs, pct, topMoves, growthMove);
-    });
-  }
+    const [logoImg, ...charImgArr] = await Promise.all([
+      loadImg("assets/wol-logo.png"),
+      ...moveIds.map((id) => loadImg(MOVES[id].img)),
+    ]);
+    const charImgs = {};
+    moveIds.forEach((id, i) => (charImgs[id] = charImgArr[i]));
 
-  function paint(x, W, H, logoImg, charImgs, pct, topMoves, growthMove) {
-    // Gradient background
-    const g = x.createLinearGradient(0, 0, 0, H);
-    g.addColorStop(0, "#2f9c97");
-    g.addColorStop(1, "#1d6a67");
-    x.fillStyle = g;
-    x.fillRect(0, 0, W, H);
+    // Background
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+    bgGrad.addColorStop(0, "#fffdf8");
+    bgGrad.addColorStop(0.4, "#eaf7f6");
+    bgGrad.addColorStop(1, "#d8f0ee");
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, W, H);
 
-    // Cream card
-    x.fillStyle = "#faf7f2";
-    roundRect(x, 24, 24, W - 48, H - 48, 20);
-    x.fill();
+    const glow = ctx.createRadialGradient(W / 2, 0, 10, W / 2, 0, 360);
+    glow.addColorStop(0, "rgba(254,197,102,0.4)");
+    glow.addColorStop(1, "rgba(254,197,102,0)");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, 280);
 
     const cx = W / 2;
-    let y = 56;
+    let y = 36;
 
-    // Logo
-    drawContain(x, logoImg, cx - 60, y, 120, 60);
+    drawContain(ctx, logoImg, cx - 30, y, 60, 60);
     y += 74;
 
-    // Title
-    x.textAlign = "center";
-    x.fillStyle = "#1d6a67";
-    x.font = "bold 26px 'Sukhumvit Set', sans-serif";
-    x.fillText("9 Learning Angles", cx, y);
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#1a8586";
+    ctx.font = "700 28px Kanit, sans-serif";
+    ctx.fillText("9 Learning Angles", cx, y);
     y += 26;
-    x.font = "13px 'Sukhumvit Set', sans-serif";
-    x.fillStyle = "#8a8a8a";
-    x.fillText("ผลสำรวจ Learning Move ของฉัน", cx, y);
-    y += 24;
+    ctx.font = "400 15px Kanit, sans-serif";
+    ctx.fillStyle = "#3f6e6d";
+    ctx.fillText("ผลสำรวจ Learning Move ของฉัน", cx, y);
+    y += 22;
 
-    // 3x3 matrix grid
-    const cellSize = 148;
-    const gridW = cellSize * 3;
-    const gridStartX = cx - gridW / 2;
-    const gridStartY = y;
+    // 3x3 grid
+    const gridLeft = cx - (gridCell * 3) / 2;
+    const gridTop = y;
 
     MATRIX_ROWS.forEach((row, ri) => {
       MATRIX_COLS.forEach((col, ci) => {
-        const moveId = Object.keys(MOVES).find(
-          (id) => MOVES[id].phase === row && MOVES[id].source === col
-        );
+        const moveId = moveIds.find((id) => MOVES[id].phase === row && MOVES[id].source === col);
         const m = MOVES[moveId];
-        const p = pct[moveId];
-        const isTop = topMoves.includes(moveId);
+        const p = lastPct[moveId];
+        const isTop = lastTopMoves.includes(moveId);
         const isZero = p === 0;
-        const bx = gridStartX + ci * cellSize;
-        const by = gridStartY + ri * cellSize;
-        const pad = 8;
-        const boxW = cellSize - pad * 2;
-        const boxH = cellSize - pad * 2 - 16; // leave room for label
+        const bx = gridLeft + ci * gridCell;
+        const by = gridTop + ri * gridCell;
+        const pad = 9;
+        const boxW = gridCell - pad * 2;
+        const boxH = gridCell - pad * 2 - 18;
 
-        roundRect(x, bx + pad, by + pad, boxW, boxH, 14);
-        x.fillStyle = "#ffffff";
-        x.fill();
-        x.lineWidth = isTop ? 4 : 2.5;
-        x.strokeStyle = isTop ? "#fec566" : isZero ? "#d9d4c8" : m.color;
-        x.stroke();
+        roundRect(ctx, bx + pad, by + pad, boxW, boxH, 14);
+        ctx.fillStyle = "#ffffff";
+        ctx.fill();
+        ctx.lineWidth = isTop ? 4 : 2.5;
+        ctx.strokeStyle = isTop ? "#fec566" : isZero ? "#d9d4c8" : m.color;
+        ctx.stroke();
 
-        if (isZero) x.globalAlpha = 0.35;
-        if (isZero) x.filter = "grayscale(1)";
-        drawContain(x, charImgs[moveId], bx + pad + 6, by + pad + 4, boxW - 12, boxH - 8);
-        x.filter = "none";
-        x.globalAlpha = 1;
-
-        if (isTop) {
-          x.beginPath();
-          x.arc(bx + cellSize - pad - 4, by + pad + 4, 11, 0, Math.PI * 2);
-          x.fillStyle = "#fec566";
-          x.fill();
-          x.fillStyle = "#fff";
-          x.font = "bold 12px sans-serif";
-          x.textAlign = "center";
-          x.fillText("★", bx + cellSize - pad - 4, by + pad + 8);
+        if (isZero) {
+          ctx.save();
+          ctx.filter = "grayscale(1)";
+          ctx.globalAlpha = 0.45;
+        }
+        drawContain(ctx, charImgs[moveId], bx + pad + 6, by + pad + 4, boxW - 12, boxH - 8);
+        if (isZero) {
+          ctx.restore();
+          roundRect(ctx, bx + pad, by + pad, boxW, boxH, 14);
+          ctx.fillStyle = "rgba(150,148,140,0.38)";
+          ctx.fill();
         }
 
-        x.fillStyle = "#6b6b6b";
-        x.font = "600 11px 'Sukhumvit Set', sans-serif";
-        x.textAlign = "center";
-        x.fillText(m.thai, bx + cellSize / 2, by + cellSize - 6);
+        if (isTop) {
+          ctx.beginPath();
+          ctx.arc(bx + gridCell - pad - 4, by + pad + 4, 12, 0, Math.PI * 2);
+          ctx.fillStyle = "#fec566";
+          ctx.fill();
+          ctx.fillStyle = "#fff";
+          ctx.font = "700 13px sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("★", bx + gridCell - pad - 4, by + pad + 8);
+        }
+
+        ctx.fillStyle = "#3f6e6d";
+        ctx.font = "600 13px Kanit, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(m.thai, bx + gridCell / 2, by + gridCell - 6);
       });
     });
 
-    y = gridStartY + cellSize * 3 + 28;
+    y = gridTop + gridH + 26;
 
-    // Strengths
-    x.textAlign = "left";
-    x.fillStyle = "#1d6a67";
-    x.font = "bold 16px 'Sukhumvit Set', sans-serif";
-    x.fillText("จุดเด่นของคุณ", 48, y);
-    y += 24;
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#1a8586";
+    ctx.font = "700 19px Kanit, sans-serif";
+    ctx.fillText("✨ จุดเด่นของคุณ", 40, y);
+    y += 28;
 
-    x.font = "13px 'Sukhumvit Set', sans-serif";
-    x.fillStyle = "#2e2e2e";
-    const shownTop = topMoves.slice(0, 4);
-    shownTop.forEach((id) => {
+    ctx.font = "400 16px Kanit, sans-serif";
+    ctx.fillStyle = "#1c4b4b";
+    lastTopMoves.forEach((id) => {
       const m = MOVES[id];
-      y = wrapText(x, `• ${m.thai} — ${m.guide}`, 48, y, W - 96, 18);
-      y += 4;
+      const lines = wrapText(ctx, `${m.thai} — ${m.guide}`, 40, y, W - 80, 22);
+      y += lines * 22 + 8;
     });
-    if (topMoves.length > shownTop.length) {
-      x.fillStyle = "#8a8a8a";
-      x.font = "12px 'Sukhumvit Set', sans-serif";
-      x.fillText(`+ อีก ${topMoves.length - shownTop.length} มุมที่คะแนนเท่ากัน`, 48, y);
-      y += 18;
-    }
 
-    y += 10;
+    y += 6;
+    ctx.fillStyle = "#d78600";
+    ctx.font = "700 19px Kanit, sans-serif";
+    ctx.fillText("🌱 ลองฝึกเพิ่ม", 40, y);
+    y += 28;
 
-    // Growth tip
-    x.fillStyle = "#b5811f";
-    x.font = "bold 16px 'Sukhumvit Set', sans-serif";
-    x.fillText("ลองฝึกเพิ่ม", 48, y);
-    y += 24;
-
-    x.font = "13px 'Sukhumvit Set', sans-serif";
-    x.fillStyle = "#2e2e2e";
-    const gm = MOVES[growthMove];
-    y = wrapText(x, `• ${gm.thai} — ${gm.activity}`, 48, y, W - 96, 18);
+    ctx.font = "400 16px Kanit, sans-serif";
+    ctx.fillStyle = "#1c4b4b";
+    const gm = MOVES[lastGrowthMove];
+    wrapText(ctx, `${gm.thai} — ${gm.activity}`, 40, y, W - 80, 22);
 
     // Footer CTA
-    const ctaH = 46;
-    const ctaY = H - 70;
-    roundRect(x, 40, ctaY, W - 80, ctaH, 12);
-    x.fillStyle = "#1d6a67";
-    x.fill();
-    x.fillStyle = "#fec566";
-    x.font = "bold 13px 'Sukhumvit Set', sans-serif";
-    x.textAlign = "center";
-    x.fillText("▶ wollab.github.io/WoL_GameLab/9-learning-angles", cx, ctaY + ctaH / 2 + 4);
+    const ctaY = H - 64;
+    roundRect(ctx, 40, ctaY, W - 80, 44, 22);
+    ctx.fillStyle = "#1a8586";
+    ctx.fill();
+    ctx.fillStyle = "#fec566";
+    ctx.font = "700 14px Kanit, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("🔮 มาเปิดมุมการเรียนรู้ของคุณได้ที่ " + SITE_URL.replace("https://", ""), cx, ctaY + 28);
+
+    return canvas;
   }
 
-  function canvasBlob() {
-    return new Promise((res) =>
-      document.getElementById("sharecard").toBlob(res, "image/png")
-    );
+  function canvasToBlob(canvas) {
+    return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
   }
 
-  async function doShare() {
-    if (shareCardReady) await shareCardReady;
-    const topMoves = getTopMoves(getPercentages());
+  async function withButtonBusy(btn, busyText, fn) {
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = busyText;
     try {
-      const blob = await canvasBlob();
+      await fn();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = original;
+    }
+  }
+
+  function doSaveImage() {
+    const btn = document.getElementById("btn-save-image");
+    withButtonBusy(btn, "กำลังสร้างภาพ...", async () => {
+      const canvas = await buildShareCanvas();
+      const blob = await canvasToBlob(canvas);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "9-learning-angles.png";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // Most desktop browsers report navigator.share but silently fail on files,
+  // so only offer the native share sheet on mobile (same check as Tarot of Learning).
+  const canShareFiles = !!(navigator.canShare && navigator.share && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+  if (!canShareFiles) {
+    const shareBtn = document.getElementById("btn-share");
+    if (shareBtn) shareBtn.classList.add("hidden-share");
+  }
+
+  function doShare() {
+    const btn = document.getElementById("btn-share");
+    withButtonBusy(btn, "กำลังสร้างภาพ...", async () => {
+      const canvas = await buildShareCanvas();
+      const blob = await canvasToBlob(canvas);
       const file = new File([blob], "9-learning-angles.png", { type: "image/png" });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], text: shareText(topMoves) });
-        return;
+        try {
+          await navigator.share({ files: [file], title: "9 Learning Angles", text: buildShareCaption() });
+        } catch (e) { /* user cancelled — not an error */ }
+      } else {
+        toast("อุปกรณ์นี้ไม่รองรับการแชร์ไฟล์ภาพ กดปุ่ม “บันทึกภาพสรุป” แทนได้เลยครับ");
       }
-      if (navigator.share) {
-        await navigator.share({ text: shareText(topMoves), url: GAME_URL });
-        return;
-      }
-      copyResultLink();
-    } catch (e) {
-      if (e.name !== "AbortError") copyResultLink();
-    }
+    });
   }
 
-  async function saveShareImage() {
-    if (shareCardReady) await shareCardReady;
-    const a = document.createElement("a");
-    a.download = "9-learning-angles.png";
-    a.href = document.getElementById("sharecard").toDataURL("image/png");
-    a.click();
-    toast("บันทึกรูปผลแล้ว");
-  }
-
-  function copyResultLink() {
-    const topMoves = getTopMoves(getPercentages());
-    const t = shareText(topMoves);
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(t).then(() => toast("คัดลอกแล้ว"));
-    } else {
-      toast("คัดลอกไม่ได้ในเบราว์เซอร์นี้");
-    }
+  function doCopyCaption() {
+    const btn = document.getElementById("btn-copy-link");
+    const original = btn.textContent;
+    navigator.clipboard.writeText(buildShareCaption()).then(() => {
+      btn.textContent = "✅ คัดลอกแล้ว! เอาไปวางตอนโพสต์ได้เลย";
+      setTimeout(() => (btn.textContent = original), 2500);
+    }).catch(() => toast("คัดลอกไม่ได้ในเบราว์เซอร์นี้"));
   }
 
   function toast(msg) {
@@ -454,9 +461,9 @@
     el.style.cssText = `
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
       background: #2e2e2e; color: #fff; padding: 12px 20px; border-radius: 8px;
-      font-size: 14px; z-index: 9999;
+      font-size: 14px; z-index: 9999; max-width: 90vw; text-align: center;
     `;
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 2000);
+    setTimeout(() => el.remove(), 3000);
   }
 })();
