@@ -2,6 +2,7 @@
 
 (function () {
   let currentQ = 0;
+  let quizQuestions = QUESTIONS;
   const scores = {}; // moveId -> raw points
   Object.keys(MOVES).forEach((id) => (scores[id] = 0));
 
@@ -16,8 +17,29 @@
     screens[name].classList.add("active");
   }
 
+  function shuffled(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Reshuffle question order (main questions only, tiebreaker stays last)
+  // and each question's option order, so the same click-pattern never
+  // maps to the same moves twice in a row.
+  function buildQuizQuestions() {
+    const tiebreaker = QUESTIONS[QUESTIONS.length - 1];
+    const mainQs = QUESTIONS.slice(0, QUESTIONS.length - 1);
+    const ordered = shuffled(mainQs).map((q) => ({ ...q, options: shuffled(q.options) }));
+    ordered.push({ ...tiebreaker, options: shuffled(tiebreaker.options) });
+    return ordered;
+  }
+
   document.getElementById("btn-start").addEventListener("click", () => {
     currentQ = 0;
+    quizQuestions = buildQuizQuestions();
     Object.keys(scores).forEach((id) => (scores[id] = 0));
     showScreen("quiz");
     renderQuestion();
@@ -28,7 +50,7 @@
   });
 
   function renderQuestion() {
-    const q = QUESTIONS[currentQ];
+    const q = quizQuestions[currentQ];
     const card = document.getElementById("question-card");
     const isNineGrid = q.options.length > 6;
 
@@ -50,7 +72,7 @@
       btn.addEventListener("click", () => {
         scores[opt.move] += q.weight || 1;
         currentQ += 1;
-        if (currentQ < QUESTIONS.length) {
+        if (currentQ < quizQuestions.length) {
           renderQuestion();
         } else {
           showResults();
@@ -59,9 +81,9 @@
       wrap.appendChild(btn);
     });
 
-    const pct = Math.round((currentQ / QUESTIONS.length) * 100);
+    const pct = Math.round((currentQ / quizQuestions.length) * 100);
     document.getElementById("progress-fill").style.width = pct + "%";
-    document.getElementById("progress-label").textContent = `คำถามที่ ${currentQ + 1} จาก ${QUESTIONS.length}`;
+    document.getElementById("progress-label").textContent = `คำถามที่ ${currentQ + 1} จาก ${quizQuestions.length}`;
   }
 
   function getPercentages() {
