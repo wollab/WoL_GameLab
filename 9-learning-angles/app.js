@@ -262,20 +262,58 @@
     return lines;
   }
 
+  function countWrapLines(ctx, text, maxWidth) {
+    const words = text.split(" ");
+    let line = "", lines = 0;
+    for (const w of words) {
+      const test = line + w + " ";
+      if (ctx.measureText(test).width > maxWidth && line) {
+        line = w + " ";
+        lines++;
+      } else {
+        line = test;
+      }
+    }
+    if (line.trim()) lines++;
+    return lines;
+  }
+
+  const CARD_PAD = 12;
+  const CARD_THUMB = 56;
+  const CARD_NAME_FONT = "600 14px Kanit, sans-serif";
+  const CARD_BODY_FONT = "400 12px Kanit, sans-serif";
+  const CARD_LINE_H = 16;
+
+  function drawMoveCard(ctx, x, y, w, h, m, img) {
+    roundRect(ctx, x, y, w, h, 14);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = m.color;
+    ctx.stroke();
+
+    const innerX = x + w / 2;
+    let cy = y + CARD_PAD;
+    drawContain(ctx, img, innerX - CARD_THUMB / 2, cy, CARD_THUMB, CARD_THUMB);
+    cy += CARD_THUMB + 10;
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#1c4b4b";
+    ctx.font = CARD_NAME_FONT;
+    ctx.fillText(m.thai, innerX, cy + 12);
+    cy += 18 + 6;
+
+    ctx.font = CARD_BODY_FONT;
+    ctx.fillStyle = "#3f6e6d";
+    wrapText(ctx, m.guide, innerX, cy + 11, w - CARD_PAD * 2, CARD_LINE_H);
+  }
+
   async function buildShareCanvas() {
     const W = 640;
-    const headerH = 150;
+    const headerH = 198;
     const gridCell = 152;
     const gridH = gridCell * 3;
-    const strengthsH = 36 + lastTopMoves.length * 42;
-    const growthH = 36 + 42;
-    const footerH = 90;
-    const H = headerH + gridH + 30 + strengthsH + growthH + footerH;
-
-    const canvas = document.createElement("canvas");
-    canvas.width = W;
-    canvas.height = H;
-    const ctx = canvas.getContext("2d");
+    const footerH = 60;
 
     const moveIds = Object.keys(MOVES);
     const [logoImg, ...charImgArr] = await Promise.all([
@@ -284,6 +322,31 @@
     ]);
     const charImgs = {};
     moveIds.forEach((id, i) => (charImgs[id] = charImgArr[i]));
+
+    // Measure card layout before sizing the real canvas
+    const mctx = document.createElement("canvas").getContext("2d");
+    mctx.font = CARD_BODY_FONT;
+
+    const strengthGap = 12;
+    const strengthCols = lastTopMoves.length;
+    const strengthBoxW = (W - 80 - (strengthCols - 1) * strengthGap) / strengthCols;
+    const strengthBodyW = strengthBoxW - CARD_PAD * 2;
+    const strengthLineCounts = lastTopMoves.map((id) => countWrapLines(mctx, MOVES[id].guide, strengthBodyW));
+    const strengthBoxH = CARD_PAD * 2 + CARD_THUMB + 10 + 18 + 6 + Math.max(...strengthLineCounts) * CARD_LINE_H;
+    const strengthsH = 36 + strengthBoxH;
+
+    const growthBoxW = 300;
+    const growthBodyW = growthBoxW - CARD_PAD * 2;
+    const growthLineCount = countWrapLines(mctx, MOVES[lastGrowthMove].guide, growthBodyW);
+    const growthBoxH = CARD_PAD * 2 + CARD_THUMB + 10 + 18 + 6 + growthLineCount * CARD_LINE_H;
+    const growthH = 36 + growthBoxH;
+
+    const H = headerH + gridH + 30 + strengthsH + 24 + growthH + footerH;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext("2d");
 
     // Background
     const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
@@ -302,8 +365,8 @@
     const cx = W / 2;
     let y = 36;
 
-    drawContain(ctx, logoImg, cx - 30, y, 60, 60);
-    y += 74;
+    drawContain(ctx, logoImg, cx - 45, y, 90, 90);
+    y += 90 + 24;
 
     ctx.textAlign = "center";
     ctx.fillStyle = "#1a8586";
@@ -378,34 +441,27 @@
     ctx.fillText("✨ จุดเด่นของคุณ", 40, y);
     y += 28;
 
-    ctx.font = "400 16px Kanit, sans-serif";
-    ctx.fillStyle = "#1c4b4b";
+    let cardX = 40;
     lastTopMoves.forEach((id) => {
-      const m = MOVES[id];
-      const lines = wrapText(ctx, `${m.thai} — ${m.guide}`, 40, y, W - 80, 22);
-      y += lines * 22 + 8;
+      drawMoveCard(ctx, cardX, y, strengthBoxW, strengthBoxH, MOVES[id], charImgs[id]);
+      cardX += strengthBoxW + strengthGap;
     });
+    y += strengthBoxH + 24;
 
-    y += 6;
+    ctx.textAlign = "left";
     ctx.fillStyle = "#d78600";
     ctx.font = "700 19px Kanit, sans-serif";
     ctx.fillText("🌱 ลองฝึกเพิ่ม", 40, y);
     y += 28;
 
-    ctx.font = "400 16px Kanit, sans-serif";
-    ctx.fillStyle = "#1c4b4b";
-    const gm = MOVES[lastGrowthMove];
-    wrapText(ctx, `${gm.thai} — ${gm.activity}`, 40, y, W - 80, 22);
+    drawMoveCard(ctx, cx - growthBoxW / 2, y, growthBoxW, growthBoxH, MOVES[lastGrowthMove], charImgs[lastGrowthMove]);
+    y += growthBoxH;
 
-    // Footer CTA
-    const ctaY = H - 64;
-    roundRect(ctx, 40, ctaY, W - 80, 44, 22);
+    // Footer CTA — plain text, no pill
     ctx.fillStyle = "#1a8586";
-    ctx.fill();
-    ctx.fillStyle = "#fec566";
-    ctx.font = "700 14px Kanit, sans-serif";
+    ctx.font = "400 14px Kanit, sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("🔮 มาเปิดมุมการเรียนรู้ของคุณได้ที่ " + SITE_URL.replace("https://", ""), cx, ctaY + 28);
+    ctx.fillText("🔮 มาเปิดมุมการเรียนรู้ของคุณได้ที่ " + SITE_URL.replace("https://", ""), cx, H - 24);
 
     return canvas;
   }
