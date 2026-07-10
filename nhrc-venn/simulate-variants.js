@@ -17,6 +17,8 @@ const IDS = Object.keys(GUARDIANS);
 const ZONES = ["left", "center", "right", "outside"];
 const MATCH_ROUNDS = 3;
 const MIN_PLAYABLE_FOR_PAIR = 10;
+const MIN_SIDE_CARDS_FOR_PAIR = 3;
+const MIN_CENTER_CARDS_FOR_PAIR = 1;
 
 function loadCards(filename, varName) {
   const code = fs.readFileSync(path.join(ROOT, filename), "utf8");
@@ -60,8 +62,15 @@ function eligiblePairs(cards) {
   for (let i = 0; i < IDS.length; i++) {
     for (let j = i + 1; j < IDS.length; j++) {
       const pair = [IDS[i], IDS[j]];
-      const playable = cards.filter((card) => correctZone(card, pair) !== "outside").length;
-      if (playable >= MIN_PLAYABLE_FOR_PAIR) pairs.push(pair);
+      const zones = { left: 0, center: 0, right: 0, outside: 0 };
+      for (const card of cards) zones[correctZone(card, pair)] += 1;
+      const playable = zones.left + zones.center + zones.right;
+      if (
+        playable >= MIN_PLAYABLE_FOR_PAIR &&
+        zones.left >= MIN_SIDE_CARDS_FOR_PAIR &&
+        zones.right >= MIN_SIDE_CARDS_FOR_PAIR &&
+        zones.center >= MIN_CENTER_CARDS_FOR_PAIR
+      ) pairs.push(pair);
     }
   }
   return pairs;
@@ -106,6 +115,23 @@ function draw(team, deck, n) {
     drawn += 1;
   }
   return drawn;
+}
+
+function prioritizeEarlyDeck(deck, pair, random) {
+  const work = [...deck];
+  const early = [];
+  const take = (zone, count) => {
+    for (let n = 0; n < count; n++) {
+      const index = work.findIndex((card) => correctZone(card, pair) === zone);
+      if (index < 0) break;
+      early.push(work.splice(index, 1)[0]);
+    }
+  };
+  take("left", 2);
+  take("right", 2);
+  take("center", 2);
+  take("outside", 2);
+  return [...shuffle(work, random), ...shuffle(early, random)];
 }
 
 function evidenceScores(placed, side) {
@@ -189,13 +215,12 @@ function scoreTokens(game) {
 }
 
 function simulateRound(cards, wordSet, tokensPerSide, roundNumber, seenPairs, matchTeams, random) {
-  const deck = shuffle(cards, random);
+  let deck = shuffle(cards, random);
   const teams = matchTeams.map((team) => {
     team.hand = [];
     team.tokens = { left: Array(tokensPerSide).fill(null), right: Array(tokensPerSide).fill(null) };
     return team;
   });
-  teams.forEach((team) => draw(team, deck, 7));
   let pair;
   if (roundNumber === 1) {
     pair = ["CRC", "ICESCR"];
@@ -220,13 +245,14 @@ function simulateRound(cards, wordSet, tokensPerSide, roundNumber, seenPairs, ma
     tokenWrong: 0,
   };
 
-  for (let i = game.deck.length - 1; i >= 0 && game.placed.left.length + game.placed.center.length + game.placed.right.length < 2; i--) {
-    const card = game.deck[i];
-    const zone = correctZone(card, pair);
-    if (zone === "outside") continue;
-    game.deck.splice(i, 1);
-    game.placed[zone].push(card);
+  for (const targetZone of ["left", "center", "right"]) {
+    const index = game.deck.findIndex((card) => correctZone(card, pair) === targetZone);
+    if (index < 0) continue;
+    const [card] = game.deck.splice(index, 1);
+    game.placed[targetZone].push(card);
   }
+  game.deck = prioritizeEarlyDeck(game.deck, pair, random);
+  teams.forEach((team) => draw(team, game.deck, 7));
 
   let turns = 0;
   let placements = 0;
@@ -380,7 +406,7 @@ function simulateVariant(wordSet, tokensPerSide, teamCount, matches, seed) {
     endDangerPct: +(totals.danger / r * 100).toFixed(1),
     avgTurnsRound: +(totals.turns / r).toFixed(1),
     avgPlacementsRound: +(totals.placements / r).toFixed(1),
-    avgCardsSeenRound: +(totals.placements / r + 2).toFixed(1),
+    avgCardsSeenRound: +(totals.placements / r + 3).toFixed(1),
     wrongRatePct: +(totals.wrong / totals.placements * 100).toFixed(1),
     avgDangerCards: +(totals.dangerCards / r).toFixed(2),
     avgDeckRemaining: +(totals.deckRemaining / r).toFixed(1),
@@ -392,7 +418,7 @@ function simulateVariant(wordSet, tokensPerSide, teamCount, matches, seed) {
       round: i + 1,
       avgTurns: +(round.turns / round.rounds).toFixed(1),
       avgPlacements: +(round.placements / round.rounds).toFixed(1),
-      avgCardsSeen: +(round.placements / round.rounds + 2).toFixed(1),
+      avgCardsSeen: +(round.placements / round.rounds + 3).toFixed(1),
       avgHandRemaining: +(round.avgHandRemaining / round.rounds).toFixed(2),
       avgNonWinnerHandRemaining: +(round.avgNonWinnerHandRemaining / round.rounds).toFixed(2),
       avgMinHandRemaining: +(round.minHandRemaining / round.rounds).toFixed(2),

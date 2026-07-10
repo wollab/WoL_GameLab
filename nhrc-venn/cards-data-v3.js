@@ -1,4 +1,4 @@
-// ชุดคำ v3 — คำเดี่ยว 40 ใบ draft สำหรับ simulation 2026-07-10
+// ชุดคำ v3 — คำเดี่ยว draft สำหรับ simulation 2026-07-10
 // เป้าหมาย: คำเห็นภาพเร็ว, ลดความกำกวม, ใช้กับ 2-3 ทีม / 7 ใบ / หลุดการป้องกัน 8
 const WORD_CARDS_V3 = [
   { no: 1, text: "นม", treaties: ["CRC", "ICESCR"], type: "overlap", reason: "โภชนาการเด็ก + สิทธิอาหาร" },
@@ -55,4 +55,12 @@ const WORD_CARDS_V3 = [
   { no: 43, text: "ตรวจค้นร่างกาย", treaties: ["CEDAW", "CAT", "ICCPR"], type: "borderline", reason: "ศักดิ์ศรี ความเป็นส่วนตัว และการปฏิบัติที่ไม่เหมาะสม" },
   { no: 44, text: "คนพิการในห้องขัง", treaties: ["CRPD", "CAT"], type: "overlap", reason: "คนพิการในพื้นที่ควบคุมตัวต้องได้รับการคุ้มครองเฉพาะ" },
   { no: 45, text: "หายตัวหลังถูกจับ", treaties: ["CAT", "CPED", "ICCPR"], type: "borderline", reason: "การควบคุมตัวที่เสี่ยงต่อการทรมานและการบังคับให้สูญหาย" },
+  { no: 46, text: "เด็กชาติพันธุ์", treaties: ["CRC", "ICERD"], type: "overlap", reason: "เด็กที่ถูกเลือกปฏิบัติจากชาติพันธุ์ต้องได้รับการคุ้มครองซ้อน" },
+  { no: 47, text: "หมู่บ้านชาติพันธุ์", treaties: ["ICESCR", "ICERD"], type: "overlap", reason: "ชุมชนชาติพันธุ์กับสิทธิที่อยู่ อาหาร สุขภาพ และบริการพื้นฐาน" },
+  { no: 48, text: "คนพิการชาติพันธุ์", treaties: ["CRPD", "ICERD"], type: "overlap", reason: "ความพิการและชาติพันธุ์เป็นการเลือกปฏิบัติซ้อน" },
+  { no: 49, text: "แรงงานชาติพันธุ์", treaties: ["ICRMW", "ICERD"], type: "overlap", reason: "แรงงานย้ายถิ่นอาจถูกเลือกปฏิบัติจากเชื้อชาติ ภาษา หรือที่มา" },
+  { no: 50, text: "ค้นตัวชาติพันธุ์", treaties: ["CAT", "ICERD", "ICCPR"], type: "borderline", reason: "การควบคุมตัวหรือตรวจค้นที่เลือกปฏิบัติจากชาติพันธุ์" },
+  { no: 51, text: "อุ้มหายชาติพันธุ์", treaties: ["CPED", "ICERD"], type: "overlap", reason: "การสูญหายที่เกิดกับกลุ่มชาติพันธุ์หรือชนกลุ่มน้อย" },
+  { no: 52, text: "ป้ายเหยียด", treaties: ["ICERD"], type: "clear", reason: "ข้อความหรือสัญลักษณ์ที่เหยียดเชื้อชาติหรือชาติพันธุ์" },
+  { no: 53, text: "เชื้อสาย", treaties: ["ICERD"], type: "clear", reason: "การเลือกปฏิบัติจากเชื้อสายหรือที่มาของบุคคล" },
 ];

@@ -3,20 +3,22 @@
 // แมตช์: เล่น 3 รอบนับแต้มรวม (ชนะรอบ +1, token ทายวง +1/0/−1) / ชนะรอบ 2 ติดจบทันที / แต้มเท่ากัน = เสมอ
 
 const GUARDIANS = {
-  CRC: { name: "พิทักษ์ผู้เยาว์", protect: "สิทธิเด็ก", clue1: "ข้าดูแลผู้ที่ยังเติบโตไม่เต็มวัย", clue2: "ของเล่น การเรียน และครอบครัว อยู่ใต้ปีกของข้า" },
-  ICESCR: { name: "พิทักษ์หล่อเลี้ยง", protect: "กิน เรียน อยู่ รักษา", clue1: "ข้าดูแลสิ่งที่ทำให้ชีวิตอิ่มและเติบโต", clue2: "ข้าว น้ำ บ้าน หมอ และห้องเรียน คือพลังของข้า" },
-  ICCPR: { name: "พิทักษ์แห่งเสียง", protect: "พูด เชื่อ ชุมนุม ความเป็นส่วนตัว", clue1: "ข้าคุ้มครองสิ่งที่เปล่งออกมาจากหัวใจ", clue2: "การพูด ความเชื่อ การรวมตัว และความลับส่วนตัว" },
-  CEDAW: { name: "พิทักษ์เสมอภาค", protect: "ผู้หญิงไม่ถูกกีดกัน", clue1: "ข้าไม่ยอมให้ใครถูกกดไว้เพียงเพราะเพศ", clue2: "หญิงต้องได้เท่าชาย ทุกสนาม ทุกอาชีพ" },
-  CRPD: { name: "พิทักษ์ผู้เข้าถึง", protect: "สิทธิคนพิการ", clue1: "ข้าเปิดทางให้ทุกคนไปถึงได้เท่ากัน", clue2: "ทางลาด อักษรเบรลล์ ภาษามือ คือสะพานของข้า" },
-  ICERD: { name: "พิทักษ์หลากสาย", protect: "ไม่ถูกเหยียดเชื้อชาติ", clue1: "ข้าปกป้องผู้คนทุกสีทุกสาย", clue2: "เชื้อชาติ สีผิว ภาษา ต้องไม่เป็นเหตุให้ถูกกีดกัน" },
-  CAT: { name: "พิทักษ์เกราะ", protect: "ไม่ถูกทรมาน", clue1: "ข้ากันความเจ็บปวดที่ถูกตั้งใจกระทำ", clue2: "ไม่มีผู้ใดควรถูกทรมานหรือย่ำยีศักดิ์ศรี" },
-  ICRMW: { name: "พิทักษ์ผู้เดินทาง", protect: "สิทธิแรงงานข้ามชาติ", clue1: "ข้าดูแลผู้จากบ้านมาไกลเพื่อทำงาน", clue2: "แรงงานข้ามแดนและครอบครัวของพวกเขา" },
-  CPED: { name: "พิทักษ์แสงสืบหา", protect: "ไม่ถูกบังคับให้สูญหาย", clue1: "ข้าตามหาผู้ที่เงาของเขาเลือนหาย", clue2: "ไม่มีผู้ใดควรถูกทำให้สูญหายไร้ร่องรอย" },
+  CRC: { name: "พิทักษ์ผู้เยาว์", protect: "สิทธิเด็ก", shortName: "เด็ก", metaphor: "เกราะให้คนที่ยังโตไม่เต็มวัย", clues: ["ของเล่น โรงเรียน ครอบครัว", "ใครยังเล็ก ต้องมีคนช่วยคุ้ม", "เรื่องเติบโต ปลอดภัย และมีตัวตน"] },
+  ICESCR: { name: "พิทักษ์หล่อเลี้ยง", protect: "กิน เรียน อยู่ รักษา", shortName: "ชีวิตพื้นฐาน", metaphor: "เสบียงของการมีชีวิตที่พออยู่ได้", clues: ["ข้าว บ้าน โรงพยาบาล โรงเรียน", "สิ่งที่ทำให้ชีวิตยืนอยู่ได้", "ปากท้อง สุขภาพ งาน และที่อยู่"] },
+  ICCPR: { name: "พิทักษ์แห่งเสียง", protect: "พูด เชื่อ ชุมนุม ความเป็นส่วนตัว", shortName: "เสียงและเสรีภาพ", metaphor: "พื้นที่ให้คนพูด เชื่อ และไม่ถูกปิดปาก", clues: ["ไมโครโฟน ศาสนา ชุมนุม รหัสผ่าน", "เสียง ความเชื่อ และพื้นที่ส่วนตัว", "สิทธิที่ทำให้คนมีตัวตนทางการเมือง"] },
+  CEDAW: { name: "พิทักษ์เสมอภาค", protect: "ผู้หญิงไม่ถูกกีดกัน", shortName: "เสมอภาคหญิง", metaphor: "ประตูที่ต้องเปิดเท่ากันไม่ว่าเพศใด", clues: ["แม่ท้อง ประจำเดือน เงินเดือนเท่ากัน", "ไม่ให้เพศเป็นเหตุผลของการกีดกัน", "โอกาสและศักดิ์ศรีของผู้หญิง"] },
+  CRPD: { name: "พิทักษ์ผู้เข้าถึง", protect: "สิทธิคนพิการ", shortName: "เข้าถึงได้", metaphor: "สะพาน ทางลาด และภาษาที่ทุกคนใช้ได้", clues: ["รถเข็น ทางลาด เบรลล์ ภาษามือ", "ระบบต้องปรับให้คนเข้าได้จริง", "ไม่ได้ช่วยสงสาร แต่ทำให้เท่าเทียม"] },
+  ICERD: { name: "พิทักษ์หลากสาย", protect: "ไม่ถูกเหยียดเชื้อชาติ", shortName: "ไม่เหยียดที่มา", metaphor: "ร่มใหญ่ให้ทุกสีผิว ภาษา และเชื้อสาย", clues: ["สีผิว ภาษาแม่ ชาติพันธุ์ สำเนียง", "ที่มาไม่ควรกลายเป็นตราบาป", "ปกป้องคนที่ถูกแบ่งจากเชื้อสาย"] },
+  CAT: { name: "พิทักษ์เกราะ", protect: "ไม่ถูกทรมาน", shortName: "ไม่ถูกทรมาน", metaphor: "กำแพงห้ามความเจ็บปวดจากอำนาจ", clues: ["ห้องสอบสวน คำสารภาพ ขู่เข็ญ", "ห้ามใช้ความเจ็บบังคับความจริง", "ศักดิ์ศรีต้องไม่ถูกทำลายระหว่างควบคุมตัว"] },
+  ICRMW: { name: "พิทักษ์ผู้เดินทาง", protect: "สิทธิแรงงานข้ามชาติ", shortName: "แรงงานข้ามแดน", metaphor: "แผนที่คุ้มคนที่ทำงานไกลบ้าน", clues: ["พาสปอร์ต ใบอนุญาต นายจ้าง ค่าแรง", "ทำงานต่างถิ่นก็ยังมีสิทธิ", "ครอบครัวและคนทำงานที่ข้ามพรมแดน"] },
+  CPED: { name: "พิทักษ์แสงสืบหา", protect: "ไม่ถูกบังคับให้สูญหาย", shortName: "ไม่ถูกทำให้หาย", metaphor: "ไฟฉายตามหาคนที่รัฐทำให้ไร้ร่องรอย", clues: ["อุ้มหาย รายชื่อผู้สูญหาย กล้องวงจรปิด", "ไม่มีใครควรหายไปโดยไม่มีคำตอบ", "การควบคุมตัวต้องตรวจสอบได้"] },
 };
 
 const ZONE_LABELS = { left: "วงซ้าย", right: "วงขวา", center: "ตรงกลาง", outside: "นอกวง" };
 const SIDE_LABELS = { left: "ฝั่งซ้าย", right: "ฝั่งขวา" };
 const MIN_PLAYABLE_FOR_PAIR = 10; // คู่วงต้องมีการ์ดที่เข้าวงได้อย่างน้อยเท่านี้ (จากทั้งสำรับ)
+const MIN_SIDE_CARDS_FOR_PAIR = 3;
+const MIN_CENTER_CARDS_FOR_PAIR = 1;
 const MATCH_ROUNDS = 3; // เล่น 3 รอบต่อแมตช์
 const TEAM_COLORS = ["#1d6fb8", "#d2574a", "#2f9b66", "#8a5bbf"]; // น้ำเงิน / แดง / เขียว / ม่วง
 const OPENER_NAME = "ผู้นำเกม";
@@ -41,6 +43,7 @@ const state = {
   selectedCard: null,
   swapUsedThisTurn: false,
   revealedHints: { left: false, right: false },
+  roundHints: { left: 0, right: 0 },
   rescueUsed: false,
   keepTurn: false,
   streak: 0,
@@ -91,12 +94,29 @@ function playableCount(pair) {
   return state.cardSet.filter((c) => correctZone(c, pair) !== "outside").length;
 }
 
+function zoneCountsForPair(pair) {
+  return state.cardSet.reduce((counts, card) => {
+    counts[correctZone(card, pair)] += 1;
+    return counts;
+  }, { left: 0, center: 0, right: 0, outside: 0 });
+}
+
 function eligiblePairs() {
   const ids = Object.keys(GUARDIANS);
   const pairs = [];
   for (let i = 0; i < ids.length; i++)
     for (let j = i + 1; j < ids.length; j++)
-      if (playableCount([ids[i], ids[j]]) >= MIN_PLAYABLE_FOR_PAIR) pairs.push([ids[i], ids[j]]);
+      {
+        const pair = [ids[i], ids[j]];
+        const counts = zoneCountsForPair(pair);
+        const playable = counts.left + counts.center + counts.right;
+        if (
+          playable >= MIN_PLAYABLE_FOR_PAIR &&
+          counts.left >= MIN_SIDE_CARDS_FOR_PAIR &&
+          counts.right >= MIN_SIDE_CARDS_FOR_PAIR &&
+          counts.center >= MIN_CENTER_CARDS_FOR_PAIR
+        ) pairs.push(pair);
+      }
   return pairs;
 }
 
@@ -115,6 +135,28 @@ function draw(team, n) {
     drawn += 1;
   }
   return drawn;
+}
+
+function prioritizeEarlyDeck(deck, pair) {
+  const work = [...deck];
+  const early = [];
+  const take = (zone, count) => {
+    for (let n = 0; n < count; n++) {
+      const index = work.findIndex((card) => correctZone(card, pair) === zone);
+      if (index < 0) break;
+      early.push(work.splice(index, 1)[0]);
+    }
+  };
+  take("left", 2);
+  take("right", 2);
+  take("center", 2);
+  take("outside", 2);
+  return [...shuffle(work), ...shuffle(early)];
+}
+
+function guardianTokenLabel(id) {
+  const guardian = GUARDIANS[id];
+  return `${id}: ${guardian.shortName}`;
 }
 
 function teamTokenOn(team, side) {
@@ -162,7 +204,7 @@ function startGame() {
     state.log = [];
   }
   state.roundNumber += 1;
-  state.deck = shuffle(state.cardSet);
+  state.deck = [];
   state.danger = [];
   state.removed = [];
   state.placed = { left: [], right: [], center: [], outside: [] };
@@ -182,10 +224,12 @@ function startGame() {
       right: Array.from({ length: state.tokensPerSide }, () => null),
     },
   }));
-  for (const team of state.teams) draw(team, handSize);
   els.thresholdNote.textContent = `หลุดการป้องกันเกิน ${state.threshold} ใบ = แพ้ทุกทีม`;
   summonPair(state.roundNumber === 1 ? ["CRC", "ICESCR"] : null); // รอบแรกเป็น tutorial pair
-  openerReveal(); // ผู้นำเกมเปิดการ์ด 2 ใบวางตามตำแหน่ง ให้ทีมมีข้อมูลตั้งต้น
+  state.deck = shuffle(state.cardSet);
+  openerReveal(); // ผู้นำเกมเปิดการ์ดซ้าย/กลาง/ขวาเป็นข้อมูลตั้งต้น
+  state.deck = prioritizeEarlyDeck(state.deck, state.pair);
+  for (const team of state.teams) draw(team, handSize);
   state.phase = "place";
   beginTurn();
 }
@@ -196,19 +240,21 @@ function summonPair(forcedPair) {
   state.streak = 0;
   state.placed = { left: [], right: [], center: [], outside: [] };
   state.selectedTreaty = null;
+  state.roundHints = {
+    left: Math.floor(Math.random() * GUARDIANS[state.pair[0]].clues.length),
+    right: Math.floor(Math.random() * GUARDIANS[state.pair[1]].clues.length),
+  };
   logEntry("summon", null, `เริ่มรอบที่ ${state.roundNumber} เรียกผู้พิทักษ์คู่ใหม่`);
   renderClues();
 }
 
-// ผู้นำเกมเปิดการ์ดจากกองจั่ว 2 ใบที่เข้าวงได้ แล้ววางในตำแหน่งที่ถูกต้อง
+// ผู้นำเกมเปิดตัวอย่างซ้าย/กลาง/ขวาอย่างละใบ ถ้าคู่นั้นมีการ์ดพอ
 function openerReveal() {
-  let revealed = 0;
-  for (let i = state.deck.length - 1; i >= 0 && revealed < 2; i--) {
-    const card = state.deck[i];
-    const zone = correctZone(card, state.pair);
-    if (zone === "outside") continue;
-    state.deck.splice(i, 1);
-    state.placed[zone].push({
+  for (const targetZone of ["left", "center", "right"]) {
+    const index = state.deck.findIndex((card) => correctZone(card, state.pair) === targetZone);
+    if (index < 0) continue;
+    const [card] = state.deck.splice(index, 1);
+    state.placed[targetZone].push({
       no: card.no,
       text: card.text,
       team: OPENER_NAME,
@@ -216,8 +262,7 @@ function openerReveal() {
       wasCorrect: true,
       reason: card.reason,
     });
-    logEntry("opener", null, `${OPENER_NAME}เปิดการ์ด "${card.text}" วางที่${ZONE_LABELS[zone]}`);
-    revealed += 1;
+    logEntry("opener", null, `${OPENER_NAME}เปิดการ์ด "${card.text}" วางที่${ZONE_LABELS[targetZone]}`);
   }
 }
 
@@ -227,11 +272,11 @@ function renderClues() {
   const render = (id, box, target, side) => {
     const g = GUARDIANS[id];
     let html = state.revealedHints[side]
-      ? g.clue1
+      ? g.clues[state.roundHints[side] || 0]
       : "ยังไม่เปิดคำใบ้";
     if (revealDone) html = `<strong>${g.name} (${id})</strong> — ${g.protect}`;
     target.innerHTML = html;
-    box.classList.toggle("revealed", revealDone);
+    box.classList.toggle("revealed", revealDone || state.revealedHints[side]);
   };
   render(left, els.clueLeftBox, els.clueLeft, "left");
   render(right, els.clueRightBox, els.clueRight, "right");
@@ -302,7 +347,7 @@ function renderTokenPanel() {
   els.rightGuess.textContent = `วาง token ฝั่งขวา`;
   if (team && state.phase === "place") {
     els.guessStatus.textContent = state.selectedTreaty
-      ? `เลือก: ${GUARDIANS[state.selectedTreaty].protect} — กดวางฝั่งซ้ายหรือขวา (${team.name}: ซ้าย ${freeLeft}/${state.tokensPerSide}, ขวา ${freeRight}/${state.tokensPerSide})`
+      ? `เลือก: ${guardianTokenLabel(state.selectedTreaty)} — กดวางฝั่งซ้ายหรือขวา (${team.name}: ซ้าย ${freeLeft}/${state.tokensPerSide}, ขวา ${freeRight}/${state.tokensPerSide})`
       : `${team.name} มี token ซ้าย ${freeLeft}/${state.tokensPerSide} และขวา ${freeRight}/${state.tokensPerSide} — เลือกสนธิสัญญาจากคลังก่อน`;
   }
 
@@ -315,7 +360,7 @@ function renderTokenPanel() {
     state.teams.forEach((t) => {
       (t.tokens[side] || []).forEach((token, ti) => {
         if (token) {
-          chips.push(`<button type="button" class="token-chip" data-team="${state.teams.indexOf(t)}" data-side="${side}" data-token="${ti}" style="border-color:${t.color};color:${t.color}" title="วางเป็นลำดับที่ ${token.seq}${t === currentTeam() ? " — แตะเพื่อยกออก" : ""}">${t.name}: ${GUARDIANS[token.treaty].protect}</button>`);
+          chips.push(`<button type="button" class="token-chip" data-team="${state.teams.indexOf(t)}" data-side="${side}" data-token="${ti}" style="border-color:${t.color};color:${t.color}" title="วางเป็นลำดับที่ ${token.seq}${t === currentTeam() ? " — แตะเพื่อยกออก" : ""}">${t.name}: ${guardianTokenLabel(token.treaty)}</button>`);
         }
       });
     });
@@ -338,7 +383,7 @@ function renderTokenPanel() {
     const button = document.createElement("button");
     button.className = "treaty-token" + (state.selectedTreaty === id ? " selected" : "");
     button.type = "button";
-    button.innerHTML = `<strong>${guardian.protect}</strong><span>${guardian.name} · ${id}</span>`;
+    button.innerHTML = `<strong>${id}</strong><span>${guardian.shortName}</span><small>${guardian.metaphor}</small>`;
     button.addEventListener("click", () => {
       state.selectedTreaty = state.selectedTreaty === id ? null : id;
       renderTokenPanel();
@@ -359,8 +404,8 @@ function placeGuess(side) {
   if (idx < 0) idx = 0;
   state.tokenSeq += 1;
   sideTokens[idx] = { treaty: state.selectedTreaty, seq: state.tokenSeq };
-  logEntry("token", team, `วาง token ทาย${SIDE_LABELS[side]} = ${GUARDIANS[state.selectedTreaty].protect} (ลำดับที่ ${state.tokenSeq})`);
-  els.guessStatus.textContent = `${team.name} วาง ${GUARDIANS[state.selectedTreaty].protect} ที่${SIDE_LABELS[side]} (ลำดับที่ ${state.tokenSeq})`;
+  logEntry("token", team, `วาง token ทาย${SIDE_LABELS[side]} = ${guardianTokenLabel(state.selectedTreaty)} (ลำดับที่ ${state.tokenSeq})`);
+  els.guessStatus.textContent = `${team.name} วาง ${guardianTokenLabel(state.selectedTreaty)} ที่${SIDE_LABELS[side]} (ลำดับที่ ${state.tokenSeq})`;
   state.selectedTreaty = null;
   renderTokenPanel();
 }
@@ -398,7 +443,7 @@ function scoreTokens() {
       } else {
         state.matchScores[ti] -= 1;
         lines.push(`${team.name} ทาย${SIDE_LABELS[side]}ผิด −1`);
-        logEntry("tokenScore", team, `token ${SIDE_LABELS[side]}: ทายผิด (ทาย ${GUARDIANS[token.treaty].protect}) −1 แต้ม`, false);
+        logEntry("tokenScore", team, `token ${SIDE_LABELS[side]}: ทายผิด (ทาย ${guardianTokenLabel(token.treaty)}) −1 แต้ม`, false);
       }
     });
   }
@@ -439,7 +484,7 @@ function renderTeams() {
     if (i === state.currentTeam && state.phase === "place") chip.style.borderColor = team.color;
     const tokenInfo = ["left", "right"].map((side) => {
       const token = team.tokens[side].find(Boolean);
-      return `${SIDE_LABELS[side]}=${token ? GUARDIANS[token.treaty].protect : "ว่าง"}`;
+      return `${SIDE_LABELS[side]}=${token ? guardianTokenLabel(token.treaty) : "ว่าง"}`;
     }).join(", ");
     chip.innerHTML = `<strong style="color:${team.color}">${team.name}</strong><span>แต้ม ${score} · การ์ดในมือ ${team.hand.length} ใบ</span><span>token: ${tokenInfo}</span>`;
     els.teamsStrip.appendChild(chip);
@@ -716,7 +761,8 @@ function revealHint(side) {
   state.revealedHints[side] = true;
   const guardianId = side === "left" ? state.pair[0] : state.pair[1];
   const label = side === "left" ? "วงซ้าย" : "วงขวา";
-  logEntry("hint", currentTeam(), `อ่านคำใบ้${label}: ${GUARDIANS[guardianId].clue1}`);
+  const clue = GUARDIANS[guardianId].clues[state.roundHints[side] || 0];
+  logEntry("hint", currentTeam(), `อ่านคำใบ้${label}: ${clue}`);
   renderAll();
 }
 
