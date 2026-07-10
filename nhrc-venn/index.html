@@ -18,56 +18,48 @@
         </div>
         <div class="score-panel" aria-live="polite">
           <span id="pairLabel">ยังไม่เริ่ม</span>
-          <strong id="dangerLabel">พลาดนอกวง 0</strong>
+          <strong id="dangerLabel">หลุดการป้องกัน 0</strong>
         </div>
       </section>
 
-      <section class="status-strip">
+      <section class="status-strip compact">
         <article><span>กติกา</span><strong>1 รอบใช้คู่ Venn เดียว / หมดมือก่อนชนะรอบ</strong></article>
-        <article><span>แพ้ร่วม</span><strong id="thresholdNote">ทายพลาดแล้วเฉลยเป็นนอกวงเกินกำหนด = แพ้ทุกทีม</strong></article>
-        <article><span>แมตช์</span><strong>ทีมแรกที่ชนะ 2 รอบ เป็นผู้ชนะ</strong></article>
+        <article><span>แพ้ร่วม</span><strong id="thresholdNote">หลุดการป้องกันเกิน 8 = แพ้ทุกทีม</strong></article>
+        <article><span>แมตช์</span><strong>เล่นครบ 3 รอบ นับแต้มรวม (ชนะรอบ +1, token ทายวง ±1) ใครมากสุดชนะ</strong></article>
       </section>
 
       <section class="game-grid">
         <aside class="control-panel">
-          <label>จำนวนทีม
-            <select id="teamCount">
-              <option value="2">2 ทีม</option>
-              <option value="3" selected>3 ทีม</option>
-              <option value="4">4 ทีม</option>
-            </select>
-          </label>
-          <label>การ์ดเริ่มต้นต่อทีม
-            <select id="handSize">
-              <option value="4">4 ใบ</option>
-              <option value="5">5 ใบ</option>
-              <option value="6">6 ใบ</option>
-              <option value="7" selected>7 ใบ</option>
-              <option value="8">8 ใบ</option>
-            </select>
-          </label>
-          <label>เพดานพลาดนอกวง
-            <select id="dangerThreshold">
-              <option value="6">6 ใบ</option>
-              <option value="7">7 ใบ</option>
-              <option value="8" selected>8 ใบ</option>
-            </select>
-          </label>
           <button id="newGameBtn" type="button">เริ่มรอบใหม่</button>
           <button id="resetMatchBtn" type="button" class="secondary">รีเซ็ตแมตช์</button>
           <button id="exportBtn" type="button" class="secondary">ส่งออก log CSV</button>
 
+          <details class="settings-drawer">
+            <summary>ตั้งค่าเกม</summary>
+            <label>จำนวนทีม
+              <select id="teamCount">
+                <option value="2" selected>2 ทีม</option>
+                <option value="3">3 ทีม</option>
+              </select>
+            </label>
+            <p>สำรับ v3: คำเดี่ยว 45 ใบ · การ์ดเริ่มต้น 7 ใบ · หลุดการป้องกัน 8 · token ซ้าย 1 + ขวา 1</p>
+          </details>
+          <input id="handSize" type="hidden" value="7" />
+          <input id="dangerThreshold" type="hidden" value="8" />
+          <input id="tokenCount" type="hidden" value="1" />
+          <input id="wordSet" type="hidden" value="v3" />
+
           <div class="ability-panel">
             <h2>ตารางความสามารถกลาง</h2>
             <button class="ability-btn" id="abilitySwap" type="button">เปลี่ยนการ์ด<small>ทิ้ง 1 จั่ว 1 (1 ครั้ง/ตา)</small></button>
-            <button class="ability-btn" id="abilityRescue" type="button">กู้คืน<small>ใช้ได้ 1 ครั้ง/รอบ: ทุกทีมเห็นด้วย ทุกทีมจั่ว 1 แล้วเอาการ์ดพลาดนอกวงออก 1 ใบ</small></button>
+            <button class="ability-btn" id="abilityRescue" type="button">กู้คืน<small>ใช้ได้ 1 ครั้ง/รอบ: ทุกทีมเห็นด้วย ทุกทีมจั่ว 1 แล้วเอาการ์ดหลุดการป้องกันออก 1 ใบ</small></button>
           </div>
 
           <div class="test-note">
             <h2>ใช้เช็กอะไร</h2>
             <ul>
               <li>คำใบ้พอให้เดาวงได้ไหม</li>
-              <li>threshold พลาดนอกวง ตึงพอดีไหม</li>
+              <li>หลุดการป้องกัน 8 ตึงพอดีไหม</li>
               <li>หลังลง 10 ใบ วางผิดแล้ว facilitator ถามได้ไหม</li>
               <li>รอบหนึ่งจบใน 10 นาทีไหมเมื่อกองจั่วหมดแล้วแพ้ร่วม</li>
               <li>การ์ดไหน map แล้วคนเถียงเฉลย</li>
@@ -95,25 +87,6 @@
               <button id="revealLeftHint" type="button">อ่านคำใบ้วงซ้าย</button>
               <button id="revealRightHint" type="button">อ่านคำใบ้วงขวา</button>
             </div>
-          </article>
-
-          <article class="treaty-helper">
-            <div class="helper-head">
-              <div>
-                <h2>ตัวช่วยเดาสนธิสัญญา</h2>
-                <p>เลือก token จาก 9 ผู้พิทักษ์ แล้ววางเดาว่าวงซ้าย/ขวาคืออะไร</p>
-              </div>
-              <div class="guess-actions">
-                <button id="checkGuesses" type="button">เช็ก token</button>
-                <button id="clearGuesses" type="button" class="secondary">ล้าง token</button>
-              </div>
-            </div>
-            <div class="guess-slots">
-              <button id="leftGuess" class="guess-slot" type="button">วาง token วงซ้าย</button>
-              <button id="rightGuess" class="guess-slot" type="button">วาง token วงขวา</button>
-            </div>
-            <p id="guessStatus" class="guess-status">ยังไม่ได้วาง token</p>
-            <div id="treatyBank" class="treaty-bank"></div>
           </article>
 
           <article class="venn-board">
@@ -146,6 +119,25 @@
             </div>
             <div class="hand-list" id="handList"></div>
           </section>
+
+          <article class="treaty-helper">
+            <div class="helper-head">
+              <div>
+                <h2>เดาวงด้วย token</h2>
+                <p>ทีมละ 1 token ต่อฝั่ง วางก่อนถูกได้ +1 ผิด −1 ย้ายได้ก่อนจบรอบ</p>
+              </div>
+              <div class="guess-actions">
+                <button id="clearGuesses" type="button" class="secondary">ยก token ของทีมออก</button>
+              </div>
+            </div>
+            <div class="guess-slots">
+              <button id="leftGuess" class="guess-slot left-slot" type="button">วาง token ฝั่งซ้าย</button>
+              <button id="rightGuess" class="guess-slot right-slot" type="button">วาง token ฝั่งขวา</button>
+            </div>
+            <div id="tokenBoard" class="token-board"></div>
+            <p id="guessStatus" class="guess-status">เลือกสนธิสัญญาจากคลังด้านล่าง แล้วกดวางฝั่งซ้ายหรือขวา</p>
+            <div id="treatyBank" class="treaty-bank"></div>
+          </article>
         </section>
       </section>
 
@@ -161,6 +153,8 @@
     </main>
 
     <script src="./cards-data.js"></script>
+    <script src="./cards-data-v2.js"></script>
+    <script src="./cards-data-v3.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

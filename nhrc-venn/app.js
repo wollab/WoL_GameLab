@@ -1,5 +1,6 @@
-// ผู้พิทักษ์เวทมนตร์แห่งสิทธิ — alpha digital playtest (กติกาตาม game-design v1.1, 2026-06-21)
+// ผู้พิทักษ์เวทมนตร์แห่งสิทธิ — alpha digital playtest (กติกาตาม game-design v1.1 + token ทายวง 2026-07-10)
 // แอปทำหน้าที่ "ผู้คุมเวท": รู้คู่ผู้พิทักษ์, ให้คำใบ้, และเฉลยถูก/ผิด
+// แมตช์: เล่น 3 รอบนับแต้มรวม (ชนะรอบ +1, token ทายวง +1/0/−1) / ชนะรอบ 2 ติดจบทันที / แต้มเท่ากัน = เสมอ
 
 const GUARDIANS = {
   CRC: { name: "พิทักษ์ผู้เยาว์", protect: "สิทธิเด็ก", clue1: "ข้าดูแลผู้ที่ยังเติบโตไม่เต็มวัย", clue2: "ของเล่น การเรียน และครอบครัว อยู่ใต้ปีกของข้า" },
@@ -14,18 +15,28 @@ const GUARDIANS = {
 };
 
 const ZONE_LABELS = { left: "วงซ้าย", right: "วงขวา", center: "ตรงกลาง", outside: "นอกวง" };
+const SIDE_LABELS = { left: "ฝั่งซ้าย", right: "ฝั่งขวา" };
 const MIN_PLAYABLE_FOR_PAIR = 10; // คู่วงต้องมีการ์ดที่เข้าวงได้อย่างน้อยเท่านี้ (จากทั้งสำรับ)
+const MATCH_ROUNDS = 3; // เล่น 3 รอบต่อแมตช์
+const TEAM_COLORS = ["#1d6fb8", "#d2574a", "#2f9b66", "#8a5bbf"]; // น้ำเงิน / แดง / เขียว / ม่วง
+const OPENER_NAME = "ผู้นำเกม";
 
 const state = {
   teams: [],
+  cardSet: [],
   deck: [],
   danger: [],
   removed: [],
   pair: null,
   pairHistory: [],
-  matchScores: [],
+  matchScores: [], // แต้มรวม: ชนะรอบ +1, token +1/0/−1
+  roundWinners: [], // index ทีมที่ชนะแต่ละรอบ (null = รอบแพ้ร่วม)
+  matchOver: false,
+  matchWinner: null, // index ทีมที่ชนะแมตช์ (null = เสมอ/ยังไม่จบ)
   roundNumber: 0,
-  threshold: 7,
+  threshold: 8,
+  tokensPerSide: 1,
+  tokenSeq: 0, // ตัวนับลำดับการวาง token (ใครวางก่อน)
   currentTeam: 0,
   selectedCard: null,
   swapUsedThisTurn: false,
@@ -35,20 +46,19 @@ const state = {
   streak: 0,
   placed: { left: [], right: [], center: [], outside: [] },
   selectedTreaty: null,
-  guesses: { left: null, right: null },
   phase: "idle", // idle | place | feedback | gameover
   log: [],
 };
 
 const els = {};
 for (const id of [
-  "pairLabel","dangerLabel","thresholdNote","teamCount","handSize","dangerThreshold",
+  "pairLabel","dangerLabel","thresholdNote","teamCount","handSize","dangerThreshold","tokenCount","wordSet",
   "newGameBtn","resetMatchBtn","exportBtn","abilitySwap","abilityRescue",
   "revealLeftHint","revealRightHint",
   "turnLabel","deckLabel","clueLeft","clueRight","clueLeftBox","clueRightBox","boardHint",
   "feedback","resultBadge","resultTitle","resultReason","nextBtn",
   "handTitle","handCount","handList","teamsStrip","summaryLabel","logList",
-  "treatyBank","leftGuess","rightGuess","guessStatus","clearGuesses","checkGuesses",
+  "treatyBank","leftGuess","rightGuess","guessStatus","clearGuesses","tokenBoard",
 ]) els[id] = document.querySelector("#" + id);
 
 const zoneButtons = [...document.querySelectorAll(".zone")];
@@ -62,6 +72,12 @@ function shuffle(items) {
   return arr;
 }
 
+function activeCardSet() {
+  if (els.wordSet.value === "v3" && typeof WORD_CARDS_V3 !== "undefined") return WORD_CARDS_V3;
+  if (els.wordSet.value === "v2" && typeof WORD_CARDS_V2 !== "undefined") return WORD_CARDS_V2;
+  return WORD_CARDS;
+}
+
 function correctZone(card, pair) {
   const inLeft = card.treaties.includes(pair[0]);
   const inRight = card.treaties.includes(pair[1]);
@@ -72,7 +88,7 @@ function correctZone(card, pair) {
 }
 
 function playableCount(pair) {
-  return WORD_CARDS.filter((c) => correctZone(c, pair) !== "outside").length;
+  return state.cardSet.filter((c) => correctZone(c, pair) !== "outside").length;
 }
 
 function eligiblePairs() {
@@ -101,15 +117,22 @@ function draw(team, n) {
   return drawn;
 }
 
+function teamTokenOn(team, side) {
+  const token = (team.tokens && team.tokens[side] ? team.tokens[side] : []).find(Boolean);
+  return token ? token.treaty : "";
+}
+
 function logEntry(kind, team, detail, correct = null) {
   const [actualLeft = "", actualRight = ""] = state.pair || [];
+  const current = state.teams.length ? currentTeam() : null;
   state.log.push({
     seq: state.log.length + 1,
+    round: state.roundNumber,
     pair: state.pair ? state.pair.join("+") : "",
     actualLeft,
     actualRight,
-    guessLeft: state.guesses.left || "",
-    guessRight: state.guesses.right || "",
+    guessLeft: current ? teamTokenOn(current, "left") : "",
+    guessRight: current ? teamTokenOn(current, "right") : "",
     hintStage: `${Number(state.revealedHints.left) + Number(state.revealedHints.right)}_hints_read`,
     team: team ? team.name : "-",
     kind,
@@ -122,15 +145,24 @@ function logEntry(kind, team, detail, correct = null) {
 
 function startGame() {
   const teamCount = Number(els.teamCount.value);
+  if (state.matchOver) {
+    showFeedback("neutral", "แมตช์นี้จบแล้ว", "กด 'รีเซ็ตแมตช์' เพื่อเริ่มแมตช์ใหม่");
+    els.nextBtn.hidden = true;
+    return;
+  }
   const handSize = Number(els.handSize.value);
   state.threshold = Number(els.dangerThreshold.value);
+  state.tokensPerSide = Number(els.tokenCount.value);
+  state.cardSet = activeCardSet();
   if (state.matchScores.length !== teamCount) {
     state.matchScores = Array.from({ length: teamCount }, () => 0);
+    state.roundWinners = [];
     state.roundNumber = 0;
     state.pairHistory = [];
+    state.log = [];
   }
   state.roundNumber += 1;
-  state.deck = shuffle(WORD_CARDS);
+  state.deck = shuffle(state.cardSet);
   state.danger = [];
   state.removed = [];
   state.placed = { left: [], right: [], center: [], outside: [] };
@@ -138,14 +170,22 @@ function startGame() {
   state.streak = 0;
   state.rescueUsed = false;
   state.selectedTreaty = null;
-  state.guesses = { left: null, right: null };
+  state.tokenSeq = 0;
   state.currentTeam = 0;
   state.revealedHints = { left: false, right: false };
-  state.log = [];
-  state.teams = Array.from({ length: teamCount }, (_, i) => ({ name: `ทีม ${i + 1}`, hand: [] }));
+  state.teams = Array.from({ length: teamCount }, (_, i) => ({
+    name: `ทีม ${i + 1}`,
+    color: TEAM_COLORS[i % TEAM_COLORS.length],
+    hand: [],
+    tokens: {
+      left: Array.from({ length: state.tokensPerSide }, () => null),
+      right: Array.from({ length: state.tokensPerSide }, () => null),
+    },
+  }));
   for (const team of state.teams) draw(team, handSize);
-  els.thresholdNote.textContent = `ทายพลาดแล้วเฉลยเป็นนอกวงเกิน ${state.threshold} ใบ = แพ้ทุกทีม`;
+  els.thresholdNote.textContent = `หลุดการป้องกันเกิน ${state.threshold} ใบ = แพ้ทุกทีม`;
   summonPair(state.roundNumber === 1 ? ["CRC", "ICESCR"] : null); // รอบแรกเป็น tutorial pair
+  openerReveal(); // ผู้นำเกมเปิดการ์ด 2 ใบวางตามตำแหน่ง ให้ทีมมีข้อมูลตั้งต้น
   state.phase = "place";
   beginTurn();
 }
@@ -156,9 +196,29 @@ function summonPair(forcedPair) {
   state.streak = 0;
   state.placed = { left: [], right: [], center: [], outside: [] };
   state.selectedTreaty = null;
-  state.guesses = { left: null, right: null };
-  logEntry("summon", null, `เรียกผู้พิทักษ์คู่ใหม่ (คู่ที่ ${state.pairHistory.length})`);
+  logEntry("summon", null, `เริ่มรอบที่ ${state.roundNumber} เรียกผู้พิทักษ์คู่ใหม่`);
   renderClues();
+}
+
+// ผู้นำเกมเปิดการ์ดจากกองจั่ว 2 ใบที่เข้าวงได้ แล้ววางในตำแหน่งที่ถูกต้อง
+function openerReveal() {
+  let revealed = 0;
+  for (let i = state.deck.length - 1; i >= 0 && revealed < 2; i--) {
+    const card = state.deck[i];
+    const zone = correctZone(card, state.pair);
+    if (zone === "outside") continue;
+    state.deck.splice(i, 1);
+    state.placed[zone].push({
+      no: card.no,
+      text: card.text,
+      team: OPENER_NAME,
+      teamColor: "#dda342",
+      wasCorrect: true,
+      reason: card.reason,
+    });
+    logEntry("opener", null, `${OPENER_NAME}เปิดการ์ด "${card.text}" วางที่${ZONE_LABELS[zone]}`);
+    revealed += 1;
+  }
 }
 
 function renderClues() {
@@ -180,7 +240,7 @@ function renderClues() {
   const canRead = state.phase === "place" && usedHints < availableHints;
   els.revealLeftHint.disabled = !canRead || state.revealedHints.left;
   els.revealRightHint.disabled = !canRead || state.revealedHints.right;
-  els.pairLabel.textContent = `คู่ผู้พิทักษ์ที่ ${state.pairHistory.length}`;
+  els.pairLabel.textContent = `รอบที่ ${state.roundNumber}/${MATCH_ROUNDS}`;
 }
 
 function answerSummary() {
@@ -202,23 +262,31 @@ function currentTeam() {
   return state.teams[state.currentTeam];
 }
 
+function scoreText() {
+  return state.matchScores.map((score, i) => `ทีม ${i + 1}: ${score}`).join(" / ");
+}
+
 function renderAll() {
   const team = currentTeam();
   els.turnLabel.textContent = state.phase === "gameover"
-    ? "จบเกม"
-    : `รอบที่ ${state.roundNumber} · ตาของ ${team.name}`;
+    ? (state.matchOver ? "จบแมตช์" : "จบรอบ")
+    : `รอบที่ ${state.roundNumber}/${MATCH_ROUNDS} · ตาของ ${team.name}`;
+  els.turnLabel.style.color = state.phase === "place" ? team.color : "";
   els.deckLabel.textContent = `กองจั่ว ${state.deck.length} ใบ`;
-  els.dangerLabel.textContent = `พลาดนอกวง ${state.danger.length}/${state.threshold}`;
+  els.dangerLabel.textContent = `หลุดการป้องกัน ${state.danger.length}/${state.threshold}`;
   renderClues();
   renderHand();
   renderTeams();
   renderSummary();
   renderPlacedCards();
-  renderTreatyHelper();
+  renderTokenPanel();
   const disable = state.phase !== "place";
   zoneButtons.forEach((z) => (z.disabled = disable || !state.selectedCard));
   els.abilitySwap.disabled = disable || state.swapUsedThisTurn;
   els.abilityRescue.disabled = disable || !state.danger.length || state.rescueUsed;
+  els.leftGuess.disabled = disable;
+  els.rightGuess.disabled = disable;
+  els.clearGuesses.disabled = disable;
   els.boardHint.textContent = disable
     ? "รอเริ่มตาใหม่"
     : state.selectedCard
@@ -226,15 +294,44 @@ function renderAll() {
       : "เลือกการ์ดจากมือ แล้วแตะตำแหน่งที่คิดว่าถูก";
 }
 
-function renderTreatyHelper() {
-  els.leftGuess.textContent = state.guesses.left
-    ? `วงซ้าย: ${GUARDIANS[state.guesses.left].protect}`
-    : "วาง token วงซ้าย";
-  els.rightGuess.textContent = state.guesses.right
-    ? `วงขวา: ${GUARDIANS[state.guesses.right].protect}`
-    : "วาง token วงขวา";
-  els.leftGuess.classList.toggle("filled", Boolean(state.guesses.left));
-  els.rightGuess.classList.toggle("filled", Boolean(state.guesses.right));
+function renderTokenPanel() {
+  const team = state.teams.length ? currentTeam() : null;
+  const freeLeft = team ? team.tokens.left.filter((t) => t === null).length : 0;
+  const freeRight = team ? team.tokens.right.filter((t) => t === null).length : 0;
+  els.leftGuess.textContent = `วาง token ฝั่งซ้าย`;
+  els.rightGuess.textContent = `วาง token ฝั่งขวา`;
+  if (team && state.phase === "place") {
+    els.guessStatus.textContent = state.selectedTreaty
+      ? `เลือก: ${GUARDIANS[state.selectedTreaty].protect} — กดวางฝั่งซ้ายหรือขวา (${team.name}: ซ้าย ${freeLeft}/${state.tokensPerSide}, ขวา ${freeRight}/${state.tokensPerSide})`
+      : `${team.name} มี token ซ้าย ${freeLeft}/${state.tokensPerSide} และขวา ${freeRight}/${state.tokensPerSide} — เลือกสนธิสัญญาจากคลังก่อน`;
+  }
+
+  // กระดาน token รวมทุกทีม (ข้อมูลเปิด เหมือนวางบนโต๊ะจริง)
+  els.tokenBoard.innerHTML = "";
+  for (const side of ["left", "right"]) {
+    const box = document.createElement("div");
+    box.className = "token-side";
+    const chips = [];
+    state.teams.forEach((t) => {
+      (t.tokens[side] || []).forEach((token, ti) => {
+        if (token) {
+          chips.push(`<button type="button" class="token-chip" data-team="${state.teams.indexOf(t)}" data-side="${side}" data-token="${ti}" style="border-color:${t.color};color:${t.color}" title="วางเป็นลำดับที่ ${token.seq}${t === currentTeam() ? " — แตะเพื่อยกออก" : ""}">${t.name}: ${GUARDIANS[token.treaty].protect}</button>`);
+        }
+      });
+    });
+    box.innerHTML = `<span>${SIDE_LABELS[side]}</span>${chips.join("") || "<em>ยังไม่มี token</em>"}`;
+    els.tokenBoard.appendChild(box);
+  }
+  // แตะ token ของทีมตัวเองเพื่อยกออก (ย้ายใหม่ได้)
+  els.tokenBoard.querySelectorAll(".token-chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const teamIdx = Number(chip.dataset.team);
+      if (teamIdx !== state.currentTeam || state.phase !== "place") return;
+      state.teams[teamIdx].tokens[chip.dataset.side][Number(chip.dataset.token)] = null;
+      els.guessStatus.textContent = "ยก token ออกแล้ว วางใหม่ได้";
+      renderTokenPanel();
+    });
+  });
 
   els.treatyBank.innerHTML = "";
   for (const [id, guardian] of Object.entries(GUARDIANS)) {
@@ -244,93 +341,83 @@ function renderTreatyHelper() {
     button.innerHTML = `<strong>${guardian.protect}</strong><span>${guardian.name} · ${id}</span>`;
     button.addEventListener("click", () => {
       state.selectedTreaty = state.selectedTreaty === id ? null : id;
-      els.guessStatus.textContent = state.selectedTreaty
-        ? `เลือก token: ${guardian.protect} แล้วแตะช่องวงซ้ายหรือวงขวา`
-        : "ยังไม่ได้วาง token";
-      renderTreatyHelper();
+      renderTokenPanel();
     });
     els.treatyBank.appendChild(button);
   }
 }
 
 function placeGuess(side) {
+  if (state.phase !== "place") return;
+  const team = currentTeam();
   if (!state.selectedTreaty) {
-    els.guessStatus.textContent = "เลือก token จากคลัง 9 ผู้พิทักษ์ก่อน";
+    els.guessStatus.textContent = "เลือกสนธิสัญญาจากคลังก่อน แล้วค่อยกดวาง";
     return;
   }
-  state.guesses[side] = state.selectedTreaty;
-  const label = side === "left" ? "วงซ้าย" : "วงขวา";
-  els.guessStatus.textContent = `วาง ${GUARDIANS[state.selectedTreaty].protect} ไว้ที่${label}`;
+  const sideTokens = team.tokens[side];
+  let idx = sideTokens.findIndex((t) => t === null);
+  if (idx < 0) idx = 0;
+  state.tokenSeq += 1;
+  sideTokens[idx] = { treaty: state.selectedTreaty, seq: state.tokenSeq };
+  logEntry("token", team, `วาง token ทาย${SIDE_LABELS[side]} = ${GUARDIANS[state.selectedTreaty].protect} (ลำดับที่ ${state.tokenSeq})`);
+  els.guessStatus.textContent = `${team.name} วาง ${GUARDIANS[state.selectedTreaty].protect} ที่${SIDE_LABELS[side]} (ลำดับที่ ${state.tokenSeq})`;
   state.selectedTreaty = null;
-  renderTreatyHelper();
+  renderTokenPanel();
 }
 
 function clearGuesses() {
+  if (state.phase !== "place") return;
+  const team = currentTeam();
+  team.tokens.left = team.tokens.left.map(() => null);
+  team.tokens.right = team.tokens.right.map(() => null);
   state.selectedTreaty = null;
-  state.guesses = { left: null, right: null };
-  els.guessStatus.textContent = "ล้าง token แล้ว";
-  renderTreatyHelper();
+  els.guessStatus.textContent = `ยก token ของ${team.name}ออกทั้งหมดแล้ว`;
+  renderTokenPanel();
 }
 
-function checkGuesses() {
-  if (!state.pair) return;
-  const leftOk = state.guesses.left === state.pair[0];
-  const rightOk = state.guesses.right === state.pair[1];
-  const leftText = state.guesses.left ? (leftOk ? "วงซ้ายตรง" : "วงซ้ายยังไม่ตรง") : "วงซ้ายยังไม่วาง";
-  const rightText = state.guesses.right ? (rightOk ? "วงขวาตรง" : "วงขวายังไม่ตรง") : "วงขวายังไม่วาง";
-  els.guessStatus.textContent = `${leftText} / ${rightText}`;
-  logEntry("guess", currentTeam(), `เช็ก token: ${leftText}, ${rightText}`);
-}
-
-function revealHint(side) {
-  if (!state.pair || state.phase !== "place") return;
-  const availableHints = state.danger.length >= 4 ? 2 : state.danger.length >= 2 ? 1 : 0;
-  const usedHints = Number(state.revealedHints.left) + Number(state.revealedHints.right);
-  if (usedHints >= availableHints || state.revealedHints[side]) return;
-  state.revealedHints[side] = true;
-  const guardianId = side === "left" ? state.pair[0] : state.pair[1];
-  const label = side === "left" ? "วงซ้าย" : "วงขวา";
-  logEntry("hint", currentTeam(), `อ่านคำใบ้${label}: ${GUARDIANS[guardianId].clue1}`);
-  renderAll();
-}
-
-function addPlacedCard(zone, card, team, wasCorrect) {
-  state.placed[zone].push({
-    no: card.no,
-    text: card.text,
-    team: team.name,
-    wasCorrect,
-    reason: card.reason,
-  });
-}
-
-function renderPlacedCards() {
-  for (const zone of zoneButtons) {
-    const zoneName = zone.dataset.zone;
-    let list = zone.querySelector(".placed-list");
-    if (!list) {
-      list = document.createElement("div");
-      list.className = "placed-list";
-      zone.appendChild(list);
-    }
-    const cards = state.placed[zoneName] || [];
-    list.innerHTML = cards.length
-      ? cards
-          .map((card) => `<span class="${card.wasCorrect ? "placed-correct" : "placed-corrected"}">${card.text}</span>`)
-          .join("")
-      : `<em>ยังไม่มีการ์ด</em>`;
+// เฉลย token ตอนจบรอบ: ถูก+วางเป็นคนแรก +1 / ถูกแต่ช้ากว่า 0 / ผิด −1 / ไม่วาง 0
+function scoreTokens() {
+  const lines = [];
+  for (const side of ["left", "right"]) {
+    const actual = side === "left" ? state.pair[0] : state.pair[1];
+    const placedTokens = [];
+    state.teams.forEach((team, ti) => {
+      (team.tokens[side] || []).forEach((token) => {
+        if (token) placedTokens.push({ ti, token });
+      });
+    });
+    const correctOnes = placedTokens.filter((p) => p.token.treaty === actual).sort((a, b) => a.token.seq - b.token.seq);
+    placedTokens.forEach(({ ti, token }) => {
+      const team = state.teams[ti];
+      if (token.treaty === actual) {
+        const isFirst = correctOnes.length && correctOnes[0].token.seq === token.seq;
+        const pts = isFirst ? 1 : 0;
+        state.matchScores[ti] += pts;
+        lines.push(`${team.name} ทาย${SIDE_LABELS[side]}ถูก${isFirst ? " เป็นคนแรก +1" : " แต่ช้ากว่า 0"}`);
+        logEntry("tokenScore", team, `token ${SIDE_LABELS[side]}: ทายถูก${isFirst ? " เป็นคนแรก +1 แต้ม" : " แต่ไม่ใช่คนแรก 0 แต้ม"}`, true);
+      } else {
+        state.matchScores[ti] -= 1;
+        lines.push(`${team.name} ทาย${SIDE_LABELS[side]}ผิด −1`);
+        logEntry("tokenScore", team, `token ${SIDE_LABELS[side]}: ทายผิด (ทาย ${GUARDIANS[token.treaty].protect}) −1 แต้ม`, false);
+      }
+    });
   }
+  return lines.length ? `ผล token: ${lines.join(" · ")}` : "ไม่มีทีมใดวาง token";
 }
 
 function renderHand() {
   const team = currentTeam();
   els.handTitle.textContent = `มือของ${team.name}`;
+  els.handTitle.style.color = team.color;
   els.handCount.textContent = `${team.hand.length} ใบ`;
+  const handArea = els.handList.closest(".hand-area");
+  if (handArea) handArea.style.borderColor = state.phase === "place" ? team.color : "";
   els.handList.innerHTML = "";
   for (const card of team.hand) {
     const btn = document.createElement("button");
     btn.className = "hand-card" + (state.selectedCard === card ? " selected" : "");
     btn.type = "button";
+    btn.style.borderColor = team.color;
     btn.textContent = card.text;
     btn.disabled = state.phase !== "place";
     btn.addEventListener("click", () => {
@@ -346,23 +433,30 @@ function renderTeams() {
   state.teams.forEach((team, i) => {
     const chip = document.createElement("article");
     const score = state.matchScores[i] || 0;
-    chip.className = "team-chip" + (i === state.currentTeam && state.phase === "place" ? " active" : "") + (score >= 2 || team.hand.length === 0 ? " winner" : "");
-    chip.innerHTML = `<strong>${team.name}</strong><span>แต้มแมตช์ ${score}/2 · การ์ดในมือ ${team.hand.length} ใบ</span>`;
+    const isMatchWinner = state.matchOver && state.matchWinner === i;
+    chip.className = "team-chip" + (i === state.currentTeam && state.phase === "place" ? " active" : "") + (isMatchWinner ? " winner" : "");
+    chip.style.borderLeft = `6px solid ${team.color}`;
+    if (i === state.currentTeam && state.phase === "place") chip.style.borderColor = team.color;
+    const tokenInfo = ["left", "right"].map((side) => {
+      const token = team.tokens[side].find(Boolean);
+      return `${SIDE_LABELS[side]}=${token ? GUARDIANS[token.treaty].protect : "ว่าง"}`;
+    }).join(", ");
+    chip.innerHTML = `<strong style="color:${team.color}">${team.name}</strong><span>แต้ม ${score} · การ์ดในมือ ${team.hand.length} ใบ</span><span>token: ${tokenInfo}</span>`;
     els.teamsStrip.appendChild(chip);
   });
 }
 
 function renderSummary() {
   const placements = state.log.filter((e) => e.kind === "place");
-  const scoreText = state.matchScores.length
-    ? state.matchScores.map((score, i) => `ทีม ${i + 1} ${score}/2`).join(" · ")
+  const scores = state.matchScores.length
+    ? state.matchScores.map((score, i) => `ทีม ${i + 1}: ${score} แต้ม`).join(" · ")
     : "ยังไม่เริ่มแมตช์";
   if (!placements.length) {
-    els.summaryLabel.textContent = scoreText;
+    els.summaryLabel.textContent = scores;
     return;
   }
   const correct = placements.filter((e) => e.correct === true).length;
-  els.summaryLabel.textContent = `${scoreText} · วางแล้ว ${placements.length} ครั้ง ถูก ${correct} (${Math.round((correct / placements.length) * 100)}%)`;
+  els.summaryLabel.textContent = `${scores} · วางแล้ว ${placements.length} ครั้ง ถูก ${correct} (${Math.round((correct / placements.length) * 100)}%)`;
 }
 
 function renderLog() {
@@ -371,7 +465,7 @@ function renderLog() {
     const row = document.createElement("article");
     const cls = entry.correct === false ? "wrong" : entry.kind === "place" ? "" : "neutral";
     row.className = `log-item ${cls}`;
-    row.innerHTML = `<strong>#${entry.seq}</strong><span>${entry.team} · ${entry.detail}</span><span>พลาดนอกวง ${entry.danger}</span>`;
+    row.innerHTML = `<strong>R${entry.round} #${entry.seq}</strong><span>${entry.team} · ${entry.detail}</span><span>หลุดการป้องกัน ${entry.danger}</span>`;
     els.logList.appendChild(row);
   }
 }
@@ -400,8 +494,8 @@ function placeCard(zone) {
   if (isCorrect) {
     state.streak += 1;
     if (answer === "outside") {
-      logEntry("place", team, `"${card.text}" → นอกวง ถูก ไม่นับเป็นภัยสะสม`, true);
-      showFeedback("good", `ถูกต้อง — "${card.text}" ไม่อยู่ใต้วงคู่นี้`, `ทายว่านอกวงแล้วถูก จึงไม่นับเป็นการ์ดแพ้ร่วม — ${card.reason}`);
+      logEntry("place", team, `"${card.text}" → นอกวง ถูก ไม่นับเป็นหลุดการป้องกัน`, true);
+      showFeedback("good", `ถูกต้อง — "${card.text}" ไม่อยู่ใต้วงคู่นี้`, `ทายว่านอกวงแล้วถูก จึงไม่นับเป็นหลุดการป้องกัน — ${card.reason}`);
     } else {
       logEntry("place", team, `"${card.text}" → ${ZONE_LABELS[zone]} ถูก ทิ้งการ์ด`, true);
       showFeedback("good", `ถูกต้อง — "${card.text}" อยู่${ZONE_LABELS[answer]}`, card.reason);
@@ -412,7 +506,7 @@ function placeCard(zone) {
     const drawn = draw(team, 1);
     logEntry("place", team, `"${card.text}" → ${ZONE_LABELS[zone]} ผิด ระบบย้ายไป${ZONE_LABELS[answer]} และจั่วเพิ่ม ${drawn} ใบ`, false);
     let reason = `การ์ดถูกลงในช่องที่ถูกแล้ว ทีมจั่วเพิ่ม ${drawn} ใบ — ${card.reason}`;
-    if (state.log.filter((e) => e.kind === "place").length >= 10) {
+    if (state.log.filter((e) => e.kind === "place" && e.round === state.roundNumber).length >= 10) {
       reason += " | Facilitator: ถามทีมว่าอะไรทำให้คิดว่าวางช่องเดิม และหลังเห็นเฉลยจะเปลี่ยนหลักคิดอย่างไร";
     }
     showFeedback("bad", `ยังไม่ถูก — ย้าย "${card.text}" ไป${ZONE_LABELS[answer]}`, reason);
@@ -421,6 +515,35 @@ function placeCard(zone) {
   state.selectedCard = null;
   state.phase = "feedback";
   checkEndThenRender(team);
+}
+
+function addPlacedCard(zone, card, team, wasCorrect) {
+  state.placed[zone].push({
+    no: card.no,
+    text: card.text,
+    team: team.name,
+    teamColor: team.color || "#8b8468",
+    wasCorrect,
+    reason: card.reason,
+  });
+}
+
+function renderPlacedCards() {
+  for (const zone of zoneButtons) {
+    const zoneName = zone.dataset.zone;
+    let list = zone.querySelector(".placed-list");
+    if (!list) {
+      list = document.createElement("div");
+      list.className = "placed-list";
+      zone.appendChild(list);
+    }
+    const cards = state.placed[zoneName] || [];
+    list.innerHTML = cards.length
+      ? cards
+          .map((card) => `<span class="${card.wasCorrect ? "placed-correct" : "placed-corrected"}" style="border-color:${card.teamColor}" title="วางโดย${card.team}">${card.text}</span>`)
+          .join("")
+      : `<em>ยังไม่มีการ์ด</em>`;
+  }
 }
 
 function abilitySwap() {
@@ -451,48 +574,61 @@ function abilityRescue() {
   state.removed.push(card);
   const draws = state.teams.map((targetTeam) => `${targetTeam.name} +${draw(targetTeam, 1)}`).join(", ");
   state.rescueUsed = true;
-  logEntry("ability", team, `ใช้ 'กู้คืน' ทุกทีมเห็นด้วย ทุกทีมจั่ว 1 (${draws}) แล้วเอา "${card.text}" ออกจากกองพลาดนอกวง`);
+  logEntry("ability", team, `ใช้ 'กู้คืน' ทุกทีมเห็นด้วย ทุกทีมจั่ว 1 (${draws}) แล้วเอา "${card.text}" ออกจากกองหลุดการป้องกัน`);
   if (checkDeckEmptyEnd()) return;
+  renderAll();
+}
+
+// ประเมินสถานะแมตช์หลังจบรอบ: เล่นครบ 3 รอบเสมอ แล้วนับแต้มรวม / เท่ากัน = เสมอ
+function evaluateMatch() {
+  const n = state.roundWinners.length;
+  if (n >= MATCH_ROUNDS) {
+    state.matchOver = true;
+    const max = Math.max(...state.matchScores);
+    const leaders = state.matchScores.map((s, i) => (s === max ? i : -1)).filter((i) => i >= 0);
+    state.matchWinner = leaders.length === 1 ? leaders[0] : null; // null = เสมอ
+  }
+}
+
+function matchEndText() {
+  if (state.matchWinner !== null) return `${state.teams[state.matchWinner].name} ชนะ!`;
+  return "เสมอ!";
+}
+
+function endRound(winnerIndex, title, reason, kind) {
+  state.phase = "gameover";
+  const tokenSummary = scoreTokens(); // เฉลย token ก่อนสรุปแต้ม
+  state.roundWinners.push(winnerIndex);
+  evaluateMatch();
+  const fullReason = `${reason} · ${tokenSummary} · แต้มรวม: ${scoreText()}`;
+  if (state.matchOver) {
+    logEntry("end", null, `จบแมตช์: ${matchEndText()} (${scoreText()})`);
+    showFeedback(kind, matchEndText(), `${fullReason} · กด 'รีเซ็ตแมตช์' เพื่อเริ่มแมตช์ใหม่`);
+  } else {
+    showFeedback(kind, title, `${fullReason} · กด 'เริ่มรอบใหม่' เพื่อเล่นรอบถัดไป (${state.roundNumber}/${MATCH_ROUNDS})`);
+  }
+  els.nextBtn.hidden = true;
   renderAll();
 }
 
 function checkDeckEmptyEnd() {
   if (state.deck.length > 0) return false;
-  state.phase = "gameover";
   logEntry("end", null, "กองจั่วหมด ทุกทีมแพ้ร่วมกัน");
-  const scoreText = state.matchScores.map((score, i) => `ทีม ${i + 1}: ${score}`).join(" / ");
-  showFeedback("bad", "กองจั่วหมด — รอบนี้ไม่มีทีมได้แต้ม", `ไม่มีการ์ดเหลือให้จั่ว เกมจบรอบทันที · คะแนนตอนนี้: ${scoreText} · ${answerSummary()}`);
-  els.nextBtn.hidden = true;
-  renderAll();
+  endRound(null, "กองจั่วหมด — รอบนี้ไม่มีทีมได้แต้มรอบ", `ไม่มีการ์ดเหลือให้จั่ว เกมจบรอบทันที · ${answerSummary()}`, "bad");
   return true;
 }
 
 function checkEndThenRender(team) {
   if (team.hand.length === 0) {
-    state.phase = "gameover";
     state.matchScores[state.currentTeam] = (state.matchScores[state.currentTeam] || 0) + 1;
-    const scoreText = state.matchScores.map((score, i) => `ทีม ${i + 1}: ${score}`).join(" / ");
-    const wonMatch = state.matchScores[state.currentTeam] >= 2;
-    logEntry("end", team, `${team.name} การ์ดหมดมือ ชนะรอบนี้ (${scoreText})${wonMatch ? " และชนะแมตช์" : ""}`);
-    showFeedback(
-      "good",
-      wonMatch ? `${team.name} ชนะ 2 ใน 3!` : `${team.name} ชนะรอบนี้`,
-      wonMatch
-        ? `จบแมตช์ — ${scoreText} · ${answerSummary()}`
-        : `คะแนนตอนนี้: ${scoreText} · ${answerSummary()} · กด 'เริ่มรอบใหม่' เพื่อเล่นรอบถัดไป`
-    );
-    els.nextBtn.hidden = true;
-    renderAll();
+    logEntry("end", team, `${team.name} การ์ดหมดมือ ชนะรอบนี้ +1 แต้ม`);
+    endRound(state.currentTeam, `${team.name} ชนะรอบนี้ +1 แต้ม`, `${answerSummary()}`, "good");
     return;
   }
   if (checkDeckEmptyEnd()) return;
   if (state.danger.length > state.threshold) {
-    state.phase = "gameover";
-    logEntry("end", null, `ทายพลาดแล้วเฉลยเป็นนอกวงเกิน ${state.threshold} ใบ ทุกทีมแพ้ร่วมกัน`);
-    const scoreText = state.matchScores.map((score, i) => `ทีม ${i + 1}: ${score}`).join(" / ");
-    showFeedback("bad", "ภัยท่วมเมือง — รอบนี้ไม่มีทีมได้แต้ม", `การ์ดที่ทีมวางผิดแต่เฉลยเป็น "นอกวง" สะสมเกิน ${state.threshold} ใบ · คะแนนตอนนี้: ${scoreText} · ${answerSummary()}`);
-    els.nextBtn.hidden = true;
-    renderAll();
+    logEntry("end", null, `หลุดการป้องกันเกิน ${state.threshold} ใบ ทุกทีมแพ้ร่วมกัน`);
+    endRound(null, "หลุดการป้องกัน — รอบนี้ไม่มีทีมได้แต้มรอบ", `การ์ดที่ทีมวางผิดแต่เฉลยเป็น "นอกวง" สะสมเกิน ${state.threshold} ใบ · ${answerSummary()}`, "bad");
     return;
   }
   els.nextBtn.hidden = false;
@@ -519,9 +655,10 @@ function nextTurn() {
 function exportCsv() {
   if (!state.log.length) return;
   const rows = [
-    ["seq", "pair", "actual_left", "actual_right", "guess_left", "guess_right", "hint_stage", "team", "kind", "detail", "correct", "missed_outside_count"],
+    ["seq", "round", "pair", "actual_left", "actual_right", "guess_left", "guess_right", "hint_stage", "team", "kind", "detail", "correct", "protection_gap_count"],
     ...state.log.map((e) => [
       e.seq,
+      e.round,
       e.pair,
       e.actualLeft,
       e.actualRight,
@@ -548,8 +685,12 @@ function exportCsv() {
 function resetMatch() {
   const teamCount = Number(els.teamCount.value);
   state.matchScores = Array.from({ length: teamCount }, () => 0);
+  state.roundWinners = [];
+  state.matchOver = false;
+  state.matchWinner = null;
   state.roundNumber = 0;
   state.pairHistory = [];
+  state.log = [];
   els.nextBtn.hidden = false;
   startGame();
 }
@@ -566,4 +707,17 @@ els.revealRightHint.addEventListener("click", () => revealHint("right"));
 els.leftGuess.addEventListener("click", () => placeGuess("left"));
 els.rightGuess.addEventListener("click", () => placeGuess("right"));
 els.clearGuesses.addEventListener("click", clearGuesses);
-els.checkGuesses.addEventListener("click", checkGuesses);
+
+function revealHint(side) {
+  if (!state.pair || state.phase !== "place") return;
+  const availableHints = state.danger.length >= 4 ? 2 : state.danger.length >= 2 ? 1 : 0;
+  const usedHints = Number(state.revealedHints.left) + Number(state.revealedHints.right);
+  if (usedHints >= availableHints || state.revealedHints[side]) return;
+  state.revealedHints[side] = true;
+  const guardianId = side === "left" ? state.pair[0] : state.pair[1];
+  const label = side === "left" ? "วงซ้าย" : "วงขวา";
+  logEntry("hint", currentTeam(), `อ่านคำใบ้${label}: ${GUARDIANS[guardianId].clue1}`);
+  renderAll();
+}
+
+startGame();
