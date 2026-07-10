@@ -183,6 +183,14 @@ function renderClues() {
   els.pairLabel.textContent = `คู่ผู้พิทักษ์ที่ ${state.pairHistory.length}`;
 }
 
+function answerSummary() {
+  if (!state.pair) return "";
+  const [left, right] = state.pair;
+  const leftGuardian = GUARDIANS[left];
+  const rightGuardian = GUARDIANS[right];
+  return `เฉลยวง: วงซ้าย = ${leftGuardian.name} (${left}) — ${leftGuardian.protect} / วงขวา = ${rightGuardian.name} (${right}) — ${rightGuardian.protect}`;
+}
+
 function beginTurn() {
   state.selectedCard = null;
   state.swapUsedThisTurn = false;
@@ -308,7 +316,7 @@ function renderPlacedCards() {
     const cards = state.placed[zoneName] || [];
     list.innerHTML = cards.length
       ? cards
-          .map((card) => `<span class="${card.wasCorrect ? "placed-correct" : "placed-corrected"}">${card.text}<small>${card.team}</small></span>`)
+          .map((card) => `<span class="${card.wasCorrect ? "placed-correct" : "placed-corrected"}">${card.text}</span>`)
           .join("")
       : `<em>ยังไม่มีการ์ด</em>`;
   }
@@ -453,7 +461,7 @@ function checkDeckEmptyEnd() {
   state.phase = "gameover";
   logEntry("end", null, "กองจั่วหมด ทุกทีมแพ้ร่วมกัน");
   const scoreText = state.matchScores.map((score, i) => `ทีม ${i + 1}: ${score}`).join(" / ");
-  showFeedback("bad", "กองจั่วหมด — รอบนี้ไม่มีทีมได้แต้ม", `ไม่มีการ์ดเหลือให้จั่ว เกมจบรอบทันที · คะแนนตอนนี้: ${scoreText}`);
+  showFeedback("bad", "กองจั่วหมด — รอบนี้ไม่มีทีมได้แต้ม", `ไม่มีการ์ดเหลือให้จั่ว เกมจบรอบทันที · คะแนนตอนนี้: ${scoreText} · ${answerSummary()}`);
   els.nextBtn.hidden = true;
   renderAll();
   return true;
@@ -469,7 +477,9 @@ function checkEndThenRender(team) {
     showFeedback(
       "good",
       wonMatch ? `${team.name} ชนะ 2 ใน 3!` : `${team.name} ชนะรอบนี้`,
-      wonMatch ? `จบแมตช์ — ${scoreText}` : `คะแนนตอนนี้: ${scoreText} กด 'เริ่มรอบใหม่' เพื่อเล่นรอบถัดไป`
+      wonMatch
+        ? `จบแมตช์ — ${scoreText} · ${answerSummary()}`
+        : `คะแนนตอนนี้: ${scoreText} · ${answerSummary()} · กด 'เริ่มรอบใหม่' เพื่อเล่นรอบถัดไป`
     );
     els.nextBtn.hidden = true;
     renderAll();
@@ -480,7 +490,7 @@ function checkEndThenRender(team) {
     state.phase = "gameover";
     logEntry("end", null, `ทายพลาดแล้วเฉลยเป็นนอกวงเกิน ${state.threshold} ใบ ทุกทีมแพ้ร่วมกัน`);
     const scoreText = state.matchScores.map((score, i) => `ทีม ${i + 1}: ${score}`).join(" / ");
-    showFeedback("bad", "ภัยท่วมเมือง — รอบนี้ไม่มีทีมได้แต้ม", `การ์ดที่ทีมวางผิดแต่เฉลยเป็น "นอกวง" สะสมเกิน ${state.threshold} ใบ · คะแนนตอนนี้: ${scoreText}`);
+    showFeedback("bad", "ภัยท่วมเมือง — รอบนี้ไม่มีทีมได้แต้ม", `การ์ดที่ทีมวางผิดแต่เฉลยเป็น "นอกวง" สะสมเกิน ${state.threshold} ใบ · คะแนนตอนนี้: ${scoreText} · ${answerSummary()}`);
     els.nextBtn.hidden = true;
     renderAll();
     return;
