@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>กสม. Alpha - ผู้พิทักษ์เวทมนตร์แห่งสิทธิ (Venn)</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="topbar">
+        <div class="title-lockup">
+          <img src="./assets/wol-logo.png" alt="Wizards of Learning" />
+          <div>
+          <p class="eyebrow">กสม. Human Rights Boardgame - Alpha Digital Playtest</p>
+          <h1>ผู้พิทักษ์เวทมนตร์แห่งสิทธิ</h1>
+          </div>
+        </div>
+        <div class="score-panel" aria-live="polite">
+          <span id="pairLabel">ยังไม่เริ่ม</span>
+          <strong id="dangerLabel">พลาดนอกวง 0</strong>
+        </div>
+      </section>
+
+      <section class="status-strip">
+        <article><span>กติกา</span><strong>1 รอบใช้คู่ Venn เดียว / หมดมือก่อนชนะรอบ</strong></article>
+        <article><span>แพ้ร่วม</span><strong id="thresholdNote">ทายพลาดแล้วเฉลยเป็นนอกวงเกินกำหนด = แพ้ทุกทีม</strong></article>
+        <article><span>แมตช์</span><strong>ทีมแรกที่ชนะ 2 รอบ เป็นผู้ชนะ</strong></article>
+      </section>
+
+      <section class="game-grid">
+        <aside class="control-panel">
+          <label>จำนวนทีม
+            <select id="teamCount">
+              <option value="2">2 ทีม</option>
+              <option value="3" selected>3 ทีม</option>
+              <option value="4">4 ทีม</option>
+            </select>
+          </label>
+          <label>การ์ดเริ่มต้นต่อทีม
+            <select id="handSize">
+              <option value="4">4 ใบ</option>
+              <option value="5">5 ใบ</option>
+              <option value="6">6 ใบ</option>
+              <option value="7" selected>7 ใบ</option>
+              <option value="8">8 ใบ</option>
+            </select>
+          </label>
+          <label>เพดานพลาดนอกวง
+            <select id="dangerThreshold">
+              <option value="6">6 ใบ</option>
+              <option value="7">7 ใบ</option>
+              <option value="8" selected>8 ใบ</option>
+            </select>
+          </label>
+          <button id="newGameBtn" type="button">เริ่มรอบใหม่</button>
+          <button id="resetMatchBtn" type="button" class="secondary">รีเซ็ตแมตช์</button>
+          <button id="exportBtn" type="button" class="secondary">ส่งออก log CSV</button>
+
+          <div class="ability-panel">
+            <h2>ตารางความสามารถกลาง</h2>
+            <button class="ability-btn" id="abilitySwap" type="button">เปลี่ยนการ์ด<small>ทิ้ง 1 จั่ว 1 (1 ครั้ง/ตา)</small></button>
+            <button class="ability-btn" id="abilityRescue" type="button">กู้คืน<small>ใช้ได้ 1 ครั้ง/รอบ: ทุกทีมเห็นด้วย ทุกทีมจั่ว 1 แล้วเอาการ์ดพลาดนอกวงออก 1 ใบ</small></button>
+          </div>
+
+          <div class="test-note">
+            <h2>ใช้เช็กอะไร</h2>
+            <ul>
+              <li>คำใบ้พอให้เดาวงได้ไหม</li>
+              <li>threshold พลาดนอกวง ตึงพอดีไหม</li>
+              <li>หลังลง 10 ใบ วางผิดแล้ว facilitator ถามได้ไหม</li>
+              <li>รอบหนึ่งจบใน 10 นาทีไหมเมื่อกองจั่วหมดแล้วแพ้ร่วม</li>
+              <li>การ์ดไหน map แล้วคนเถียงเฉลย</li>
+            </ul>
+          </div>
+        </aside>
+
+        <section class="play-area">
+          <article class="clue-card">
+            <div class="card-topline">
+              <span id="turnLabel">รอเริ่มเกม</span>
+              <span id="deckLabel">กองจั่ว -</span>
+            </div>
+            <div class="clue-grid">
+              <div class="clue-box" id="clueLeftBox">
+                <span>วงซ้าย</span>
+                <p id="clueLeft">-</p>
+              </div>
+              <div class="clue-box" id="clueRightBox">
+                <span>วงขวา</span>
+                <p id="clueRight">-</p>
+              </div>
+            </div>
+            <div class="clue-actions">
+              <button id="revealLeftHint" type="button">อ่านคำใบ้วงซ้าย</button>
+              <button id="revealRightHint" type="button">อ่านคำใบ้วงขวา</button>
+            </div>
+          </article>
+
+          <article class="treaty-helper">
+            <div class="helper-head">
+              <div>
+                <h2>ตัวช่วยเดาสนธิสัญญา</h2>
+                <p>เลือก token จาก 9 ผู้พิทักษ์ แล้ววางเดาว่าวงซ้าย/ขวาคืออะไร</p>
+              </div>
+              <div class="guess-actions">
+                <button id="checkGuesses" type="button">เช็ก token</button>
+                <button id="clearGuesses" type="button" class="secondary">ล้าง token</button>
+              </div>
+            </div>
+            <div class="guess-slots">
+              <button id="leftGuess" class="guess-slot" type="button">วาง token วงซ้าย</button>
+              <button id="rightGuess" class="guess-slot" type="button">วาง token วงขวา</button>
+            </div>
+            <p id="guessStatus" class="guess-status">ยังไม่ได้วาง token</p>
+            <div id="treatyBank" class="treaty-bank"></div>
+          </article>
+
+          <article class="venn-board">
+            <div class="venn-wrap">
+              <button class="zone zone-outside" data-zone="outside" type="button" aria-label="นอกวงทั้งหมด">
+                <span class="zone-tag">นอกวงทั้งหมด</span>
+              </button>
+              <div class="venn-circles">
+                <button class="zone zone-left" data-zone="left" type="button" aria-label="วงซ้ายเท่านั้น"><span>วงซ้าย</span></button>
+                <button class="zone zone-center" data-zone="center" type="button" aria-label="ตรงกลางทับซ้อน"><span>ตรงกลาง</span></button>
+                <button class="zone zone-right" data-zone="right" type="button" aria-label="วงขวาเท่านั้น"><span>วงขวา</span></button>
+              </div>
+            </div>
+            <p class="board-hint" id="boardHint">เลือกการ์ดจากมือ แล้วแตะตำแหน่งที่คิดว่าถูก</p>
+          </article>
+
+          <article class="feedback" id="feedback" hidden>
+            <div>
+              <span id="resultBadge"></span>
+              <h2 id="resultTitle"></h2>
+            </div>
+            <p id="resultReason"></p>
+            <button id="nextBtn" type="button">ตาถัดไป</button>
+          </article>
+
+          <section class="hand-area">
+            <div class="hand-head">
+              <h2 id="handTitle">มือของทีม</h2>
+              <span id="handCount"></span>
+            </div>
+            <div class="hand-list" id="handList"></div>
+          </section>
+        </section>
+      </section>
+
+      <section class="teams-strip" id="teamsStrip"></section>
+
+      <section class="results">
+        <div class="results-head">
+          <h2>บันทึกการเล่น</h2>
+          <span id="summaryLabel">ยังไม่มีข้อมูล</span>
+        </div>
+        <div class="log-list" id="logList"></div>
+      </section>
+    </main>
+
+    <script src="./cards-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
