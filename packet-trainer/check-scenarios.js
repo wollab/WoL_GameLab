@@ -2,7 +2,8 @@
 // ไม่ได้โหลดในหน้าเว็บ (แนวเดียวกับ nhrc-venn/simulate-variants.js)
 
 const { FILES, SCENARIOS } = require("./scenarios.js");
-const { MODES, estTokens, fmtTokens } = require("./rubric.js");
+const { MODES, estTokens, fmtTokens, scoreDoneWhen } = require("./rubric.js");
+const { TERMS, FIELD_ORDER, MODE_KEYS, PAIRS } = require("./lessons.js");
 
 const errors = [];
 const warnings = [];
@@ -68,6 +69,72 @@ for (const s of SCENARIOS) {
   }
 }
 
+// ---------- ตรวจศัพท์และแบบฝึกด่าน 1-3 ----------
+for (const [k, t] of Object.entries(TERMS)) {
+  const id = `TERM ${k}`;
+  for (const f of ["kind", "th", "en", "short", "why", "good", "bad"]) {
+    if (!t[f]) err(id, `ขาดฟิลด์ ${f}`);
+  }
+  if (!["field", "mode"].includes(t.kind)) err(id, `kind ต้องเป็น field หรือ mode (ได้ ${t.kind})`);
+  if (!(t.cues || []).length) err(id, "ไม่มี cues — ด่าน 1 จะมีข้อสอบน้อยเกินไป");
+  if (!(t.confusedWith || []).length) err(id, "ไม่มี confusedWith — ตัวลวงจะสุ่มมั่ว");
+  for (const c of t.confusedWith || []) {
+    if (!TERMS[c]) err(id, `confusedWith ชี้ไปคำที่ไม่มี: ${c}`);
+    else if (TERMS[c].kind !== t.kind) err(id, `confusedWith ข้ามชนิด (${k} เป็น ${t.kind} แต่ ${c} เป็น ${TERMS[c].kind})`);
+    if (c === k) err(id, "confusedWith ชี้กลับมาที่ตัวเอง");
+  }
+  if (t.good === t.bad) err(id, "ตัวอย่างดีกับแย่เหมือนกัน");
+}
+if (FIELD_ORDER.length !== 8) err("FIELD_ORDER", `ต้องมี 8 ช่อง (ได้ ${FIELD_ORDER.length})`);
+for (const k of FIELD_ORDER) {
+  if (!TERMS[k]) err("FIELD_ORDER", `อ้างคำที่ไม่มี: ${k}`);
+  else if (TERMS[k].kind !== "field") err("FIELD_ORDER", `${k} ไม่ใช่ kind field`);
+}
+for (const k of MODE_KEYS) {
+  if (!TERMS[k]) err("MODE_KEYS", `อ้างคำที่ไม่มี: ${k}`);
+  else if (TERMS[k].kind !== "mode") err("MODE_KEYS", `${k} ไม่ใช่ kind mode`);
+}
+if (MODE_KEYS.length < 4) err("MODE_KEYS", "ต้องมี 4 โหมดเพื่อให้มีตัวเลือกครบ");
+
+// ทุกโจทย์ wol-gamelab ต้องประกอบเป็น packet ครบ 8 ช่อง (ด่าน 3 ใช้)
+function slotValue(s, key) {
+  const r = s.reference || {};
+  if (key === "mode") return s.expectedMode;
+  if (key === "files") return (s.referenceFiles || []).join(" + ");
+  if (key === "decisions") return (s.decisionOptions.find((o) => o.correct) || {}).text;
+  if (key === "boundary") return (s.boundaryOptions.find((o) => o.correct) || {}).text;
+  return r[key];
+}
+for (const s of SCENARIOS.filter((x) => x.source === "wol-gamelab")) {
+  for (const k of FIELD_ORDER) {
+    if (!slotValue(s, k)) err(s.id, `ประกอบด่าน 3 ไม่ได้ — ไม่มีค่าสำหรับช่อง ${k}`);
+  }
+  // ตัวลวงของแต่ละช่องต้องหาได้อย่างน้อย 1 ตัวและต้องไม่ซ้ำคำตอบ
+  for (const k of FIELD_ORDER) {
+    if (k === "mode") continue;
+    const correct = slotValue(s, k);
+    const lures = TERMS[k].confusedWith.map((c) => slotValue(s, c)).filter((v) => v && v !== correct);
+    if (!lures.length) warn(s.id, `ช่อง ${k} ไม่มีตัวลวงที่ต่างจากคำตอบ`);
+  }
+}
+
+// คู่ดี/แย่
+const pairByTerm = {};
+PAIRS.forEach((p, i) => {
+  const id = `PAIR ${i + 1} (${p.term})`;
+  if (!TERMS[p.term]) err(id, `term ไม่มีในศัพท์: ${p.term}`);
+  if (!p.good || !p.bad) err(id, "ขาด good หรือ bad");
+  if (p.good === p.bad) err(id, "good กับ bad เหมือนกัน");
+  if (!p.why) err(id, "ไม่มีคำอธิบายว่าทำไม");
+  pairByTerm[p.term] = (pairByTerm[p.term] || 0) + 1;
+  // ข้อที่บอกว่าดี ต้องได้คะแนนเกณฑ์ปิดงานสูงกว่าจริง
+  if (p.term === "doneWhen") {
+    const g = scoreDoneWhen(p.good).points, b = scoreDoneWhen(p.bad).points;
+    if (g <= b) err(id, `ตัวที่ทำเครื่องหมายว่าดีได้คะแนนไม่สูงกว่า (ดี ${g} vs แย่ ${b})`);
+  }
+});
+if (PAIRS.length < 8) err("PAIRS", `ด่าน 2 ต้องมีอย่างน้อย 8 คู่ (ได้ ${PAIRS.length})`);
+
 // สรุป
 const byAxis = {};
 for (const s of SCENARIOS) for (const a of s.axes || []) byAxis[a] = (byAxis[a] || 0) + 1;
@@ -82,6 +149,12 @@ const bannedTokens = Object.entries(FILES)
   .filter(([, f]) => f.banned)
   .reduce((s, [, f]) => s + estTokens(f.bytes), 0);
 console.log(`ไฟล์ต้องห้ามในระบบ: ${fmtTokens(bannedTokens)} tokens ถ้าเผลออ่านทั้งหมด`);
+
+console.log(`ศัพท์: ${Object.keys(TERMS).length} คำ (ช่อง ${FIELD_ORDER.length} · โหมด ${MODE_KEYS.length})`);
+console.log(`ด่าน 2: ${PAIRS.length} คู่ · ครอบคลุม ${Object.keys(pairByTerm).length} คำ`);
+for (const k of FIELD_ORDER) {
+  if (!pairByTerm[k]) warnings.push(`ด่าน 2 ยังไม่มีคู่ดี/แย่ของ ${TERMS[k].th} (${k})`);
+}
 
 for (const a of Object.keys(byAxis)) {
   if (byAxis[a] < 2) warnings.push(`แกน ${a} มีโจทย์แค่ ${byAxis[a]} ข้อ — ควรมีอย่างน้อย 2`);

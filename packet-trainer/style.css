@@ -247,3 +247,71 @@ ul.axes li:last-child { border-bottom: none; }
 ul.axes b { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--teal-ink); margin-right: 8px; }
 
 footer.foot { text-align: center; font-size: 12px; color: var(--muted); padding: 10px 0 4px; }
+
+/* ---------- แผนที่ด่าน ---------- */
+.levelcard {
+  display: block; width: 100%; text-align: left; font-family: inherit;
+  color: var(--ink); border: 1px solid var(--line);
+}
+.levelcard.off { opacity: .55; }
+.lvhead { display: flex; align-items: baseline; gap: 8px; justify-content: space-between; }
+.lvhead b { font-family: "Kanit", sans-serif; font-size: 16px; }
+.lvblurb { font-size: 14px; margin-top: 2px; }
+.lvtaps { margin-top: 2px; }
+.lvhead span { font-size: 11.5px; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+.pass { background: var(--good-bg); color: var(--good); font-weight: 600; }
+.tried { background: var(--warn-bg); color: var(--gold-deep); }
+.fresh { background: var(--hint); color: var(--muted); }
+.lock { background: var(--hint); color: var(--muted); }
+.unlocked { color: var(--good); font-weight: 600; }
+
+/* ---------- ด่าน 1-3 ---------- */
+.lessonhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.lessonhead .dots { display: flex; gap: 3px; }
+.lessonhead .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); display: block; }
+.lessonhead .dots i.done { background: var(--teal); }
+.lessonhead .dots i.now { background: var(--gold); }
+
+.answers { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.answers.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ans {
+  text-align: left; padding: 13px 12px; border: 1.5px solid var(--line);
+  background: var(--card); border-radius: 12px; font-family: inherit;
+  font-size: 14px; line-height: 1.4; color: var(--ink); min-height: 52px;
+}
+.ans b { display: block; font-family: "Kanit", sans-serif; font-size: 15px; }
+.ans span { display: block; font-size: 11px; color: var(--muted); }
+.ans.wide { font-size: 14.5px; }
+.ans.ok { border-color: var(--good); background: var(--good-bg); }
+.ans.ok span { color: var(--good); }
+.ans.no { border-color: var(--bad); background: var(--bad-bg); }
+.ans.no span { color: var(--bad); }
+.ans.dim { opacity: .45; }
+.ans:disabled { cursor: default; }
+
+.fb { border-width: 1.5px; }
+.fb.right { border-color: var(--good); background: var(--good-bg); }
+.fb.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.fbtop { font-family: "Kanit", sans-serif; font-size: 16px; margin-bottom: 4px; }
+.fb.right .fbtop { color: var(--good); }
+.fb.wrong .fbtop { color: var(--bad); }
+.fb p { margin: 0; font-size: 14px; }
+
+/* packet ที่ค่อย ๆ ประกอบในด่าน 3 */
+.built { padding: 10px 14px; }
+.brow { display: flex; gap: 10px; padding: 5px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.brow:last-child { border-bottom: none; }
+.brow span { min-width: 96px; color: var(--muted); flex-shrink: 0; }
+.brow b { font-weight: 400; word-break: break-word; }
+
+/* ---------- ปุ่มดูใบ้ในด่าน 4 ---------- */
+.drillhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.hintbtn {
+  border: 1px solid var(--line); background: var(--card); color: var(--muted);
+  border-radius: 20px; padding: 4px 12px; font-family: inherit; font-size: 12.5px;
+}
+.hintbtn.on { border-color: var(--gold-deep); background: var(--warn-bg); color: var(--gold-deep); }
+.hintbox { background: var(--warn-bg); border-radius: 10px; padding: 10px 12px; margin-top: 8px; font-size: 13px; }
+.hintbox b { display: block; font-size: 12px; color: var(--gold-deep); margin-top: 6px; }
+.hintbox b:first-child { margin-top: 0; }
+.hintbox p { margin: 2px 0 0; }
