@@ -29,6 +29,7 @@
 | `9-learning-angles/` | แบบประเมินตัวเอง 9 Learning Moves ผลลัพธ์เป็น matrix 3×3 + share card | `app.js` (logic + canvas), `data.js` (เนื้อหา 9 ตัวละคร), `style.css` |
 | `nhrc-venn/` | เกมการ์ด Venn สนธิสัญญาสิทธิมนุษยชน (ลูกค้า: กสม.) | `app.js`, `cards-data-v3.js`, `styles.css`, `RULEBOOK-v3-th.md` |
 | `wizardhat/`, `wizardhat-v2/` | เครื่องมือคิดไอเดียเกม (React build) | ดูหัวข้อ "ห้ามแก้" ด้านบน |
+| `packet-trainer/` | เครื่องมือส่วนตัวฝึกจัด context ให้ AI (ไม่ใช่งานลูกค้า) | `scenarios.js` (ข้อมูลโจทย์), `rubric.js` (เกณฑ์), `app.js`, `style.css` |
 
 ### หมายเหตุ `nhrc-venn`
 
@@ -38,6 +39,13 @@
 - ค่าคงที่ที่กติกาผูกไว้ (อยู่หัว `app.js`): `MIN_PLAYABLE_FOR_PAIR = 10`, `MIN_SIDE_CARDS_FOR_PAIR = 3`, `MIN_CENTER_CARDS_FOR_PAIR = 1`, `MATCH_ROUNDS = 3`
   **แก้ตัวเลขพวกนี้ต้องอัปเดต `RULEBOOK-v3-th.md` ให้ตรงกันเสมอ**
 - การ์ดทุกใบต้องมีครบ: `no`, `text`, `treaties[]`, `type` (`clear`/`overlap`/`borderline`), `reason`
+
+### หมายเหตุ `packet-trainer`
+
+- แก้ `scenarios.js` แล้ว **ต้องรัน `node packet-trainer/check-scenarios.js` เสมอ** ก่อน commit
+- ตัวเลข `bytes` ใน catalog ต้องเป็นขนาดจริง (`stat -c%s`) ยกเว้นที่ติด `est: true`
+- โจทย์ที่ `source: "codex-audit"` อ้าง path ใน workspace นอกรีโปนี้ — เป็นค่าประมาณ ห้ามไป "แก้ให้ตรง" กับไฟล์ในรีโป
+- **โฟลเดอร์นี้ใช้ Google Fonts CDN โดยตั้งใจ** (เครื่องมือส่วนตัวบนมือถือ ไม่ใช่ของใช้ในห้อง workshop) อย่าแก้ให้เหมือนโปรเจกต์อื่น
 
 ---
 

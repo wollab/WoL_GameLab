@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#168a88" />
+<title>Packet Trainer — ฝึกจัด context ให้ AI</title>
+<meta name="description" content="ฝึกแปลงคำสั่งดิบเป็น Task Packet ที่ AI ทำงานต่อได้ โดยไม่เปลือง context" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600&family=Bai+Jamjuree:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <b>Packet Trainer</b>
+      <span>Wizards of Learning</span>
+    </header>
+
+    <nav class="tabs">
+      <button data-go="home">หน้าแรก</button>
+      <button data-go="drill">ฝึก</button>
+      <button data-go="composer">แต่ง packet</button>
+      <button data-go="progress">พัฒนาการ</button>
+    </nav>
+
+    <main id="app"></main>
+
+    <footer class="foot">เก็บข้อมูลไว้ในเครื่องนี้เท่านั้น ไม่ส่งออกไปไหน</footer>
+  </div>
+
+  <script src="./rubric.js"></script>
+  <script src="./scenarios.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
