@@ -499,6 +499,68 @@ function radar(stat){
   return `<svg viewBox="0 0 300 330" width="100%" style="max-width:320px">${g}</svg>`;
 }
 
+/* ---------- routine: แปลง action เป็นตารางสัปดาห์ที่ทำตามได้จริง ----------
+   หลักการ: เริ่มทีละอย่าง · ผูกกับสิ่งที่ทำอยู่แล้ว · พลาดวันเดียวไม่ได้เริ่มใหม่
+   (Lally et al. 2010 — เวลาสร้างนิสัยต่างกัน 18-254 วัน และการพลาดหนึ่งวัน
+    ไม่ทำให้ความเป็นอัตโนมัติที่สะสมมาหายไป) */
+function slotOf(m){
+  if(/\/วัน|ทุกวัน/.test(m))      return {k:'daily',  when:'ทุกวัน ตอนก่อนปิดคอม'};
+  if(/\/สัปดาห์/.test(m))         return {k:'weekly', when:'ทุกวันศุกร์ 16:00 — ชั่วโมงดูแลธุรกิจ'};
+  if(/\/เดือน/.test(m))           return {k:'monthly',when:'วันแรกของเดือน ต่อจากชั่วโมงดูแลธุรกิจ'};
+  if(/\/งาน/.test(m))             return {k:'perjob', when:'ทุกครั้งที่รับงานใหม่ ก่อนเริ่มทำ'};
+  return {k:'once', when:'สัปดาห์นี้ เลือกวันที่ว่างที่สุด 1 วัน'};
+}
+function routine(prog){
+  return prog.map((a,i)=>{
+    const s=slotOf(a.m);
+    return {n:a.n, when:s.when, kind:s.k,
+      week: i===0 ? 'สัปดาห์ที่ 1' : i===1 ? 'สัปดาห์ที่ 2-3' : 'สัปดาห์ที่ 4 เป็นต้นไป'};
+  });
+}
+
+/* ---------- radar เป็นรูป PNG สำหรับแนบไปกับอีเมล ----------
+   ใช้ canvas ไม่ใช่ SVG เพราะ Gmail ตัด SVG ทิ้ง
+   ป้ายกำกับใช้ชื่อมิติภาษาอังกฤษ เลี่ยงปัญหาฟอนต์ไทยบน canvas */
+function radarPNG(stat){
+  try{
+    const S=2, W=420, H=420;                  // 840px จริง — คมพอสำหรับแสดงที่ 320px บนจอ retina
+    const cv=document.createElement('canvas'); cv.width=W*S; cv.height=H*S;
+    const g=cv.getContext('2d'); g.scale(S,S);
+    g.fillStyle='#ffffff'; g.fillRect(0,0,W,H);
+
+    const keys=Object.keys(DIMS), N=6, cx=W/2, cy=H/2+5, R=124, MAX=44;
+    const pt=(k,rr)=>{const a=-Math.PI/2+k*2*Math.PI/N;
+      return [cx+Math.cos(a)*rr, cy+Math.sin(a)*rr];};
+
+    for(let ring=1;ring<=4;ring++){
+      g.beginPath();
+      for(let k=0;k<N;k++){const[x,y]=pt(k,R*ring/4); k?g.lineTo(x,y):g.moveTo(x,y);}
+      g.closePath(); g.strokeStyle='#e2e0dc'; g.lineWidth=1; g.stroke();
+    }
+    for(let k=0;k<N;k++){const[x,y]=pt(k,R);
+      g.beginPath(); g.moveTo(cx,cy); g.lineTo(x,y); g.strokeStyle='#eae8e4'; g.stroke();}
+
+    g.beginPath();
+    keys.forEach((k,idx)=>{const[x,y]=pt(idx,Math.max(0.10,stat[k]/MAX)*R); idx?g.lineTo(x,y):g.moveTo(x,y);});
+    g.closePath();
+    g.fillStyle='rgba(226,98,10,.20)'; g.fill();
+    g.strokeStyle='#e2620a'; g.lineWidth=2.5; g.lineJoin='round'; g.stroke();
+
+    keys.forEach((k,idx)=>{
+      const[x,y]=pt(idx,Math.max(0.10,stat[k]/MAX)*R);
+      g.beginPath(); g.arc(x,y,4.5,0,Math.PI*2); g.fillStyle='#e2620a'; g.fill();
+      const[lx,ly]=pt(idx,R+28);
+      g.textAlign='center'; g.textBaseline='middle';
+      g.fillStyle='#6b6b76'; g.font='500 13px Helvetica, Arial, sans-serif';
+      g.fillText(DIMS[k].th, lx, ly-8);
+      g.fillStyle='#1a1a1e'; g.font='700 17px Helvetica, Arial, sans-serif';
+      g.fillText(String(stat[k]), lx, ly+11);
+    });
+
+    return cv.toDataURL('image/png').split(',')[1];   // ตัด data: prefix ออก
+  }catch(e){ return ''; }                              // วาดไม่ได้ก็ส่งอีเมลแบบไม่มีรูป
+}
+
 /* ---------- render ---------- */
 function render(){
   // ---------- หน้าแรก: นี่คืออะไร จะได้อะไร ----------
@@ -635,6 +697,22 @@ function renderResult(){
     <p class="sub" style="margin-bottom:14px">เลือกมาจากเจตนาที่คุณตอบไว้: “${INTENT_FOCUS[r.intent].label}”</p>
     ${prog.map(a=>`<div class="act"><div class="an">${a.n}</div>
       <div class="am">${a.m}</div><div class="aw">${a.w}</div></div>`).join('')}
+
+    <h3>เอาไปทำเป็นกิจวัตรยังไง</h3>
+    <p class="sub" style="margin-bottom:14px">รู้ว่าควรทำอะไรกับทำได้จริง เป็นคนละเรื่องกัน —
+    นี่คือวิธีวางมันลงในสัปดาห์ของคุณ</p>
+    ${routine(prog).map((x,i)=>`<div class="act">
+      <div class="am" style="color:var(--accent);margin-bottom:4px">${x.week}</div>
+      <div class="an">${x.n}</div>
+      <div class="am" style="margin-top:4px">🕐 ${x.when}</div></div>`).join('')}
+    <div class="insight" style="margin-top:16px"><div class="lab">กฎ 3 ข้อของการเริ่ม</div>
+      <p><b>1. เริ่มทีละอย่าง</b> — ทำข้อแรกให้ติดก่อน ค่อยเพิ่มข้อถัดไป
+      คนที่เริ่มพร้อมกัน 5 อย่างมักไม่เหลือสักอย่างในเดือนที่สอง<br><br>
+      <b>2. ผูกกับสิ่งที่ทำอยู่แล้ว</b> — "หลังปิดคอม" ทำงานได้ดีกว่า "ตอนเย็น"
+      เพราะมีสิ่งที่มาสะกิดให้นึกออกจริง<br><br>
+      <b>3. พลาดหนึ่งวันไม่ได้ทำให้ที่สะสมมาหายไป</b> — งานวิจัยการสร้างนิสัยพบว่า
+      การขาดไปหนึ่งครั้งไม่ทำให้ต้องเริ่มนับหนึ่งใหม่ สิ่งที่ทำให้ล้มเหลวคือการเลิกหลังพลาด ไม่ใช่ตัวการพลาด</p>
+    </div>
 
     <div id="leadbox"></div>
 
@@ -775,6 +853,8 @@ function renderLead(){
             answers:ans.map((v,idx)=>Q[idx].o[v][1]),
             cond:r?.cond, stat:r?.stat, phase:r?.phase, intent:r?.intent,
             phaseName:ph?.n,
+            radar:r?radarPNG(r.stat):'',
+            routine:routine(prog||[]),
             actions:(prog||[]).map(a=>({n:a.n,m:a.m,w:a.w})),
             ua:navigator.userAgent.slice(0,120)
           })
