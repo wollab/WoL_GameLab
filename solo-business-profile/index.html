@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solo Business Profile — โปรไฟล์สุขภาพธุรกิจของคนทำคนเดียว | Wizards of Learning</title>
+<meta name="description" content="แบบประเมินสุขภาพธุรกิจสำหรับคนที่ทำธุรกิจคนเดียว 25 คำถาม 6 นาที รู้ว่าธุรกิจคุณแข็งตรงไหน กำลังจะพังตรงไหน และควรทำอะไรต่อ">
+<meta property="og:title" content="Solo Business Profile — โปรไฟล์สุขภาพธุรกิจของคนทำคนเดียว">
+<meta property="og:description" content="25 คำถาม 6 นาที ได้โปรไฟล์ธุรกิจของคุณ 6 ด้าน พร้อมสิ่งที่ควรทำต่อ">
+<meta property="og:type" content="website">
+<style>
+  :root, :root[data-theme="dark"]{
+    --bg:#0d0d0f; --card:#17171b; --card2:#1e1e24; --line:#2a2a32;
+    --fg:#f2f2f5; --dim:#9a9aa6; --accent:#ff7a1a; --accent2:#ffa45c;
+    --ring:#2a2a32; --fill:rgba(255,122,26,.24); --track:#26262e;
+    --notebg:#141419; --alertbg:#241318; --alertline:#5a2230; --alertfg:#f0d5d9;
+  }
+  :root[data-theme="light"]{
+    --bg:#faf9f7; --card:#ffffff; --card2:#f3f2ef; --line:#e2e0dc;
+    --fg:#1a1a1e; --dim:#6b6b76; --accent:#e2620a; --accent2:#c25208;
+    --ring:#e2e0dc; --fill:rgba(226,98,10,.16); --track:#eae8e4;
+    --notebg:#fff8f2; --alertbg:#fff1f2; --alertline:#fecdd3; --alertfg:#7f1d2b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font-family:"Noto Sans Thai","Sarabun",system-ui,-apple-system,"Segoe UI",sans-serif;
+    line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:520px;margin:0 auto;padding:20px 18px 80px}
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:26px;min-height:28px}
+  .bar{flex:1;height:6px;background:var(--track);border-radius:99px;overflow:hidden}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));
+    border-radius:99px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+  .count{font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .dimtag{display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);border:1px solid var(--line);background:var(--notebg);padding:4px 12px;border-radius:99px;margin-bottom:18px}
+  h1{font-size:23px;line-height:1.45;margin:0 0 8px;font-weight:700}
+  .sub{color:var(--dim);font-size:14px;margin:0 0 24px}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:15px 17px;font-size:15px;cursor:pointer;text-align:left;color:var(--fg);
+    font-family:inherit;line-height:1.5;transition:border-color .15s,background .15s,transform .08s}
+  .opt:hover{border-color:var(--accent);background:var(--card2)}
+  .opt:active{transform:scale(.985)}
+  .opt.sel{border-color:var(--accent);background:var(--notebg)}
+  .back{margin-top:22px;background:none;border:none;color:var(--dim);font-size:14px;
+    cursor:pointer;font-family:inherit;padding:6px 0}
+  .back:hover{color:var(--fg)}
+  .inter p{color:var(--fg)}
+  .note{margin-top:22px;padding:14px 16px;background:var(--notebg);border-left:3px solid var(--accent);
+    border-radius:0 10px 10px 0;font-size:13.5px;color:var(--fg)}
+  .note b{color:var(--accent)}
+
+  /* interstitial */
+  .inter{text-align:center;padding:40px 0}
+  .inter .big{font-size:34px;margin-bottom:18px}
+  .inter p{font-size:16px;color:var(--fg);margin:0 0 30px}
+  .cta{width:100%;background:linear-gradient(180deg,var(--accent2),var(--accent));color:#fff;
+    border:none;border-radius:13px;padding:16px;font-size:16.5px;font-weight:700;
+    cursor:pointer;font-family:inherit;box-shadow:0 3px 0 rgba(0,0,0,.28)}
+  .cta:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.28)}
+
+  /* result */
+  .rtitle{font-size:12px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+  h2{font-size:26px;margin:0 0 4px}
+  .phase{display:inline-block;background:var(--notebg);border:1px solid var(--line);color:var(--accent);
+    padding:5px 13px;border-radius:99px;font-size:13px;margin:10px 0 22px}
+  .statlist{display:flex;flex-direction:column;gap:9px;margin:20px 0}
+  .row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;padding:12px 15px}
+  .row .nm{width:74px;font-size:14px;font-weight:600;flex-shrink:0}
+  .row .track{flex:1;height:9px;background:var(--track);border-radius:99px;overflow:hidden}
+  .row .track > i{display:block;height:100%;border-radius:99px;transition:width .8s cubic-bezier(.3,0,.2,1)}
+  .row .val{width:34px;text-align:right;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+  .row .cond{width:42px;text-align:right;font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums}
+  .insight{background:var(--notebg);border:1px solid var(--line);border-radius:14px;padding:17px 19px;margin:20px 0}
+  .insight .lab{font-size:11px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:9px}
+  .insight p{margin:0;font-size:15px;color:var(--fg)}
+  .alert{background:var(--alertbg);border:1px solid var(--alertline);border-radius:14px;padding:17px 19px;margin:20px 0}
+  .alert .lab{color:var(--alertfg);opacity:.85;font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px}
+  .alert p{margin:0;font-size:15px;color:var(--alertfg)}
+  h3{font-size:17px;margin:30px 0 12px}
+  .act{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:9px}
+  .act .an{font-size:15px;font-weight:600;margin-bottom:3px}
+  .act .am{font-size:12.5px;color:var(--dim)}
+  .act .aw{font-size:12.5px;color:var(--dim);margin-top:6px;font-style:italic}
+  svg{display:block;margin:6px auto 0}
+  .ghost{width:100%;background:none;border:1px solid var(--line);color:var(--dim);border-radius:12px;
+    padding:13px;font-size:14px;cursor:pointer;font-family:inherit;margin-top:14px}
+  .ghost:hover{color:var(--fg);border-color:var(--accent)}
+    .themebtn{position:fixed;top:12px;right:12px;z-index:50;background:var(--card);
+    border:1px solid var(--line);color:var(--dim);border-radius:99px;width:38px;height:38px;
+    font-size:16px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center}
+  .themebtn:hover{color:var(--fg);border-color:var(--accent)}
+  .savebar{display:flex;gap:8px;margin-top:20px}
+  .savebar button{flex:1;background:var(--card);border:1px solid var(--line);color:var(--fg);
+    border-radius:12px;padding:13px 10px;font-size:14px;cursor:pointer;font-family:inherit}
+  .savebar button:hover{border-color:var(--accent)}
+  .hero{padding:24px 0 10px}
+  .hero .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+  .hero h1{font-size:29px;line-height:1.35;margin:0 0 12px}
+  .hero .lede{font-size:16px;color:var(--fg);margin:0 0 26px;line-height:1.7}
+  .getlist{display:flex;flex-direction:column;gap:10px;margin:0 0 22px}
+  .get{display:flex;gap:12px;align-items:flex-start;background:var(--card);
+    border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .get .ic{font-size:17px;line-height:1.4;flex-shrink:0}
+  .get b{display:block;font-size:14.5px;margin-bottom:2px}
+  .get span{font-size:13px;color:var(--dim);line-height:1.55}
+  .facts{display:flex;gap:8px;margin:0 0 22px}
+  .fact{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:12px 8px;text-align:center}
+  .fact b{display:block;font-size:19px;color:var(--accent)}
+  .fact span{font-size:11.5px;color:var(--dim)}
+  .basis{font-size:12.5px;color:var(--dim);line-height:1.65;margin:18px 0 0;
+    padding-top:16px;border-top:1px solid var(--line)}
+  .lead{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 19px;margin-top:26px}
+  .lead h4{margin:0 0 5px;font-size:16px}
+  .lead .why{font-size:13.5px;color:var(--dim);margin:0 0 16px}
+  .lead label{display:block;font-size:13px;color:var(--dim);margin:0 0 5px}
+  .lead input[type=text],.lead input[type=email]{width:100%;background:var(--bg);
+    border:1px solid var(--line);border-radius:10px;padding:12px 13px;font-size:15px;
+    color:var(--fg);font-family:inherit;margin-bottom:13px}
+  .lead input:focus{outline:none;border-color:var(--accent)}
+  .consent{display:flex;gap:10px;align-items:flex-start;margin:4px 0 15px;
+    font-size:13px;color:var(--dim);line-height:1.55;cursor:pointer}
+  .consent input{margin-top:3px;flex-shrink:0;width:17px;height:17px;accent-color:var(--accent)}
+  .lead .err{color:#e11d48;font-size:13px;margin:-6px 0 12px}
+  .lead .ok{font-size:14px;color:var(--fg)}
+  .pnotice{margin:-4px 0 15px}
+  .pnotice summary{cursor:pointer;font-size:12.5px;color:var(--accent);list-style:none;
+    padding:6px 0;user-select:none}
+  .pnotice summary::-webkit-details-marker{display:none}
+  .pnotice summary::before{content:'▸ ';font-size:11px}
+  .pnotice[open] summary::before{content:'▾ '}
+  .pnotice .pbody{font-size:12px;line-height:1.75;color:var(--dim);
+    background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px 15px;margin-top:4px}
+  .pnotice .pbody b{color:var(--fg);display:block;margin-top:11px}
+  .pnotice .pbody b:first-child{margin-top:0}
+  .pnotice .pbody a{color:var(--accent)}
+  .lead .tiny{font-size:12px;color:var(--dim);margin-top:12px;line-height:1.6}
+  @media print{
+    :root{--bg:#fff;--card:#fff;--card2:#fff;--line:#ccc;--fg:#111;--dim:#555;
+          --accent:#c2410c;--accent2:#c2410c;--ring:#ddd;--fill:rgba(194,65,12,.15);--track:#eee;
+          --notebg:#fafafa;--alertbg:#fff;--alertline:#999;--alertfg:#111}
+    body{background:#fff;color:#111}
+    .themebtn,.ghost,.lead{display:none !important}
+    .wrap{max-width:100%;padding:0}
+    .row,.act,.insight,.alert{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<button class="themebtn" id="theme" title="สลับโหมดสว่าง/มืด">◑</button>
+<div class="wrap" id="app"></div>
+
+<script>
+/* ============================================================
+   Solo Business Profile — แบบประเมินสุขภาพธุรกิจคนเดียว (production)
+   spec: docs/03-assessment-questions.md + 02-dimensions-detail.md
+   ============================================================ */
+
+/* ตั้งค่า: วาง Web app URL ของ Google Apps Script ที่นี่หลัง deploy
+   ถ้าปล่อยว่าง แอปจะยังใช้งานได้ทุกอย่าง แต่จะไม่ส่งอีเมลและแจ้งผู้ใช้ตามตรง */
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbwZR7hYM_H7-90Wz0rxjHQW-IwEHRlYQ0BPP9vDdO_-hNyeG3vPDVgtbKgrOEoxh1zH/exec';
+
+const DIMS = {
+  offer:   {th:'Offer',    full:'ของที่คุณขาย',   color:'#f59e0b'},
+  demand:  {th:'Demand',   full:'คนที่จะซื้อ',    color:'#fb923c'},
+  money:   {th:'Money',    full:'เงิน',           color:'#4ade80'},
+  delivery:{th:'Delivery', full:'การส่งมอบ',      color:'#60a5fa'},
+  systems: {th:'Systems',  full:'ระบบ',           color:'#a78bfa'},
+  owner:   {th:'Owner',    full:'ตัวคุณ',         color:'#f472b6'},
+};
+
+const Q = [
+  // ---------- OFFER ----------
+  {d:'offer', t:'ถ้ามีคนถามว่า "ทำอะไรอยู่" คุณตอบยังไง', o:[
+    ['ตอบยาว เพราะอธิบายสั้นๆ แล้วเขาไม่เข้าใจ',0],
+    ['บอกอาชีพ เช่น "รับออกแบบ" "ขายของออนไลน์"',1],
+    ['บอกว่าช่วยใครแก้ปัญหาอะไร',2],
+    ['บอกแล้วคนมักถามต่อว่า "ทำให้หน่อยได้มั้ย"',3]]},
+  {d:'offer', t:'นึกถึงลูกค้าที่ดีที่สุดของคุณ — คุณอธิบายเขาได้แค่ไหน', o:[
+    ['ยังไม่มีลูกค้าที่รู้สึกว่าใช่',0],
+    ['บอกได้กว้างๆ เช่น "คนทำธุรกิจ"',1],
+    ['บอกได้ว่าเขาทำอะไร อายุประมาณไหน',2],
+    ['บอกได้ว่าเขาเจอปัญหาอะไรอยู่ก่อนมาหาคุณ',3]]},
+  {d:'offer', t:'ราคาที่คุณขายอยู่ตอนนี้ มาจากอะไร', o:[
+    ['ดูจากคนอื่นแล้วตั้งใกล้ๆ กัน',0],
+    ['ตั้งเท่าที่คิดว่าคนน่าจะยอมจ่าย',1],
+    ['คิดจากต้นทุนบวกกำไรที่ต้องการ',2],
+    ['คิดจากผลลัพธ์ที่ลูกค้าได้',3]]},
+  {d:'offer', t:'ถ้าพรุ่งนี้ต้องเลิกขายทุกอย่าง เหลือได้อย่างเดียว — คุณรู้มั้ยว่าจะเหลืออันไหน',
+    n:'คำตอบ "ไม่รู้" ไม่ได้แปลว่าคุณแย่ — แต่แปลว่ายังไม่เคยมีใครบังคับให้คุณเลือก คำถามนี้ทำหน้าที่นั้นแทน', o:[
+    ['ไม่รู้เลย เลือกไม่ถูก',0],
+    ['พอเดาได้ แต่ไม่แน่ใจ',1],
+    ['รู้ แต่มันไม่ใช่อันที่ทำรายได้มากที่สุด',2],
+    ['รู้ และมันคืออันที่ทำรายได้หลักอยู่แล้ว',3]]},
+
+  // ---------- DEMAND ----------
+  {d:'demand', t:'ลูกค้า 3 คนล่าสุด มาจากช่องทางไหน', o:[
+    ['ตอบไม่ได้ จำไม่ได้แล้ว',0],
+    ['ตอบได้ 1 คน',1],
+    ['ตอบได้ 2 คน',2],
+    ['ตอบได้ครบทั้ง 3 คน',3]]},
+  {d:'demand', t:'ถ้าเดือนหน้าอยากได้ลูกค้าเพิ่มอีก 1 คน คุณจะทำอะไร',
+    n:'ถ้าลูกค้าของคุณมาจากการบอกต่อของคนที่เคยร่วมงานกัน — นั่นเป็นช่องทางที่ดีมาก คำถามคือคุณ "ดูแลมันอยู่" หรือ "รอให้มันเกิดเอง" สองอย่างนี้ต่างกันมาก', o:[
+    ['ยังไม่รู้ ต้องรอให้มีคนติดต่อมาเอง',0],
+    ['โพสต์ลงโซเชียลแล้วหวังว่าจะมีคนเห็น',1],
+    ['ติดต่อคนที่เคยร่วมงานด้วย แต่ทำเป็นครั้งคราวเวลานึกได้',2],
+    ['ติดต่อคนที่เคยร่วมงานอย่างสม่ำเสมอ หรือมีวิธีอื่นที่ได้ผลเกือบทุกครั้ง',3]]},
+  {d:'demand', t:'ลูกค้าเก่าหรือหน่วยงานที่เคยร่วมงาน กลับมาหาคุณอีกมั้ย', o:[
+    ['ยังไม่เคยมีใครกลับมา',0],
+    ['มีบ้าง แต่นานๆ ครั้ง',1],
+    ['มีประจำ ประมาณ 1 ใน 3 ของรายได้',2],
+    ['งานซ้ำจากที่เดิมคือรายได้หลัก',3]]},
+  {d:'demand', t:'ถ้าพรุ่งนี้ช่องทางที่พาลูกค้ามาหาคุณมากที่สุดหายไป จะเป็นยังไง',
+    n:'คนทำธุรกิจคนเดียวมักไม่รู้ว่าตัวเองพึ่งอะไรอยู่ จนกว่ามันจะหายไป — และตอนนั้นก็สายไปแล้ว', o:[
+    ['รายได้หยุดเกือบหมด',0],
+    ['กระทบหนัก แต่ยังพอมีทางอื่น',1],
+    ['กระทบบ้าง มีช่องทางอื่นรองรับ',2],
+    ['แทบไม่กระทบ เพราะไม่ได้พึ่งช่องทางไหนเป็นพิเศษ',3]]},
+
+  // ---------- MONEY ----------
+  {d:'money', t:'เงินธุรกิจกับเงินส่วนตัว อยู่ด้วยกันหรือแยกกัน', o:[
+    ['อยู่บัญชีเดียวกัน',0],
+    ['แยกบัญชี แต่โอนไปมาจนงง',1],
+    ['แยกบัญชี และพยายามไม่ปน',2],
+    ['แยกบัญชี และจ่ายเงินเดือนให้ตัวเองเป็นจำนวนที่แน่นอน',3]]},
+  {d:'money', t:'เดือนที่แล้วคุณ "เหลือ" เท่าไหร่ (ไม่ใช่ขายได้เท่าไหร่)', o:[
+    ['ไม่รู้เลย',0],
+    ['พอเดาได้คร่าวๆ',1],
+    ['รู้ประมาณ เพราะดูยอดในบัญชี',2],
+    ['รู้ตัวเลขชัด เพราะจดรายรับรายจ่ายไว้',3]]},
+  {d:'money', t:'ถ้าวันนี้ไม่มีเงินเข้าอีกเลย เงินที่มีอยู่พอใช้จ่ายทั้งธุรกิจและชีวิตได้กี่เดือน',
+    n:'นี่คือตัวเลขเดียวที่บอกว่าคุณมี "เวลา" เหลือแค่ไหนในการแก้ทุกเรื่องที่เหลือ', o:[
+    ['ไม่ถึงเดือน',0],
+    ['1-3 เดือน',1],
+    ['3-6 เดือน',2],
+    ['เกิน 6 เดือน',3]]},
+  {d:'money', t:'ลูกค้ารายใหญ่ที่สุดของคุณ คิดเป็นสัดส่วนเท่าไหร่ของรายได้', o:[
+    ['มากกว่าครึ่ง',0],
+    ['ประมาณ 30-50%',1],
+    ['ประมาณ 10-30%',2],
+    ['น้อยกว่า 10% เพราะลูกค้ากระจาย',3]]},
+
+  // ---------- DELIVERY ----------
+  {d:'delivery', t:'งาน 5 ชิ้นล่าสุด ส่งตรงเวลากี่ชิ้น', o:[
+    ['0-2 ชิ้น',0],['3 ชิ้น',1],['4 ชิ้น',2],['ครบ 5 ชิ้น',3]]},
+  {d:'delivery', t:'ที่ส่งงานตรงเวลาได้ — ต้องแลกกับอะไรมั้ย',
+    n:'ถ้าคุณตอบข้อก่อนหน้าว่าครบ 5 แต่ข้อนี้ว่าต้องทำดึกทุกครั้ง แอปจะไม่ให้คะแนนเต็ม เพราะนั่นไม่ใช่ความสามารถ แต่คือการยืมเวลาจากตัวคุณเองมาใช้', o:[
+    ['ต้องทำงานดึกหรือทำเสาร์อาทิตย์แทบทุกครั้ง',0],
+    ['ต้องเร่งช่วงท้ายเป็นประจำ',1],
+    ['นานๆ ครั้งถึงจะต้องเร่ง',2],
+    ['เสร็จในเวลาทำงานปกติ',3]]},
+  {d:'delivery', t:'ลูกค้าขอแก้งานบ่อยแค่ไหน', o:[
+    ['เกือบทุกงาน และหลายรอบ',0],
+    ['บ่อย แต่รอบเดียวจบ',1],
+    ['นานๆ ครั้ง',2],
+    ['แทบไม่มี เพราะตกลงกันชัดตั้งแต่ต้น',3]]},
+  {d:'delivery', t:'เวลาเริ่มงานใหม่ คุณเริ่มจากอะไร', o:[
+    ['คิดใหม่ทุกครั้ง',0],
+    ['จำๆ เอาว่าครั้งก่อนทำยังไง',1],
+    ['มีไฟล์เก่าให้ก๊อปมาแก้',2],
+    ['มีขั้นตอนที่เขียนไว้และใช้ทุกครั้ง',3]]},
+
+  // ---------- SYSTEMS ----------
+  {d:'systems', t:'ถ้าคุณป่วยหนักหายไป 2 สัปดาห์ ธุรกิจจะเป็นยังไง',
+    n:'คำตอบข้อนี้บอกว่าคุณเป็น "เจ้าของธุรกิจ" หรือ "ตัวธุรกิจเอง" — และถ้าเป็นอย่างหลัง มันขายต่อไม่ได้ ส่งต่อไม่ได้ และหยุดพักไม่ได้', o:[
+    ['หยุดทันที และลูกค้าจะเดือดร้อน',0],
+    ['เดินต่อได้ไม่กี่วันแล้วติดขัด',1],
+    ['เดินได้ แต่กลับมาแล้วต้องตามเก็บเยอะ',2],
+    ['เดินได้เกือบปกติ',3]]},
+  {d:'systems', t:'ข้อมูลลูกค้าทั้งหมดของคุณอยู่ที่ไหน',
+    n:'ถ้าคุณกำลังย้ายเข้าเครื่องมือใหม่อยู่ ให้ตอบตามสภาพ "วันนี้" ไม่ใช่ตามที่ตั้งใจให้เป็น — ระบบที่ยังไม่นิ่งกับระบบที่ใช้จริงได้ ให้ผลต่างกัน', o:[
+    ['กระจายอยู่ในแชท อีเมล กระดาษ และในหัว',0],
+    ['ส่วนใหญ่อยู่ในแชท ค้นเอาเมื่อต้องใช้ หรือมีที่รวมแต่ไม่ได้อัปเดต',1],
+    ['กำลังย้ายเข้าเครื่องมือ/ระบบใหม่ ยังไม่แน่ใจว่านิ่งมั้ย',2],
+    ['อยู่ที่เดียว อัปเดตสม่ำเสมอ และหาเจอภายในนาทีเดียว',3]]},
+  {d:'systems', t:'สัปดาห์ที่ผ่านมา คุณหมดเวลาไปกับงานซ้ำๆ ที่ไม่ต้องใช้ความคิดประมาณกี่ชั่วโมง', o:[
+    ['เกิน 15 ชั่วโมง',0],['ประมาณ 8-15 ชั่วโมง',1],
+    ['ประมาณ 3-8 ชั่วโมง',2],['น้อยกว่า 3 ชั่วโมง',3]]},
+  {d:'systems', t:'งานซ้ำๆ พวกนั้น คุณเคยลองให้เครื่องมือหรือ AI ช่วยมั้ย',
+    n:'สมัยก่อนการทำงานได้มากขึ้นแปลว่าต้องจ้างคนเพิ่ม ตอนนี้ไม่ใช่แล้ว — สัดส่วนสตาร์ทอัพที่มีผู้ก่อตั้งคนเดียวเพิ่มจาก 23.7% ปี 2019 เป็น 36.3% ในครึ่งแรกของปี 2025', o:[
+    ['ยังไม่เคยคิดว่าทำได้',0],
+    ['เคยคิด แต่ไม่รู้จะเริ่มยังไง',1],
+    ['ลองแล้วบางอย่าง ยังไม่เข้าที่',2],
+    ['มีบางงานที่ให้เครื่องมือทำแทนได้จริงแล้ว',3]]},
+
+  // ---------- OWNER ----------
+  {d:'owner', t:'สัปดาห์ที่ผ่านมาคุณทำงานประมาณกี่ชั่วโมง', o:[
+    ['มากกว่า 60 ชั่วโมง',0],['50-60 ชั่วโมง',1],
+    ['40-50 ชั่วโมง',2],['น้อยกว่า 40 ชั่วโมง',3]]},
+  {d:'owner', t:'เดือนที่ผ่านมา มีวันไหนที่คุณไม่แตะงานเลยสักนิดมั้ย', o:[
+    ['ไม่มีเลยสักวัน',0],['มี 1-2 วัน',1],
+    ['มีประมาณสัปดาห์ละวัน',2],['มีสม่ำเสมอ และไม่รู้สึกผิดที่หยุด',3]]},
+  {d:'owner', t:'ตอนนี้พลังงานของคุณอยู่ระดับไหน', o:[
+    ['หมดแล้ว ฝืนไปวันๆ',0],['เหนื่อยมาก แต่ยังไหว',1],
+    ['กลางๆ มีวันดีวันแย่',2],['ดี ตื่นมาแล้วอยากทำงาน',3]]},
+  {d:'owner', t:'เวลาเจอปัญหาเรื่องธุรกิจ คุณคุยกับใคร', o:[
+    ['ไม่มีใคร คิดเอง แก้เอง',0],
+    ['มีคนคุยได้ แต่เขาไม่เข้าใจเรื่องธุรกิจ',1],
+    ['มีคนที่เข้าใจ แต่นานๆ คุยที',2],
+    ['มีคนที่เข้าใจ และคุยกันสม่ำเสมอ',3]]},
+
+  // ---------- INTENT (ไม่คิดคะแนน) ----------
+  {d:'intent', t:'อีก 3 ปีข้างหน้า คุณอยากให้ธุรกิจนี้เป็นแบบไหน',
+    n:'ข้อนี้ไม่มีคะแนน เพราะไม่มีคำตอบที่ถูกกว่ากัน — แต่มันเปลี่ยนคำแนะนำทั้งชุด', o:[
+    ['อยากให้ใหญ่ขึ้นมาก มีทีม มีรายได้หลายเท่า','grow'],
+    ['อยากให้รายได้เพิ่มขึ้นบ้าง แต่ยังทำคนเดียวเหมือนเดิม','lean'],
+    ['อยากให้รายได้เท่าเดิม แต่ทำงานน้อยลงและสบายใจขึ้น','calm'],
+    ['ยังไม่รู้ ตอนนี้ขอแค่ให้อยู่รอดก่อน','survive']]},
+];
+
+const INTER = {
+  4:  'คุณผ่านเรื่องของที่ขายมาแล้ว — ข้อที่แล้วเป็นข้อที่คนส่วนใหญ่ลังเลนานที่สุด',
+  8:  'ถ้าข้อที่แล้วทำให้คุณอึดอัด นั่นเป็นสัญญาณที่ดี — แปลว่าคุณเพิ่งเห็นความเสี่ยงที่เดิมมองไม่เห็น',
+  12: 'เรื่องเงินผ่านแล้ว — ส่วนใหญ่คนหลบดูข้อ runway มากที่สุด คุณตอบมันแล้ว',
+  16: 'ข้อ "ต้องแลกกับอะไรมั้ย" คือข้อที่แอปนี้ให้ความสำคัญมากกว่าเครื่องมืออื่น — เพราะงานที่ส่งตรงเวลาโดยแลกกับการนอน ไม่ใช่ระบบที่ไปต่อได้',
+  20: 'เหลืออีกมิติเดียว และเป็นมิติที่เครื่องมือประเมินธุรกิจทั่วไปไม่ถาม',
+};
+const LEAD = {
+  8:  {t:'ต่อไปเป็นเรื่องเงิน', p:'ตอบตามจริงได้เลย ไม่มีใครเห็นนอกจากคุณ'},
+  20: {t:'5 ข้อสุดท้ายเป็นเรื่องของคุณ ไม่ใช่ของธุรกิจ',
+       p:'กรอบมาตรฐานสากลอย่าง Baldrige แยก "ผู้กำหนดทิศทาง" กับ "ผู้ลงมือทำ" เป็นคนละหมวด แต่ในธุรกิจของคุณ สองอย่างนี้คือคนคนเดียวกัน'},
+};
+
+const ACTIONS = {
+  offer:[
+    {n:'เขียนประโยคเดียวว่าคุณขายอะไร แล้วเอาไปถามคน 3 คน',m:'30 นาที · ครั้งเดียว',w:'ถ้าคนฟังอธิบายกลับมาไม่ตรง แปลว่าปัญหาอยู่ที่ offer ไม่ใช่ที่การตลาด'},
+    {n:'ดูว่ารายได้เดือนที่ผ่านมามาจาก offer ไหนบ้าง',m:'20 นาที/เดือน',w:'ส่วนใหญ่จะพบว่ารายได้กระจุกอยู่ที่ 1-2 อย่าง ไม่ใช่ทุกอย่างที่ขาย'},
+    {n:'เลือก offer ที่จะเลิกขาย 1 อย่าง',m:'30 นาที · ครั้งเดียว',w:'Company of One — simplicity คือการตัดออก ไม่ใช่การเพิ่มเข้า'},
+    {n:'ลองขึ้นราคากับลูกค้าใหม่ 1 ราย',m:'ครั้งเดียว',w:'ทดสอบว่าราคาที่ตั้งอยู่ต่ำกว่าที่ตลาดรับได้มั้ย'},
+    {n:'ถามลูกค้าเก่า 1 คนว่าเลือกคุณเพราะอะไร',m:'15 นาที/สัปดาห์',w:'คำตอบของเขาคือ offer จริงของคุณ ไม่ใช่คำที่คุณเขียนไว้'},
+  ],
+  demand:[
+    {n:'ถามลูกค้า 3 คนว่าเจอคุณได้ยังไง',m:'15 นาที/สัปดาห์',w:'แก้จุดตายที่พบบ่อยที่สุด คือไม่รู้ว่าลูกค้ามาจากไหน จึงทำซ้ำไม่ได้'},
+    {n:'ติดต่อคนที่เคยสนใจแต่ยังไม่ซื้อ 2 คน',m:'20 นาที/สัปดาห์',w:'คนกลุ่มนี้ใกล้ปิดที่สุดและมักถูกลืม'},
+    {n:'ทักลูกค้าเก่าที่หายไปเกิน 6 เดือน 1 คน',m:'10 นาที/สัปดาห์',w:'ต้นทุนต่ำกว่าหาลูกค้าใหม่มาก'},
+    {n:'จดว่าลูกค้าใหม่เดือนนี้มาจากช่องทางไหนบ้าง',m:'5 นาที/สัปดาห์',w:'ข้อมูลนี้คือสิ่งที่ทำให้เร่งได้ในเดือนถัดไป'},
+    {n:'เริ่มช่องทางที่สอง 1 ช่องทาง',m:'1 ชม./สัปดาห์',w:'resilience — การพึ่งช่องทางเดียวคือความเสี่ยงที่มองไม่เห็นจนกว่ามันจะหาย'},
+  ],
+  money:[
+    {n:'จดรายรับรายจ่ายของสัปดาห์นี้',m:'10 นาที/สัปดาห์',w:'ไม่มีตัวเลขก็ไม่มีทางรู้ว่ากำไรจริงเท่าไหร่'},
+    {n:'คำนวณว่าเดือนนี้ต้องได้เท่าไหร่ถึงจะเสมอตัว',m:'30 นาที/เดือน',w:'ตัวเลขนี้เปลี่ยนวิธีตัดสินใจรับงานทันที'},
+    {n:'เปิดบัญชีธุรกิจแยกจากบัญชีส่วนตัว',m:'1 ชม. · ครั้งเดียว',w:'เงินที่ปนกันทำให้มองไม่เห็นความจริงตั้งแต่ต้น'},
+    {n:'เช็กว่าลูกค้ารายใหญ่สุดคิดเป็นกี่ % ของรายได้',m:'15 นาที/เดือน',w:'เกิน 50% เมื่อไหร่ ธุรกิจของคุณอยู่ในมือคนอื่น'},
+    {n:'ตั้งเป้าเก็บเงินสำรองให้ถึง 3 เดือน',m:'ต่อเนื่อง',w:'runway คือเวลาที่คุณมีไว้แก้ทุกเรื่องที่เหลือ'},
+  ],
+  delivery:[
+    {n:'เขียนขั้นตอนงานที่ทำบ่อยที่สุด 1 อย่าง',m:'45 นาที · ครั้งเดียว',w:'ลดเวลาและลดงานแก้ในทุกรอบถัดไป'},
+    {n:'ทำ checklist ก่อนส่งงาน',m:'30 นาที · ครั้งเดียว',w:'งานแก้ซ้ำส่วนใหญ่มาจากของที่ลืม ไม่ใช่ฝีมือ'},
+    {n:'จดว่าสัปดาห์นี้ทำงานนอกเวลากี่ชั่วโมง',m:'5 นาที/สัปดาห์',w:'ตัวเลขนี้บอกว่าคุณกำลังยืมเวลาจากตัวเองอยู่เท่าไหร่'},
+    {n:'ตกลงขอบเขตงานเป็นลายลักษณ์อักษรกับลูกค้ารายถัดไป',m:'20 นาที/งาน',w:'แก้ปัญหางานแก้ซ้ำที่ต้นทาง ไม่ใช่ปลายทาง'},
+    {n:'บวกเวลาเผื่อ 20% ในทุกกำหนดส่งงานถัดไป',m:'ครั้งเดียว',w:'ส่งตรงเวลาโดยไม่ต้องอดนอน คือของคนละอย่างกับส่งตรงเวลาเฉยๆ'},
+  ],
+  systems:[
+    {n:'รวมรายชื่อลูกค้าทั้งหมดไว้ที่เดียว',m:'1 ชม. · ครั้งเดียว',w:'ข้อมูลที่กระจายอยู่คือเวลาที่หายไปทุกครั้งที่ต้องค้น'},
+    {n:'จดว่างานอะไรที่ทำซ้ำทุกสัปดาห์',m:'20 นาที · ครั้งเดียว',w:'ต้องเห็นรายการก่อน ถึงจะรู้ว่าอะไรควรให้เครื่องมือทำแทน'},
+    {n:'เลือกงานซ้ำ 1 อย่างมาให้เครื่องมือหรือ AI ช่วย',m:'1 ชม./เดือน',w:'leverage คือสิ่งที่มาแทนการจ้างคนเพิ่มในธุรกิจคนเดียวยุคนี้'},
+    {n:'เขียนไว้ว่าถ้าคุณหายไป 1 สัปดาห์ ใครต้องรู้อะไร',m:'40 นาที · ครั้งเดียว',w:'ทำให้ธุรกิจไม่ผูกกับความจำของคุณคนเดียว'},
+    {n:'ตั้งข้อความตอบกลับอัตโนมัติสำหรับคำถามที่ถูกถามบ่อยที่สุด',m:'30 นาที · ครั้งเดียว',w:'คืนเวลาได้ทุกสัปดาห์โดยไม่ต้องทำอะไรเพิ่ม'},
+  ],
+  owner:[
+    {n:'กันไว้ 1 วันที่ไม่แตะงานเลย',m:'1 วัน/สัปดาห์',w:'burnout เป็นตัวทำนายการล้มเลิกของผู้ก่อตั้งเดี่ยวที่แรงกว่ากลยุทธ์ผิด'},
+    {n:'บันทึกระดับพลังงานตอนจบวัน',m:'1 นาที/วัน',w:'แนวโน้มที่ลดลงต่อเนื่องมองเห็นได้ก่อนที่จะพัง'},
+    {n:'นัดคุยกับคนที่ทำธุรกิจคนเดียวเหมือนกัน 1 คน',m:'1 ชม./เดือน',w:'ความโดดเดี่ยวเพิ่มความเครียดเรื้อรังและความล้าจากการตัดสินใจ'},
+    {n:'เขียนว่าทำไมถึงเริ่มทำสิ่งนี้',m:'20 นาที · ทุก 3 เดือน',w:'เป้าหมายของเจ้าของเป็น 1 ในปัจจัยความอยู่รอดตามกรอบมาตรฐาน'},
+    {n:'ตั้งเวลาเลิกงานแล้วทำตามให้ได้ 3 วันในสัปดาห์นี้',m:'ทุกวัน',w:'เริ่มจากเล็กที่สุดที่ทำได้จริง ดีกว่าตั้งกฎที่พังในวันที่สอง'},
+  ],
+};
+
+const PHASES = {
+  recover:{n:'ต้องดูแลตัวเองก่อน', d:'ตัวเลขบอกว่าคุณกำลังใช้ตัวเองเกินกำลัง เดือนนี้เราจะไม่ชวนคุณทำอะไรเพิ่ม'},
+  money:{n:'เวลาเหลือน้อย', d:'runway ของคุณสั้นมาก ซึ่งแปลว่าเรื่องอื่นทั้งหมดรอได้ แต่เรื่องนี้รอไม่ได้ — เดือนนี้ขอโฟกัสที่เงินอย่างเดียวก่อน'},
+  crisis:{n:'ทั้งเงินและแรงกำลังจะหมดพร้อมกัน', d:'runway สั้นมาก และคุณเองก็ใกล้หมดแรงแล้ว — สองอย่างนี้เกี่ยวกัน คนที่หมดแรงจะตัดสินใจเรื่องเงินได้แย่ลง เราจะให้แค่ 2 อย่าง คือเรื่องเงิน 1 อย่างและเรื่องตัวคุณ 1 อย่าง ไม่มีอย่างอื่น'},
+  p1:{n:'กำลังหาจุดยืน', d:'ช่วงนี้เปลี่ยนไอเดียบ่อยและรู้สึกไม่มั่นใจว่าขายอะไรกันแน่ — เป็นเรื่องปกติของช่วงนี้ สิ่งที่ควรทำคือทำให้ offer เดียวชัดก่อนเพิ่มอย่างอื่น'},
+  p2:{n:'กำลังหาลูกค้าให้เจอ', d:'ของดีแต่ยังไม่มีคนรู้จัก และเหนื่อยกับการโปรโมท — ช่วงนี้เกือบทุกคนผ่าน สิ่งที่ควรทำคือสร้างช่องทางที่ทำซ้ำได้สัก 1 ช่องทาง'},
+  p3:{n:'กำลังทำให้รายได้นิ่ง', d:'เดือนดีสลับเดือนแย่จนวางแผนไม่ได้ — นี่คือช่วงที่คนเลิกกลางคันมากที่สุด สิ่งที่ควรทำคือทำให้รายได้คาดเดาได้และกระจายความเสี่ยงลูกค้า'},
+  p4:{n:'กำลังทำให้ระบบนิ่ง', d:'งานล้นจนรับเพิ่มไม่ไหว — แปลว่าคุณผ่านเรื่องหาลูกค้ามาแล้ว สิ่งที่ควรทำคือลดงานซ้ำและวางขั้นตอน'},
+  p5:{n:'ถึงจุดที่ต้องเลือกทาง', d:'ทุกมิติแข็งพอแล้ว จากนี้ไม่ใช่คำถามว่าทำยังไงให้รอด แต่เป็นคำถามว่าคุณอยากให้มันเป็นแบบไหน'},
+};
+
+const INTENT_FOCUS = {
+  grow:   {dims:['demand','systems'], label:'โตให้ใหญ่ขึ้น',   max:5},
+  lean:   {dims:['offer','systems'],  label:'เพิ่มรายได้แต่ยังทำคนเดียว', max:4},
+  calm:   {dims:['systems','delivery','owner'], label:'ทำงานน้อยลง สบายใจขึ้น', max:4},
+  survive:{dims:['money','demand'],   label:'ขอให้อยู่รอดก่อน', max:3},
+};
+
+/* ---------- state ---------- */
+let stage = 'landing';     // landing → scope → questions
+let i = 0;                 // index of current question
+let ans = new Array(Q.length).fill(null);
+let showInter = null;      // interstitial after index N
+const app = document.getElementById('app');
+
+/* ---------- scoring ---------- */
+function score(){
+  const raw = {offer:0,demand:0,money:0,delivery:0,systems:0,owner:0};
+  Q.forEach((q,idx)=>{
+    if(q.d==='intent') return;
+    raw[q.d] += q.o[ans[idx]][1];
+  });
+
+  const cond = {};
+  for(const k in raw) cond[k] = Math.round(raw[k]/12*5);
+
+  // ---- override rules (spec: 03-assessment-questions.md) ----
+  const fired = [];
+  const a = idx => q_val(idx);
+  function q_val(n){ return Q[n].o[ans[n]][1]; }
+
+  if(a(12)===3 && a(13)===0){ cond.delivery = Math.min(cond.delivery,3);
+    fired.push('ส่งตรงเวลาครบ แต่ต้องทำงานดึกทุกครั้ง → Delivery ไม่เกิน 3'); }
+  if(a(10)===0){ cond.money = Math.min(cond.money,1);
+    fired.push('runway ไม่ถึง 1 เดือน → Money ไม่เกิน 1'); }
+  if(a(11)===0){ cond.money = Math.max(0,cond.money-1);
+    fired.push('ลูกค้าเจ้าเดียวเกินครึ่งของรายได้ → Money ลด 1'); }
+  if(a(16)===0){ cond.systems = Math.min(cond.systems,1);
+    fired.push('หายไป 2 สัปดาห์แล้วธุรกิจหยุดทันที → Systems ไม่เกิน 1'); }
+
+  const emergency = (a(20)===0 && a(22)<=1);
+  if(emergency) fired.push('ทำงาน >60 ชม. และพลังงานเหลือน้อย → เสนอ Emergency Mode ก่อนแสดงผล');
+
+  // ---- seed STAT (spec: 02-dimensions-detail.md) ----
+  const stat = {};
+  for(const k in cond) stat[k] = 4 + cond[k]*8;
+
+  const intent = Q[24].o[ans[24]][1];
+
+  // ---- phase ----
+  let phase;
+  // ⚠ จุดที่ spec เดิมขัดกันเอง: "runway <3 เดือน = ทุกอย่างรอได้" กับ "Owner วิกฤต = ข้ามทุก phase"
+  // ทางแก้ที่ใช้อยู่: ถ้าวิกฤตทั้งคู่ ไม่เลือกข้างใดข้างหนึ่ง แต่แสดงทั้งสองเรื่อง โดยนำด้วยเรื่องเงิน
+  if(cond.owner<=1 && cond.money<=1) phase='crisis';
+  else if(cond.money<=1) phase='money';
+  else if(cond.owner<=1) phase='recover';
+  else if(cond.offer<3) phase='p1';
+  else if(cond.demand<3) phase='p2';
+  else if(cond.money<3) phase='p3';
+  else if(cond.delivery<3||cond.systems<3) phase='p4';
+  else phase='p5';
+
+  return {raw,cond,stat,fired,emergency,intent,phase};
+}
+
+function program(r){
+  if(r.phase==='recover') return [ACTIONS.owner[0], ACTIONS.owner[1]];
+  if(r.phase==='crisis')  return [ACTIONS.money[1], ACTIONS.owner[0]];
+  if(r.phase==='money')   return [ACTIONS.money[1], ACTIONS.money[0], ACTIONS.money[3]];
+
+  const f = INTENT_FOCUS[r.intent];
+  // ทุกมิติแข็งแล้ว → ไม่ใช่การซ่อม แต่เป็นการเลือกทาง
+  if(Object.values(r.cond).every(v=>v>=4)){
+    return f.dims.slice(0,2).map(d=>({...ACTIONS[d][ACTIONS[d].length-1], dim:d}));
+  }
+  // จัดลำดับมิติ: อ่อนสุดก่อน แต่ให้น้ำหนักพิเศษกับมิติที่ตรงกับเจตนา
+  const ranked = Object.keys(r.cond).sort((x,y)=>{
+    const bx = r.cond[x] - (f.dims.includes(x)?1.5:0);
+    const by = r.cond[y] - (f.dims.includes(y)?1.5:0);
+    return bx-by;
+  });
+  // เจตนา calm = ไม่เสนอ action สาย demand เลย
+  // เจตนา calm = ไม่เสนอเรื่องหาลูกค้าเลย · มิติที่แข็งแล้ว (≥4) ไม่ต้องซ่อม
+  const pool = (r.intent==='calm' ? ranked.filter(d=>d!=='demand') : ranked)
+                 .filter(d=>r.cond[d]<4);
+  const out=[];
+  for(const d of pool){
+    if(out.length>=f.max) break;
+    out.push({...ACTIONS[d][0], dim:d});
+    if(out.length<f.max && r.cond[d]<=1) out.push({...ACTIONS[d][1], dim:d});
+  }
+  return out.slice(0,f.max);
+}
+
+/* ---------- radar ---------- */
+function radar(stat){
+  const keys=Object.keys(DIMS), N=6, cx=150, cy=160, R=92;
+  const maxv = 44;
+  const pt=(k,rr)=>{const ang=-Math.PI/2+k*2*Math.PI/N;
+    return [cx+Math.cos(ang)*rr, cy+Math.sin(ang)*rr];};
+  let g='';
+  for(let ring=1;ring<=4;ring++){
+    const p=[...Array(N)].map((_,k)=>pt(k,R*ring/4).join(',')).join(' ');
+    g+=`<polygon points="${p}" fill="none" stroke="var(--ring)" stroke-width="1"/>`;
+  }
+  const pts=keys.map((k,idx)=>pt(idx, Math.max(0.10,stat[k]/maxv)*R).join(',')).join(' ');
+  g+=`<polygon points="${pts}" fill="var(--fill)" stroke="var(--accent)" stroke-width="2.5"
+       stroke-linejoin="round"/>`;
+  keys.forEach((k,idx)=>{
+    const [x,y]=pt(idx, Math.max(0.10,stat[k]/maxv)*R);
+    g+=`<circle cx="${x}" cy="${y}" r="4" fill="var(--accent)"/>`;
+    const [lx,ly]=pt(idx,R+26);
+    g+=`<text x="${lx}" y="${ly-7}" fill="var(--dim)" font-size="12" text-anchor="middle"
+         dominant-baseline="middle">${DIMS[k].th}</text>`;
+    g+=`<text x="${lx}" y="${ly+10}" fill="var(--fg)" font-size="14" font-weight="700"
+         text-anchor="middle" dominant-baseline="middle">${stat[k]}</text>`;
+  });
+  return `<svg viewBox="0 0 300 330" width="100%" style="max-width:320px">${g}</svg>`;
+}
+
+/* ---------- render ---------- */
+function render(){
+  // ---------- หน้าแรก: นี่คืออะไร จะได้อะไร ----------
+  if(stage==='landing'){
+    app.innerHTML=`<div class="hero">
+      <div class="kicker">Wizards of Learning</div>
+      <h1>ธุรกิจที่คุณทำอยู่คนเดียว ตอนนี้สุขภาพเป็นยังไง</h1>
+      <p class="lede">คนทำธุรกิจคนเดียวส่วนใหญ่ไม่ได้ขาดความขยัน
+      แต่ขาดกระจกที่บอกว่าตรงไหนแข็ง ตรงไหนกำลังจะพัง
+      แบบประเมินนี้ทำหน้าที่นั้นให้ — ตอบตามจริง ไม่มีคำตอบที่ผิด</p>
+
+      <div class="facts">
+        <div class="fact"><b>25</b><span>คำถาม</span></div>
+        <div class="fact"><b>~6</b><span>นาที</span></div>
+        <div class="fact"><b>6</b><span>ด้านที่วัด</span></div>
+      </div>
+
+      <div class="getlist">
+        <div class="get"><span class="ic">📊</span><div>
+          <b>Stat ธุรกิจของคุณ 6 ด้าน</b>
+          <span>ของที่ขาย · คนที่จะซื้อ · เงิน · การส่งมอบ · ระบบ · และตัวคุณเอง</span></div></div>
+        <div class="get"><span class="ic">🧭</span><div>
+          <b>รู้ว่าตอนนี้อยู่ช่วงไหน</b>
+          <span>แต่ละช่วงมีความยากคนละแบบ รู้ว่าช่วงนี้ยากแบบนี้เป็นเรื่องปกติ ก็เบาใจขึ้นแล้ว</span></div></div>
+        <div class="get"><span class="ic">✅</span><div>
+          <b>สิ่งที่ควรทำต่อ 3-5 อย่าง</b>
+          <span>เลือกมาให้ตรงกับสภาพและเป้าหมายของคุณ ไม่ใช่รายการเดียวกันกับทุกคน</span></div></div>
+      </div>
+
+      <button class="cta" id="go">เริ่มประเมิน</button>
+
+      <p class="basis">
+      <b style="color:var(--fg)">ทำไมเชื่อถือได้</b> — 6 ด้านนี้ประกอบขึ้นจากกรอบมาตรฐาน
+      Baldrige Excellence Framework (NIST สหรัฐฯ), EFQM Model 2025 และเกณฑ์ SME ของ สสว.
+      โดยปรับให้เข้ากับธุรกิจที่ทำคนเดียวจริงๆ<br><br>
+      <b style="color:var(--fg)">ความเป็นส่วนตัว</b> — ไม่ถามตัวเลขการเงินของคุณ ไม่ต้องสมัครสมาชิก
+      คำตอบอยู่ในเครื่องของคุณ</p>
+    </div>`;
+    document.getElementById('go').onclick=()=>{stage='scope';render();window.scrollTo(0,0);};
+    return;
+  }
+
+  // หน้าตั้งกรอบ — สำหรับคนที่ธุรกิจมีหลายส่วน
+  if(stage==='scope'){
+    app.innerHTML=`<div class="inter" style="text-align:left">
+      <div class="big" style="text-align:center">✦</div>
+      <h1 style="margin-bottom:14px">ก่อนเริ่ม — ตอบโดยนึกถึงอะไร</h1>
+      <p style="margin-bottom:18px">ถ้าธุรกิจของคุณมีหลายส่วน เช่นมีทั้งงานบริการและสินค้า
+      ให้ตอบทั้งหมดโดยนึกถึง <b>ส่วนที่ทำรายได้ให้คุณมากที่สุดในปีที่ผ่านมา</b></p>
+      <div class="note" style="margin-top:0;margin-bottom:26px">
+      <b>ทำไมต้องเลือกแค่ส่วนเดียว</b> — ธุรกิจที่มีหลายส่วนมักมีสุขภาพไม่เท่ากัน
+      ถ้าตอบรวมๆ ผลจะออกมาเป็นค่าเฉลี่ยที่ไม่ตรงกับอะไรเลย
+      และคุณจะได้คำแนะนำที่ไม่เข้ากับส่วนไหนสักส่วน<br><br>
+      ประเมินส่วนอื่นทีหลังได้ — และการเห็นว่าแต่ละส่วนมีสุขภาพต่างกัน คือข้อมูลที่มีประโยชน์ในตัวมันเอง</div>
+      <button class="cta" id="go">เข้าใจแล้ว เริ่มเลย</button></div>`;
+    document.getElementById('go').onclick=()=>{stage='questions';render();window.scrollTo(0,0);};
+    return;
+  }
+  if(i>=Q.length) return renderResult();
+
+  // interstitial card?
+  if(showInter!==null){
+    const msg=INTER[showInter];
+    app.innerHTML=`<div class="inter">
+      <div class="big">✦</div>
+      <p>${msg}</p>
+      <button class="cta" id="go">ทำต่อ</button></div>`;
+    document.getElementById('go').onclick=()=>{showInter=null;render();};
+    return;
+  }
+  // lead-in card?
+  const lead=LEAD[i];
+  if(lead && ans[i]===null && !window.__seenLead?.[i]){
+    window.__seenLead=window.__seenLead||{}; window.__seenLead[i]=1;
+    app.innerHTML=`<div class="inter"><div class="big">✦</div>
+      <h1 style="margin-bottom:14px">${lead.t}</h1>
+      <p>${lead.p}</p><button class="cta" id="go">เริ่ม</button></div>`;
+    document.getElementById('go').onclick=render;
+    return;
+  }
+
+  const q=Q[i], pct=(i/Q.length)*100;
+  const tag = q.d==='intent' ? 'คำถามสุดท้าย' : DIMS[q.d].th+' · '+DIMS[q.d].full;
+  app.innerHTML=`
+    <div class="top"><div class="bar"><i style="width:${pct}%"></i></div>
+      <span class="count">${i+1}/${Q.length}</span></div>
+    <span class="dimtag">${tag}</span>
+    <h1>${q.t}</h1>
+    <div class="opts">${q.o.map((o,k)=>
+      `<button class="opt${ans[i]===k?' sel':''}" data-k="${k}">${o[0]}</button>`).join('')}</div>
+    ${q.n?`<div class="note"><b>ทำไมถามข้อนี้</b> — ${q.n}</div>`:''}
+    ${i>0?'<button class="back" id="bk">← ย้อนกลับ</button>':''}`;
+
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    ans[i]=+b.dataset.k;
+    b.classList.add('sel');
+    setTimeout(()=>{
+      i++;
+      if(INTER[i]) showInter=i;
+      render(); window.scrollTo(0,0);
+    },160);
+  });
+  const bk=document.getElementById('bk');
+  if(bk) bk.onclick=()=>{i--;render();window.scrollTo(0,0);};
+}
+
+function renderResult(){
+  const r=score(), prog=program(r), ph=PHASES[r.phase];
+  const condPct=k=>Math.round(r.cond[k]/5*100);
+
+  app.innerHTML=`
+    <div class="rtitle">โปรไฟล์ธุรกิจของคุณ</div>
+    <h2 id="rhead">Stat ธุรกิจของคุณ</h2>
+    <span class="phase">ช่วงนี้: ${ph.n}</span>
+    ${radar(r.stat)}
+    <div class="statlist">
+      ${Object.keys(DIMS).map(k=>`
+        <div class="row">
+          <span class="nm">${DIMS[k].th}</span>
+          <span class="track"><i style="width:${Math.max(6,r.stat[k]/44*100)}%;
+            background:${DIMS[k].color}"></i></span>
+          <span class="val">${r.stat[k]}</span>
+          <span class="cond">${condPct(k)}%</span>
+        </div>`).join('')}
+    </div>
+
+    ${r.emergency?`<div class="alert"><div class="lab">ก่อนอย่างอื่น</div>
+      <p>3 คำตอบล่าสุดบอกว่าคุณทำงานเกิน 60 ชั่วโมงและพลังงานเหลือน้อย —
+      จะเปิด Emergency Mode สัก 1 สัปดาห์มั้ย ระหว่างนั้น stat ไม่หายและ streak ไม่ขาด</p></div>`:''}
+
+    <div class="insight"><div class="lab">ช่วงนี้ของคุณ</div><p>${ph.d}</p></div>
+
+    <h3>สิ่งที่ควรทำต่อจากนี้ (${prog.length} อย่าง)</h3>
+    <p class="sub" style="margin-bottom:14px">เลือกมาจากเจตนาที่คุณตอบไว้: “${INTENT_FOCUS[r.intent].label}”</p>
+    ${prog.map(a=>`<div class="act"><div class="an">${a.n}</div>
+      <div class="am">${a.m}</div><div class="aw">${a.w}</div></div>`).join('')}
+
+    <div id="leadbox"></div>
+
+    <button class="ghost" id="again">เริ่มใหม่</button>
+`;
+
+  window.__last={r,prog,ph};
+  renderLead();
+  document.getElementById('again').onclick=()=>{
+    ans.fill(null); i=0; stage='landing'; window.__seenLead={}; render(); window.scrollTo(0,0);};
+  window.scrollTo(0,0);
+}
+
+
+/* ---------- เก็บข้อมูลติดต่อ (หลังเห็นผลแล้วเท่านั้น) ---------- */
+function getLead(){ try{return JSON.parse(localStorage.getItem('sbp-lead')||'null')}catch(e){return null} }
+
+function applyName(){
+  const l=getLead(), h=document.getElementById('rhead');
+  if(l&&l.biz&&h) h.textContent='Stat ของ '+l.biz;
+}
+
+function renderLead(){
+  const box=document.getElementById('leadbox'); if(!box) return;
+  const l=getLead();
+  applyName();
+
+  if(l&&l.sent){
+    box.innerHTML=`<div class="lead">
+      <h4>${l.delivered?'ส่งผลไปที่อีเมลของคุณแล้ว':'บันทึกข้อมูลของคุณไว้แล้ว'}</h4>
+      <p class="ok">${l.email}</p>
+      ${l.delivered
+        ? `<p class="tiny" style="margin-top:14px">ในอีเมลจะมี stat 6 ด้านของคุณ ช่วงที่ธุรกิจคุณอยู่
+           และสิ่งที่ควรทำต่อ — เก็บไว้เทียบตอนประเมินรอบหน้าได้<br>
+           ถ้าไม่เห็นภายใน 10 นาที ลองดูในกล่องจดหมายขยะด้วยนะครับ</p>`
+        : `<p class="tiny" style="color:var(--accent)">⚠ ระบบส่งอีเมลยังไม่ถูกตั้งค่า —
+           ข้อมูลถูกเก็บไว้ในเครื่องนี้เท่านั้น ยังไม่ได้ส่งไปไหน</p>`}
+      <button class="ghost" id="lclear">ลบข้อมูลนี้ออกจากเครื่อง</button>
+    </div>`;
+    document.getElementById('lclear').onclick=()=>{
+      localStorage.removeItem('sbp-lead');
+      const h=document.getElementById('rhead'); if(h) h.textContent='Stat ธุรกิจของคุณ';
+      renderLead();};
+    return;
+  }
+
+  box.innerHTML=`<div class="lead">
+    <h4>รับผลฉบับเต็มทางอีเมล</h4>
+    <p class="why">เราจะส่ง stat 6 ด้าน ช่วงที่ธุรกิจคุณอยู่ และสิ่งที่ควรทำต่อ ไปให้ทางอีเมล
+    เก็บไว้เทียบตอนประเมินรอบหน้าได้ว่าอะไรขยับไปทางไหน</p>
+
+    <label for="lname">ชื่อที่ให้เราเรียกคุณ</label>
+    <input type="text" id="lname" placeholder="เช่น พีรัช" value="${l?.name||''}">
+
+    <label for="lbiz">ชื่อธุรกิจ <span style="opacity:.7">(จะแสดงบนผลของคุณ)</span></label>
+    <input type="text" id="lbiz" placeholder="เช่น Wizards of Learning" value="${l?.biz||''}">
+
+    <label for="lmail">อีเมล</label>
+    <input type="email" id="lmail" inputmode="email" placeholder="you@example.com" value="${l?.email||''}">
+
+    <label class="consent"><input type="checkbox" id="lok">
+      <span>ยินยอมให้ Wizards of Learning ใช้อีเมลนี้ส่งผลประเมิน
+      และเนื้อหาเกี่ยวกับการดูแลธุรกิจคนเดียว — ไม่ส่งต่อให้ใคร และยกเลิกได้ทุกเมื่อ</span></label>
+
+    <details class="pnotice"><summary>อ่านรายละเอียดการเก็บข้อมูล</summary>
+      <div class="pbody">
+        <b>ใครเก็บข้อมูลของคุณ</b>
+        บริษัท รูม 22 จำกัด (Wizards of Learning)<br>
+        149/9 ซอยวิภาวดีรังสิต 64 (มหานคร) แขวงตลาดบางเขน เขตหลักสี่ กรุงเทพมหานคร 10210<br>
+        ติดต่อเรื่องข้อมูลส่วนบุคคล: <a href="mailto:contact@wizardsoflearning.com">contact@wizardsoflearning.com</a>
+
+        <b>เก็บอะไร</b>
+        อีเมล · ชื่อและชื่อธุรกิจ (ถ้ากรอก) · คำตอบ 25 ข้อและคะแนนที่คำนวณได้ · วันเวลาที่ทำแบบประเมิน
+
+        <b>ไม่เก็บอะไร</b>
+        จำนวนเงินของคุณ (แบบประเมินนี้ถามเป็นช่วงเท่านั้น) · ข้อมูลลูกค้าหรือบุคคลอื่นของคุณ ·
+        ตำแหน่งที่ตั้ง · ข้อมูลอ่อนไหวตามที่กฎหมายกำหนด<br>
+        ถ้าคุณไม่กรอกอีเมล คำตอบจะอยู่ในเบราว์เซอร์ของคุณเท่านั้น ไม่ถูกส่งมาที่เรา
+
+        <b>เอาไปทำอะไร</b>
+        ส่งผลประเมินกลับไปให้คุณ · ส่งเนื้อหาเกี่ยวกับการดูแลธุรกิจคนเดียว ·
+        ดูภาพรวมแบบไม่ระบุตัวตนเพื่อปรับปรุงแบบประเมิน<br>
+        อาศัยความยินยอมของคุณเป็นฐาน และถอนได้ทุกเมื่อ<br>
+        เราไม่ขาย ไม่แลก และไม่ส่งต่อข้อมูลของคุณให้ใครเพื่อการตลาด
+
+        <b>เก็บไว้นานแค่ไหน</b>
+        เก็บต่อเนื่องเพื่อให้คุณเทียบผลรอบเก่ากับรอบใหม่ได้ ·
+        ถ้าคุณขอลบหรือถอนความยินยอม จะลบภายใน 30 วัน ·
+        ถ้าไม่มีการติดต่อกันเกิน 24 เดือน เราจะลบให้เองโดยไม่ต้องรอให้ขอ
+
+        <b>เก็บไว้ที่ไหน</b>
+        Google Workspace และ Google Sheets เข้าถึงได้เฉพาะผู้ที่ได้รับมอบหมายของเรา
+
+        <b>สิทธิของคุณ</b>
+        ตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 คุณมีสิทธิขอดู ขอแก้ไข ขอลบ ขอให้ระงับการใช้
+        ขอรับสำเนา คัดค้านการใช้ ถอนความยินยอม และร้องเรียนต่อสำนักงานคณะกรรมการคุ้มครองข้อมูลส่วนบุคคล<br>
+        ใช้สิทธิได้โดยส่งอีเมลมาที่ <a href="mailto:contact@wizardsoflearning.com">contact@wizardsoflearning.com</a>
+        เราจะตอบกลับภายใน 30 วัน
+
+        <b>คุกกี้</b>
+        แบบประเมินนี้ไม่ใช้คุกกี้ติดตาม และไม่มีเครื่องมือวิเคราะห์ของบุคคลที่สาม
+        ใช้เพียงพื้นที่จัดเก็บในเบราว์เซอร์ของคุณเพื่อจำคำตอบระหว่างทำ ซึ่งไม่ถูกส่งมาที่เรา
+      </div>
+    </details>
+
+    <div class="err" id="lerr" style="display:none"></div>
+    <button class="cta" id="lsave">ส่งผลไปที่อีเมลของฉัน</button>
+    <p class="tiny">ไม่ถามตัวเลขการเงินของคุณในแบบประเมินนี้
+    คำตอบทั้ง 25 ข้ออยู่ในเครื่องของคุณ</p>
+  </div>`;
+
+  document.getElementById('lsave').onclick=async ()=>{
+    const btn=document.getElementById('lsave');
+    const name=document.getElementById('lname').value.trim();
+    const biz =document.getElementById('lbiz').value.trim();
+    const email=document.getElementById('lmail').value.trim();
+    const ok  =document.getElementById('lok').checked;
+    const err =document.getElementById('lerr');
+    const fail=m=>{err.textContent=m;err.style.display='block';
+      btn.disabled=false;btn.textContent='ส่งผลไปที่อีเมลของฉัน'};
+
+    err.style.display='none';
+    if(!email) return fail('กรอกอีเมลก่อนนะครับ เราจะได้ส่งผลไปให้ได้');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail('อีเมลยังไม่ถูกรูปแบบ');
+    if(!ok) return fail('ติ๊กยินยอมก่อนครับ เราถึงจะส่งอีเมลให้ได้');
+
+    btn.disabled=true; btn.textContent='กำลังส่ง…';
+    const L={name,biz,email,consent:true,sent:true,delivered:false};
+
+    if(ENDPOINT){
+      try{
+        const {r,prog,ph}=window.__last||{};
+        const res=await fetch(ENDPOINT,{
+          method:'POST',
+          headers:{'Content-Type':'text/plain;charset=utf-8'},  // เลี่ยง preflight ของ Apps Script
+          body:JSON.stringify({
+            name,biz,email,consent:true,
+            answers:ans.map((v,idx)=>Q[idx].o[v][1]),
+            cond:r?.cond, stat:r?.stat, phase:r?.phase, intent:r?.intent,
+            phaseName:ph?.n,
+            actions:(prog||[]).map(a=>({n:a.n,m:a.m,w:a.w})),
+            ua:navigator.userAgent.slice(0,120)
+          })
+        });
+        const out=await res.json().catch(()=>({ok:false}));
+        if(!out.ok) throw new Error(out.error||'ส่งไม่สำเร็จ');
+        L.delivered=true;
+      }catch(e){
+        return fail('ส่งไม่สำเร็จ ลองใหม่อีกครั้งนะครับ — ถ้ายังไม่ได้ ทักมาที่ LINE ของเราได้เลย');
+      }
+    }
+
+    localStorage.setItem('sbp-lead',JSON.stringify(L));
+    renderLead(); window.scrollTo(0,document.body.scrollHeight);
+  };
+}
+
+/* ---------- theme ---------- */
+(function(){
+  const root=document.documentElement, btn=document.getElementById('theme');
+  const saved=localStorage.getItem('sbp-theme');
+  const sysLight=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;
+  const set=t=>{root.setAttribute('data-theme',t);btn.textContent=t==='light'?'🌙':'☀';
+    localStorage.setItem('sbp-theme',t);};
+  set(saved || (sysLight?'light':'dark'));
+  btn.onclick=()=>set(root.getAttribute('data-theme')==='light'?'dark':'light');
+})();
+
+render();
+</script>
+</body>
+</html>
