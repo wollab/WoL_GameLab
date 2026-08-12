@@ -189,6 +189,32 @@ body {
 .share-actions button { margin-top: 0; flex: 1 1 150px; max-width: 220px; }
 .share-actions .hidden-share { display: none; }
 
+.ecosystem-card h3 { margin: 0 0 8px; font-size: 17px; color: var(--dark); font-weight: 600; }
+.tool-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+.tool-links a {
+  display: block;
+  text-decoration: none;
+  color: var(--ink);
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  text-align: left;
+  transition: border-color 0.15s ease, transform 0.15s ease, background 0.15s ease;
+}
+.tool-links a:hover { border-color: var(--teal); background: #f0fbfa; transform: translateY(-1px); }
+.tool-links strong { display: block; color: var(--teal-deep); font-weight: 700; margin-bottom: 4px; }
+.tool-links span { display: block; color: var(--muted); font-size: 13px; line-height: 1.45; }
+
+@media (max-width: 720px) {
+  .tool-links { grid-template-columns: 1fr; }
+}
+
 /* ===== Matrix grid (3x3, big character cards) ===== */
 .matrix-table { border-collapse: collapse; }
 .matrix-table th { font-size: 11px; color: var(--muted); font-weight: 700; padding: 8px 4px; }
