@@ -1,6 +1,63 @@
 // WoL 9 Learning Angles — Quiz Logic & Results Rendering
 
 (function () {
+  const META_BASE = "https://wollab.github.io/meta-learning/";
+  const TRACK_SUFFIX = "utm_source=9_learning_angles&utm_medium=ecosystem_link&utm_campaign=result_bridge";
+  const metaLink = (path) => {
+    const [cleanPath, hash] = path.split("#");
+    return `${META_BASE}${cleanPath}?${TRACK_SUFFIX}${hash ? `#${hash}` : ""}`;
+  };
+  const MOVE_READING_BRIDGES = {
+    explorer: [
+      ["เด็กและการสำรวจโลกจริง", "อ่าน Montessori, Piaget, Vygotsky และ Learning by Observing and Pitching In", metaLink("paths/#syn-11")],
+      ["ประสบการณ์คืออะไร", "เทียบ Locke, Dewey และ experiential learning", metaLink("paths/#syn-02")],
+    ],
+    listener: [
+      ["เรียนรู้ผ่านคนและชุมชน", "อ่าน Vygotsky, Situated Learning และ Community of Practice", metaLink("paths/#syn-05")],
+      ["เสียงที่ถูกนับในห้องเรียน", "ต่อด้วย Critical / Feminist / Transformative Pedagogy", metaLink("paths/#syn-08")],
+    ],
+    experimenter: [
+      ["ลองทำก่อนแล้วเรียนรู้", "อ่าน Dewey, experiential learning และ constructionism", metaLink("paths/#syn-02")],
+      ["ครูควรนำมากแค่ไหน", "เทียบ discovery learning, cognitive load, Montessori และ UDL", metaLink("paths/#syn-06")],
+    ],
+    connector: [
+      ["เชื่อมความรู้เดิมกับเรื่องใหม่", "อ่าน schema theory, meaningful reception และ cognitive perspectives", metaLink("paths/#syn-04")],
+      ["สร้างความรู้คนเดียวหรือกับสังคม", "เทียบ constructivism และ sociocultural learning", metaLink("paths/#syn-05")],
+    ],
+    meaningmaker: [
+      ["คิดชัดขึ้นผ่านการอธิบาย", "อ่าน social-cultural learning และ community of practice", metaLink("paths/#syn-05")],
+      ["การเรียนรู้กับเสียงและอำนาจ", "ต่อด้วย Freire, feminist pedagogy และ transformative learning", metaLink("paths/#syn-08")],
+    ],
+    creator: [
+      ["สร้างชิ้นงานเพื่อเรียนรู้", "อ่าน constructionism, connectivism และ community learning", metaLink("paths/#syn-09")],
+      ["ครูควรเปิดพื้นที่สร้างมากแค่ไหน", "เทียบ discovery learning, cognitive load และ UDL", metaLink("paths/#syn-06")],
+    ],
+    decider: [
+      ["กำกับการเรียนรู้ของตัวเอง", "อ่าน motivation, self-determination และ self-regulated learning", metaLink("paths/#syn-07")],
+      ["ใช้ evidence ช่วยเลือกวิธีเรียน", "อ่าน cognitive load, retrieval practice และ memory limits", metaLink("paths/#syn-04")],
+    ],
+    synthesizer: [
+      ["สรุปและจัดโครงความรู้", "อ่าน retrieval practice, schema theory และ taxonomy ที่ต้องใช้อย่างระวัง", metaLink("paths/#syn-04")],
+      ["ของยอดนิยมที่ต้องแยกชนิด", "อ่าน Bloom, learning styles, multiple intelligences และ Maslow แบบไม่เหมารวม", metaLink("paths/#syn-10")],
+    ],
+    reflector: [
+      ["ทบทวนตัวเองและเปลี่ยนกรอบคิด", "อ่าน transformative learning, humanistic learning และ self-regulation", metaLink("paths/#syn-12")],
+      ["พัฒนาตนเองอย่างไม่กลายเป็น self-help เกินหลักฐาน", "อ่าน Buddhist training, Rogers, SDT และ SRL", metaLink("paths/#syn-13")],
+    ],
+  };
+
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest("a[data-wol-event]");
+    if (!link) return;
+    window.dispatchEvent(new CustomEvent("wol:ecosystem-link", {
+      detail: {
+        event: link.dataset.wolEvent,
+        source: link.dataset.wolSource || "9-learning-angles",
+        target: link.dataset.wolTarget || link.href,
+      },
+    }));
+  });
+
   let currentQ = 0;
   let quizQuestions = QUESTIONS;
   const scores = {}; // moveId -> raw points
@@ -123,6 +180,7 @@
 
     renderMatrix(lastPct, lastTopMoves);
     renderDetailSections(lastTopMoves, lastGrowthMove);
+    renderReadingBridge(lastTopMoves);
 
     document.getElementById("btn-share").onclick = doShare;
     document.getElementById("btn-save-image").onclick = doSaveImage;
@@ -195,6 +253,18 @@
         </div>
       </div>
     `;
+  }
+
+  function renderReadingBridge(topMoves) {
+    const host = document.getElementById("reading-bridge-list");
+    if (!host) return;
+    const picked = topMoves.flatMap((id) => MOVE_READING_BRIDGES[id] || []).slice(0, 4);
+    host.innerHTML = picked.map(([title, body, href]) => `
+      <a href="${href}" target="_blank" rel="noopener" data-wol-event="ecosystem_link" data-wol-source="9-learning-angles" data-wol-target="meta-learning-path">
+        <strong>${title}</strong>
+        <span>${body}</span>
+      </a>
+    `).join("");
   }
 
   /* ===== SHARE: build canvas on demand (same pattern as Tarot of Learning) ===== */
