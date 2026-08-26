@@ -33,11 +33,55 @@
       <p class="subtitle">ตอบ 10 คำถามสั้น ๆ เพื่อดูว่าตอนเรียนรู้สิ่งใหม่ คุณถนัดมุมไหนที่สุด</p>
     </header>
 
+    <nav id="main-tabs" class="main-tabs">
+      <button class="main-tab is-active" data-screen="intro">🔮 ทำแบบสอบถาม</button>
+      <button class="main-tab" data-screen="learn">📖 รู้จัก 9 มุม</button>
+    </nav>
+
     <main id="screen-intro" class="screen active">
       <div class="card intro-card">
         <p>ไม่มีคำตอบถูกหรือผิด และผลลัพธ์ไม่ได้บอกว่าคุณ "เป็น" คนแบบไหนตายตัว — มันเป็นแค่ภาพสะท้อน ณ ช่วงเวลานี้</p>
         <p>นึกถึงช่วง 1-2 เดือนที่ผ่านมา แล้วเลือกคำตอบที่ใกล้เคียงตัวเองที่สุดในแต่ละข้อ</p>
         <button id="btn-start" class="btn-primary">เริ่มทำแบบสอบถาม</button>
+      </div>
+
+      <div class="card">
+        <h3>Learning Move คืออะไร?</h3>
+        <p class="lead">เวลาเจอเรื่องใหม่ที่ต้องเรียนรู้ เราไม่ได้ใช้วิธีเดียวกันทุกคน — บางคนต้องออกไปเจอของจริง บางคนต้องได้คุยกับใครสักคน บางคนต้องนั่งคิดเงียบ ๆ ก่อนถึงจะเข้าใจ</p>
+        <p>Wizards of Learning เรียกวิธีเหล่านี้ว่า <strong>Learning Move</strong> และแบ่งออกเป็น <strong>9 มุม</strong> จากการไขว้กันของ 2 แกน คือ <strong>เรียนรู้จากแหล่งไหน</strong> (แนวนอน) และ <strong>อยู่ช่วงไหนของการเรียนรู้</strong> (แนวตั้ง)</p>
+        <div id="intro-matrix" class="matrix-scroll"></div>
+        <p class="matrix-hint">ทุกคนใช้ได้ทั้ง 9 มุม เพียงแต่ถนัดไม่เท่ากัน — แบบสอบถามนี้ช่วยให้เห็นว่าตอนนี้คุณใช้มุมไหนบ่อยที่สุด</p>
+        <button class="btn-link" data-goto="learn">อ่านรายละเอียดทั้ง 9 มุม →</button>
+      </div>
+    </main>
+
+    <main id="screen-learn" class="screen">
+      <div class="card">
+        <h2>หลักการของ 9 Learning Angles</h2>
+        <p class="lead">ทั้ง 9 มุมเกิดจากการไขว้กันของคำถาม 2 ข้อ คือเรารับความรู้ <em>จากไหน</em> และเราอยู่ <em>ช่วงไหน</em> ของกระบวนการเรียนรู้</p>
+
+        <div class="axis-block">
+          <h4>แกนนอน — เรียนรู้ผ่าน "แหล่ง" ไหน</h4>
+          <ul id="axis-cols" class="axis-list"></ul>
+        </div>
+
+        <div class="axis-block">
+          <h4>แกนตั้ง — อยู่ "ช่วงไหน" ของการเรียนรู้</h4>
+          <ul id="axis-rows" class="axis-list"></ul>
+        </div>
+      </div>
+
+      <div class="card matrix-card">
+        <h3>แตะตัวละครเพื่อดูรายละเอียด</h3>
+        <div id="learn-matrix" class="matrix-scroll"></div>
+      </div>
+
+      <div id="learn-detail-list"></div>
+
+      <div class="card center">
+        <h3>อยากรู้ว่าตัวเองถนัดมุมไหน?</h3>
+        <p class="sub">ตอบ 10 คำถามสั้น ๆ ใช้เวลาไม่ถึง 2 นาที</p>
+        <button class="btn-primary" data-goto="intro">ไปทำแบบสอบถาม</button>
       </div>
     </main>
 

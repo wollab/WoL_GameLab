@@ -65,14 +65,40 @@
 
   const screens = {
     intro: document.getElementById("screen-intro"),
+    learn: document.getElementById("screen-learn"),
     quiz: document.getElementById("screen-quiz"),
     results: document.getElementById("screen-results"),
   };
 
+  const mainTabs = document.getElementById("main-tabs");
+  const tabButtons = Array.from(document.querySelectorAll(".main-tab"));
+
   function showScreen(name) {
     Object.values(screens).forEach((s) => s.classList.remove("active"));
     screens[name].classList.add("active");
+
+    // The tab bar only makes sense on the two browsable screens — mid-quiz
+    // or on results it would just be an escape hatch that loses progress.
+    const isTabbed = name === "intro" || name === "learn";
+    mainTabs.classList.toggle("hidden", !isTabbed);
+    if (isTabbed) {
+      tabButtons.forEach((b) => b.classList.toggle("is-active", b.dataset.screen === name));
+    }
   }
+
+  tabButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      showScreen(btn.dataset.screen);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+
+  document.querySelectorAll("[data-goto]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      showScreen(btn.dataset.goto);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
 
   function shuffled(arr) {
     const a = arr.slice();
@@ -187,30 +213,37 @@
     document.getElementById("btn-copy-link").onclick = doCopyCaption;
   }
 
-  function renderMatrix(pct, topMoves) {
-    const wrap = document.getElementById("matrix-wrap");
-    let html = `<table class="matrix-table"><thead><tr><th></th>`;
+  function moveIdAt(row, col) {
+    return Object.keys(MOVES).find((id) => MOVES[id].phase === row && MOVES[id].source === col);
+  }
 
+  // Shared 3x3 matrix markup. `pct`/`topMoves` are result-specific (omit them
+  // for the plain reference grid); `clickable` turns each bubble into a link
+  // down to that move's detail card.
+  function buildMatrixHTML({ pct = null, topMoves = [], clickable = false } = {}) {
+    let html = `<table class="matrix-table"><thead><tr><th></th>`;
     MATRIX_COLS.forEach((c) => (html += `<th>${COL_LABELS[c]}</th>`));
     html += `</tr></thead><tbody>`;
 
     MATRIX_ROWS.forEach((row) => {
       html += `<tr><th class="matrix-row-label">${ROW_LABELS[row]}</th>`;
       MATRIX_COLS.forEach((col) => {
-        const moveId = Object.keys(MOVES).find(
-          (id) => MOVES[id].phase === row && MOVES[id].source === col
-        );
+        const moveId = moveIdAt(row, col);
         const m = MOVES[moveId];
-        const p = pct[moveId];
         const isTop = topMoves.includes(moveId);
-        const isZero = p === 0;
+        const isZero = pct ? pct[moveId] === 0 : false;
 
         let bubbleClass = "matrix-bubble";
         if (isZero) bubbleClass += " is-zero";
         if (isTop) bubbleClass += " is-top";
+        if (clickable) bubbleClass += " is-clickable";
+
+        const attrs = clickable
+          ? ` data-move="${moveId}" role="button" tabindex="0" aria-label="ดูรายละเอียด${m.thai}"`
+          : "";
 
         html += `<td class="matrix-cell">
-          <div class="${bubbleClass}" style="border-color:${m.color}">
+          <div class="${bubbleClass}" style="border-color:${m.color}"${attrs}>
             <img src="${m.img}" alt="${m.thai}">
             ${isTop ? `<div class="matrix-star">★</div>` : ""}
           </div>
@@ -221,8 +254,79 @@
     });
 
     html += `</tbody></table>`;
-    wrap.innerHTML = html;
+    return html;
   }
+
+  function renderMatrix(pct, topMoves) {
+    document.getElementById("matrix-wrap").innerHTML = buildMatrixHTML({ pct, topMoves });
+  }
+
+  /* ===== Intro + Learn screens ===== */
+
+  function renderLearnContent() {
+    document.getElementById("intro-matrix").innerHTML = buildMatrixHTML();
+
+    document.getElementById("axis-cols").innerHTML = MATRIX_COLS.map(
+      (c) => `<li><span class="axis-key">${COL_LABELS[c]}</span>${COL_INTRO[c]}</li>`
+    ).join("");
+    document.getElementById("axis-rows").innerHTML = MATRIX_ROWS.map(
+      (r) => `<li><span class="axis-key">${ROW_LABELS[r]}</span>${ROW_INTRO[r]}</li>`
+    ).join("");
+
+    const learnMatrix = document.getElementById("learn-matrix");
+    learnMatrix.innerHTML = buildMatrixHTML({ clickable: true });
+
+    let detailHTML = "";
+    MATRIX_ROWS.forEach((row) => {
+      detailHTML += `<div class="phase-heading">
+        <h3>${ROW_LABELS[row]}</h3>
+        <p>${ROW_INTRO[row]}</p>
+      </div>`;
+      MATRIX_COLS.forEach((col) => {
+        const id = moveIdAt(row, col);
+        const m = MOVES[id];
+        detailHTML += `<article class="card move-card" id="move-${id}" style="border-top-color:${m.color}">
+          <div class="move-head">
+            <img class="move-img" src="${m.img}" alt="${m.thai}" />
+            <div>
+              <div class="move-name">${m.thai}</div>
+              <div class="move-en">${m.en}</div>
+              <div class="move-tags">
+                <span style="background:${m.color}1a;color:${m.color}">${COL_LABELS[col]}</span>
+                <span style="background:${m.color}1a;color:${m.color}">${ROW_LABELS[row]}</span>
+              </div>
+            </div>
+          </div>
+          <p class="move-guide">${m.guide}</p>
+          <p class="move-detail">${m.detail}</p>
+          <div class="move-activity">🎯 ลองฝึก: ${m.activity}</div>
+        </article>`;
+      });
+    });
+    document.getElementById("learn-detail-list").innerHTML = detailHTML;
+
+    function jumpToMove(moveId) {
+      const target = document.getElementById(`move-${moveId}`);
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      target.classList.add("is-highlighted");
+      setTimeout(() => target.classList.remove("is-highlighted"), 1600);
+    }
+
+    learnMatrix.addEventListener("click", (e) => {
+      const bubble = e.target.closest("[data-move]");
+      if (bubble) jumpToMove(bubble.dataset.move);
+    });
+    learnMatrix.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const bubble = e.target.closest("[data-move]");
+      if (!bubble) return;
+      e.preventDefault();
+      jumpToMove(bubble.dataset.move);
+    });
+  }
+
+  renderLearnContent();
 
   function renderDetailSections(topMoves, growthMove) {
     const topDetailList = document.getElementById("top-detail-list");
