@@ -1,4 +1,4 @@
-// WoL Learning Moves — data definitions
+// WoL Learning Angles — data definitions
 // แก้ไขสีหรือชื่อได้ที่นี่ที่เดียว ทุกหน้าจะอัปเดตตาม
 
 const MOVES = {

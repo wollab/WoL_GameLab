@@ -378,7 +378,7 @@
     const top3 = lastTopMoves.map((id) => MOVES[id].thai).join(" · ");
     const gm = MOVES[lastGrowthMove];
     return [
-      "🧙‍♂️ เพิ่งรู้จัก Learning Move ของตัวเองจาก 9 Learning Angles!",
+      "🧙‍♂️ เพิ่งรู้จัก Learning Angles ของตัวเองมา!",
       "",
       `✨ ความถนัดของฉัน: ${top3}`,
       `🌱 มุมที่อยากลองฝึกเพิ่ม: ${gm.thai}`,
@@ -544,7 +544,7 @@
     y += 26;
     ctx.font = "400 15px Kanit, sans-serif";
     ctx.fillStyle = "#3f6e6d";
-    ctx.fillText("ผลสำรวจ Learning Move ของฉัน", cx, y);
+    ctx.fillText("ผลสำรวจ Learning Angles ของฉัน", cx, y);
     y += 22;
 
     // 3x3 grid with axis labels — mirrors the on-page matrix
