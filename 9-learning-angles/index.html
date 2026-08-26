@@ -22,23 +22,42 @@
   <div class="app">
 
     <div class="mini-header">
-      <img src="assets/wol-logo.png" alt="" />
-      <span>Wizards of Learning</span>
+      <a class="mini-brand" href="https://wollab.github.io/" target="_blank" rel="noopener">
+        <img src="assets/wol-logo.png" alt="Wizards of Learning" />
+        <span>Wizards of Learning</span>
+      </a>
+      <nav aria-label="WoL tools">
+        <a href="https://wollab.github.io/meta-learning/" target="_blank" rel="noopener">Learning Tools</a>
+        <a href="https://wollab.github.io/WoL_GameLab/" target="_blank" rel="noopener">Game Design Lab</a>
+      </nav>
     </div>
 
-    <header class="app-header">
-      <img class="brand-logo" src="assets/wol-logo.png" alt="Wizards of Learning" />
-      <div class="brand">9 Learning Angles</div>
-      <h1>รู้จัก Learning Angles ของตัวเอง</h1>
-      <p class="subtitle">ตอบ 10 คำถามสั้น ๆ เพื่อดูว่าตอนเรียนรู้สิ่งใหม่ คุณถนัดมุมไหนที่สุด</p>
-    </header>
-
     <main id="screen-intro" class="screen active">
+      <section class="angles-hero" aria-labelledby="angles-title">
+        <div class="angles-hero-copy">
+          <p class="hero-kicker">WoL Learning Tools</p>
+          <h1 id="angles-title">Learning<br /><span>Angles</span></h1>
+          <p class="hero-lead">ค้นพบมุมที่คุณใช้เรียนรู้บ่อย เพื่อเลือกวิธีเรียนรู้ที่เข้ากับตัวเองมากขึ้น</p>
+          <button id="btn-start" class="btn-primary">เริ่มสำรวจมุมของตัวเอง <span aria-hidden="true">→</span></button>
+          <p class="hero-note">10 คำถามสั้น ๆ · ใช้เวลาประมาณ 3 นาที</p>
+        </div>
+        <div class="angles-hero-art" aria-label="แผนที่ 9 Learning Angles">
+          <div class="matrix-art-label"><span>YOUR LEARNING MAP</span><strong>9 มุมที่เป็นไปได้</strong></div>
+          <div id="hero-matrix-wrap"></div>
+          <p class="matrix-art-caption">แต่ละมุมสะท้อนวิธีที่เราเปิดรับ แปรรูป และตกผลึกสิ่งใหม่</p>
+        </div>
+      </section>
+
       <div class="card intro-card">
         <p class="eyebrow">A short reflection by Wizards of Learning</p>
         <p>ไม่มีคำตอบถูกหรือผิด และผลลัพธ์ไม่ได้บอกว่าคุณ "เป็น" คนแบบไหนตายตัว — มันเป็นแค่ภาพสะท้อนของมุมที่คุณใช้บ่อยในช่วงเวลานี้</p>
         <p>นึกถึงช่วง 1-2 เดือนที่ผ่านมา แล้วเลือกคำตอบที่ใกล้เคียงตัวเองที่สุดในแต่ละข้อ</p>
-        <button id="btn-start" class="btn-primary">เริ่มทำแบบสอบถาม</button>
+      </div>
+
+      <div class="hero-tool-strip" aria-label="เครื่องมือ WoL ที่ไปต่อได้">
+        <a href="https://wollab.github.io/WoL_Tarot_of_Learning/" target="_blank" rel="noopener"><span>01</span><strong>Reflect</strong><small>ตั้งคำถามกับตัวเอง</small></a>
+        <a href="https://wollab.github.io/meta-learning/" target="_blank" rel="noopener"><span>02</span><strong>Explore</strong><small>อ่านแนวคิดการเรียนรู้</small></a>
+        <a href="https://wollab.github.io/WizardHat_LearningOutcome/" target="_blank" rel="noopener"><span>03</span><strong>Make</strong><small>เปลี่ยน insight เป็นการลงมือทำ</small></a>
       </div>
     </main>
 

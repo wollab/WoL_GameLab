@@ -70,6 +70,27 @@
     results: document.getElementById("screen-results"),
   };
 
+  function renderHeroMatrix() {
+    const wrap = document.getElementById("hero-matrix-wrap");
+    if (!wrap) return;
+    let html = `<table class="matrix-table hero-matrix" aria-label="แผนที่ 9 Learning Angles"><thead><tr><th></th>`;
+    MATRIX_COLS.forEach((col) => (html += `<th>${COL_LABELS[col]}</th>`));
+    html += `</tr></thead><tbody>`;
+    MATRIX_ROWS.forEach((row) => {
+      html += `<tr><th class="matrix-row-label">${ROW_LABELS[row]}</th>`;
+      MATRIX_COLS.forEach((col) => {
+        const moveId = Object.keys(MOVES).find((id) => MOVES[id].phase === row && MOVES[id].source === col);
+        const m = MOVES[moveId];
+        html += `<td class="matrix-cell"><div class="matrix-bubble" role="img" aria-label="${m.thai}" style="border-color:${m.color}"><img src="${m.img}" alt="${m.thai}"></div><div class="matrix-name">${m.thai}</div></td>`;
+      });
+      html += `</tr>`;
+    });
+    html += `</tbody></table>`;
+    wrap.innerHTML = html;
+  }
+
+  renderHeroMatrix();
+
   function showScreen(name) {
     Object.values(screens).forEach((s) => s.classList.remove("active"));
     screens[name].classList.add("active");
