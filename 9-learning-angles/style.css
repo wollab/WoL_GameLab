@@ -68,6 +68,16 @@ body {
   box-shadow: 0 10px 28px rgba(47, 156, 151, 0.1);
 }
 
+.eyebrow, .question-kicker {
+  color: var(--teal-deep);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.eyebrow { margin: 0 0 8px; }
+
 .intro-card { text-align: center; }
 .intro-card p { color: var(--muted); line-height: 1.6; }
 
@@ -120,7 +130,24 @@ body {
 }
 .progress-label { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
 
+.question-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
 .question-text { font-size: 19px; font-weight: 600; margin: 0 0 18px; line-height: 1.5; color: var(--dark); }
+.back-question {
+  border: 0;
+  background: transparent;
+  color: var(--teal-deep);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 0;
+}
 
 .option-btn {
   display: block;
@@ -272,3 +299,22 @@ body {
 }
 
 #btn-restart { display: block; margin: 0 auto; }
+
+button:focus-visible, a:focus-visible {
+  outline: 3px solid rgba(254, 197, 102, .95);
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .app { padding-left: 14px; padding-right: 14px; }
+  .mini-header { margin-left: -14px; margin-right: -14px; padding-left: 14px; }
+  .card { padding: 18px; border-radius: 16px; }
+  .app-header { margin-top: 16px; text-align: left; }
+  .app-header h1 { font-size: 26px; line-height: 1.15; }
+  .subtitle { font-size: 14px; line-height: 1.5; }
+  .question-text { font-size: 18px; }
+  .options-grid-9 { gap: 8px; }
+  .options-grid-9 .option-btn { padding: 11px 8px; font-size: 13px; }
+  .option-thumb { width: 48px; height: 48px; }
+  .share-actions button { max-width: none; }
+}

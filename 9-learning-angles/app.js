@@ -60,6 +60,7 @@
 
   let currentQ = 0;
   let quizQuestions = QUESTIONS;
+  const answers = [];
   const scores = {}; // moveId -> raw points
   Object.keys(MOVES).forEach((id) => (scores[id] = 0));
 
@@ -97,6 +98,7 @@
   document.getElementById("btn-start").addEventListener("click", () => {
     currentQ = 0;
     quizQuestions = buildQuizQuestions();
+    answers.length = 0;
     Object.keys(scores).forEach((id) => (scores[id] = 0));
     showScreen("quiz");
     renderQuestion();
@@ -111,7 +113,8 @@
     const card = document.getElementById("question-card");
     const isNineGrid = q.options.length > 6;
 
-    let html = `<p class="question-text">${q.text}</p>`;
+    let html = `<div class="question-topline"><span class="question-kicker">Learning Angles check-in</span>${currentQ > 0 ? '<button type="button" class="back-question" id="btn-back-question">← ย้อนกลับ</button>' : ''}</div>`;
+    html += `<p class="question-text">${q.text}</p>`;
     if (q.note) html += `<p class="q-note">${q.note}</p>`;
     html += `<div class="${isNineGrid ? "options-grid-9" : ""}"></div>`;
 
@@ -127,6 +130,7 @@
         btn.textContent = opt.text;
       }
       btn.addEventListener("click", () => {
+        answers[currentQ] = { move: opt.move, weight: q.weight || 1 };
         scores[opt.move] += q.weight || 1;
         currentQ += 1;
         if (currentQ < quizQuestions.length) {
@@ -137,6 +141,18 @@
       });
       wrap.appendChild(btn);
     });
+
+    const back = card.querySelector("#btn-back-question");
+    if (back) {
+      back.addEventListener("click", () => {
+        const previous = answers[currentQ - 1];
+        if (!previous) return;
+        scores[previous.move] -= previous.weight;
+        answers.pop();
+        currentQ -= 1;
+        renderQuestion();
+      });
+    }
 
     const pct = Math.round((currentQ / quizQuestions.length) * 100);
     document.getElementById("progress-fill").style.width = pct + "%";
@@ -173,6 +189,7 @@
     lastTopMoves = getTopMoves(lastPct);
     lastGrowthMove = getGrowthMove(lastPct);
     showScreen("results");
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     const topNames = lastTopMoves.map((id) => MOVES[id].thai).join(" · ");
     document.getElementById("top-moves-text").textContent =
@@ -210,7 +227,7 @@
         if (isTop) bubbleClass += " is-top";
 
         html += `<td class="matrix-cell">
-          <div class="${bubbleClass}" style="border-color:${m.color}">
+          <div class="${bubbleClass}" role="img" aria-label="${m.thai}: ${p}%" style="border-color:${m.color}">
             <img src="${m.img}" alt="${m.thai}">
             ${isTop ? `<div class="matrix-star">★</div>` : ""}
           </div>
@@ -274,7 +291,7 @@
     const top3 = lastTopMoves.map((id) => MOVES[id].thai).join(" · ");
     const gm = MOVES[lastGrowthMove];
     return [
-      "🧙‍♂️ เพิ่งรู้จัก Learning Move ของตัวเองจาก 9 Learning Angles!",
+      "🧙‍♂️ เพิ่งรู้จัก Learning Angles ของตัวเองจาก 9 Learning Angles!",
       "",
       `✨ ความถนัดของฉัน: ${top3}`,
       `🌱 มุมที่อยากลองฝึกเพิ่ม: ${gm.thai}`,
@@ -440,7 +457,7 @@
     y += 26;
     ctx.font = "400 15px Kanit, sans-serif";
     ctx.fillStyle = "#3f6e6d";
-    ctx.fillText("ผลสำรวจ Learning Move ของฉัน", cx, y);
+    ctx.fillText("ผลสำรวจ Learning Angles ของฉัน", cx, y);
     y += 22;
 
     // 3x3 grid with axis labels — mirrors the on-page matrix
