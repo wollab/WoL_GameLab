@@ -1,0 +1,317 @@
+/* Packet Trainer — mobile-first, WoL CI */
+
+:root {
+  color-scheme: light;
+  --teal: #50c2c0;
+  --teal-deep: #168a88;   /* พื้นหลังปุ่ม — ใช้คู่ตัวหนังสือขาว */
+  --teal-ink: #168a88;    /* ตัวหนังสือสี teal บนพื้นอ่อน */
+  --teal-soft: #e8f8f7;
+  --gold: #fec566;
+  --gold-deep: #e0a73e;
+  --ink: #414141;
+  --muted: #6d7777;
+  --paper: #f7fbfb;
+  --card: #ffffff;
+  --line: #d7eceb;
+  --bad: #d2574a;
+  --good: #2f9b66;
+  --shadow: 0 8px 22px rgba(65, 65, 65, 0.07);
+  --wash: rgba(80, 194, 192, 0.14);
+  --sheet: rgba(255, 255, 255, 0.96);
+  --track: #eef3f3;
+  --hint: #f1f4f4;
+  --warn-bg: #fff8e9;
+  --bad-bg: #fdeceb;
+  --good-bg: #e4f6ec;
+}
+
+/* โหมดมืด — แบรนด์ยังเป็น teal/gold เดิม แค่สลับพื้น */
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: dark; }
+  :root:not([data-theme="light"]) {
+    --teal-deep: #1a7f7d;
+    --teal-ink: #6ad7d5;
+    --teal-soft: #14302f;
+    --gold-deep: #f0bd67;
+    --ink: #e7efee;
+    --muted: #93a5a3;
+    --paper: #0f1716;
+    --card: #17211f;
+    --line: #2a3b39;
+    --bad: #e8796b;
+    --good: #56c48d;
+    --shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    --wash: rgba(80, 194, 192, 0.10);
+    --sheet: rgba(23, 33, 31, 0.97);
+    --track: #22302e;
+    --hint: #1e2b29;
+    --warn-bg: #2a2419;
+    --bad-bg: #2d1c1a;
+    --good-bg: #172c22;
+  }
+}
+
+/* ปุ่มสลับธีมของผู้ดูต้องชนะ media query ทั้งสองทาง */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --teal-deep: #1a7f7d; --teal-ink: #6ad7d5; --teal-soft: #14302f; --gold-deep: #f0bd67;
+  --ink: #e7efee; --muted: #93a5a3; --paper: #0f1716; --card: #17211f; --line: #2a3b39;
+  --bad: #e8796b; --good: #56c48d; --shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+  --wash: rgba(80, 194, 192, 0.10); --sheet: rgba(23, 33, 31, 0.97);
+  --track: #22302e; --hint: #1e2b29; --warn-bg: #2a2419; --bad-bg: #2d1c1a; --good-bg: #172c22;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body { margin: 0; }
+
+body {
+  font-family: "Bai Jamjuree", "Segoe UI", Tahoma, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--wash), rgba(255, 255, 255, 0) 240px), var(--paper);
+  min-height: 100vh;
+  padding-bottom: 92px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+h1, h2, h3 { font-family: "Kanit", "Bai Jamjuree", sans-serif; font-weight: 600; margin: 0 0 6px; }
+h2 { font-size: 20px; }
+h3 { font-size: 16px; }
+p { margin: 0 0 10px; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.mt { margin-top: 18px; }
+
+.wrap { max-width: 520px; margin: 0 auto; padding: 0 14px; }
+
+header.top {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 4px 8px; font-family: "Kanit", sans-serif; font-weight: 600;
+}
+header.top b { color: var(--teal-ink); }
+header.top span { font-size: 12px; color: var(--muted); font-weight: 400; }
+
+nav.tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+nav.tabs button {
+  flex: 1; padding: 9px 4px; border: 1px solid var(--line); background: var(--card);
+  border-radius: 10px; font-family: inherit; font-size: 14px; color: var(--muted); cursor: pointer;
+}
+nav.tabs button.on { background: var(--teal-deep); border-color: var(--teal-deep); color: #fff; font-weight: 600; }
+
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px; margin-bottom: 12px; box-shadow: var(--shadow);
+}
+.card.intro { text-align: center; }
+.crumb { font-size: 13px; color: var(--muted); padding: 2px 4px 8px; }
+.tag { background: var(--gold); color: #5a4212; border-radius: 5px; padding: 1px 6px; font-size: 11px; }
+
+.ask .quote {
+  font-family: "Kanit", sans-serif; font-size: 19px; line-height: 1.45;
+  border-left: 4px solid var(--gold); padding-left: 12px; margin-bottom: 10px;
+}
+
+/* ปุ่ม */
+button { font-family: inherit; cursor: pointer; }
+button.big {
+  width: 100%; padding: 14px; border: none; border-radius: 12px;
+  background: var(--teal-deep); color: #fff; font-size: 16px; font-weight: 600; margin-top: 8px;
+}
+button.ghost {
+  width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--card); color: var(--muted); font-size: 15px; margin-top: 8px;
+}
+
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mode {
+  text-align: left; padding: 11px 12px; border: 1.5px solid var(--line);
+  background: var(--card); border-radius: 12px; min-height: 64px;
+}
+.mode b { display: block; font-family: "Kanit", sans-serif; font-size: 15px; }
+.mode span { font-size: 12px; color: var(--muted); line-height: 1.35; display: block; }
+.mode.on { border-color: var(--teal-deep); background: var(--teal-soft); }
+.mode.on span { color: var(--teal-ink); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 6px; }
+.chips.faded { opacity: .65; margin-top: 8px; }
+.chip {
+  display: flex; align-items: center; gap: 7px; padding: 9px 11px;
+  border: 1.5px solid var(--line); background: var(--card); border-radius: 10px; font-size: 13px;
+}
+.chip .path { font-family: ui-monospace, Menlo, monospace; font-size: 12px; word-break: break-all; }
+.chip .tok { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.chip.on { border-color: var(--teal-deep); background: var(--teal-soft); }
+.chip.on .tok { color: var(--teal-ink); }
+.chip.danger.on { border-color: var(--bad); background: var(--bad-bg); }
+.chip.danger.on .tok { color: var(--bad); font-weight: 700; }
+
+.opts { display: flex; flex-direction: column; gap: 7px; }
+.opt {
+  text-align: left; padding: 11px 12px; border: 1.5px solid var(--line);
+  background: var(--card); border-radius: 10px; font-size: 14px; line-height: 1.4;
+}
+.opt.on { border-color: var(--teal-deep); background: var(--teal-soft); }
+
+textarea, input {
+  width: 100%; font-family: inherit; font-size: 15px; padding: 11px;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--ink);
+}
+textarea { resize: vertical; }
+.addrow { display: flex; gap: 6px; margin-top: 6px; }
+.addrow input { flex: 1; }
+.addrow button {
+  padding: 0 16px; border: 1px solid var(--teal-deep); background: var(--teal-deep);
+  color: #fff; border-radius: 10px; font-size: 14px;
+}
+
+.livecheck { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.hint {
+  font-size: 11.5px; padding: 3px 8px; border-radius: 20px;
+  background: var(--hint); color: var(--muted);
+}
+.hint.ok { background: var(--good-bg); color: var(--good); }
+
+/* แถบล่างติดหน้าจอ */
+.stickybar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: var(--sheet); border-top: 1px solid var(--line);
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+  display: flex; gap: 10px; align-items: center;
+  max-width: 520px; margin: 0 auto;
+}
+.meter { flex: 1; font-size: 12px; color: var(--muted); line-height: 1.25; }
+.meter b { display: block; font-size: 19px; color: var(--teal-ink); font-family: "Kanit", sans-serif; }
+.meter.blown b { color: var(--bad); }
+.meter.blown .lbl { color: var(--bad); font-weight: 600; }
+.stickybar .go {
+  padding: 13px 22px; border: none; border-radius: 12px;
+  background: var(--teal-deep); color: #fff; font-size: 15px; font-weight: 600;
+}
+.stickybar .go[disabled] { background: var(--track); }
+.stickybar .go:only-child { flex: 1; }
+
+/* ผลลัพธ์ */
+.score { text-align: center; }
+.total { font-family: "Kanit", sans-serif; font-size: 48px; line-height: 1.1; }
+.total small { font-size: 15px; color: var(--muted); margin-left: 4px; }
+.total.good { color: var(--good); }
+.total.mid { color: var(--gold-deep); }
+.total.low { color: var(--bad); }
+
+.tokencmp {
+  display: flex; align-items: center; justify-content: space-around;
+  gap: 8px; margin-top: 10px; padding: 10px; background: var(--teal-soft); border-radius: 12px;
+}
+.tokencmp.blown { background: var(--bad-bg); }
+.tokencmp .lbl { display: block; font-size: 11px; color: var(--muted); }
+.tokencmp b { font-family: "Kanit", sans-serif; font-size: 17px; }
+.tokencmp .ratio { font-family: "Kanit", sans-serif; font-size: 17px; color: var(--teal-ink); }
+.tokencmp.blown .ratio { color: var(--bad); }
+
+.part { margin-bottom: 12px; }
+.part .row { display: flex; justify-content: space-between; font-size: 14px; }
+.bar { height: 7px; background: var(--track); border-radius: 4px; overflow: hidden; margin: 5px 0 3px; }
+.bar i { display: block; height: 100%; background: var(--teal); }
+.missed { background: var(--warn-bg); border-radius: 10px; padding: 10px; font-size: 13px; }
+.missed span { display: block; color: var(--gold-deep); }
+.alert { background: var(--bad-bg); color: var(--bad); border-radius: 10px; padding: 10px; font-size: 13px; margin-top: 8px; }
+.warnbox { border-color: var(--gold); background: var(--warn-bg); font-size: 13.5px; }
+.warnbox b { display: block; margin-bottom: 6px; font-family: "Kanit", sans-serif; }
+
+pre {
+  background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
+  padding: 11px; font-size: 12px; line-height: 1.5; overflow-x: auto;
+  white-space: pre-wrap; word-break: break-word; margin: 0 0 10px;
+}
+
+/* progress */
+.prow { display: flex; align-items: center; gap: 8px; padding: 7px 0; font-size: 14px; border-bottom: 1px solid var(--line); }
+.prow:last-of-type { border-bottom: none; }
+.prow > span:first-child { flex: 1; }
+.prow .bar { flex: 1.2; margin: 0; }
+.prow b { min-width: 62px; text-align: right; font-family: "Kanit", sans-serif; }
+.prow i { font-style: normal; font-size: 11px; margin-left: 3px; }
+i.up { color: var(--good); }
+i.down { color: var(--bad); }
+i.flat { color: var(--muted); }
+
+.spark { display: flex; align-items: flex-end; gap: 4px; height: 70px; padding: 6px 0; }
+.spark i { flex: 1; max-width: 26px; border-radius: 3px 3px 0 0; background: var(--teal); min-height: 4px; }
+.spark i.mid { background: var(--gold); }
+.spark i.bad { background: var(--bad); }
+
+ul.axes { padding-left: 0; list-style: none; margin: 0; font-size: 14px; }
+ul.axes li { padding: 5px 0; border-bottom: 1px solid var(--line); }
+ul.axes li:last-child { border-bottom: none; }
+ul.axes b { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--teal-ink); margin-right: 8px; }
+
+footer.foot { text-align: center; font-size: 12px; color: var(--muted); padding: 10px 0 4px; }
+
+/* ---------- แผนที่ด่าน ---------- */
+.levelcard {
+  display: block; width: 100%; text-align: left; font-family: inherit;
+  color: var(--ink); border: 1px solid var(--line);
+}
+.levelcard.off { opacity: .55; }
+.lvhead { display: flex; align-items: baseline; gap: 8px; justify-content: space-between; }
+.lvhead b { font-family: "Kanit", sans-serif; font-size: 16px; }
+.lvblurb { font-size: 14px; margin-top: 2px; }
+.lvtaps { margin-top: 2px; }
+.lvhead span { font-size: 11.5px; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+.pass { background: var(--good-bg); color: var(--good); font-weight: 600; }
+.tried { background: var(--warn-bg); color: var(--gold-deep); }
+.fresh { background: var(--hint); color: var(--muted); }
+.lock { background: var(--hint); color: var(--muted); }
+.unlocked { color: var(--good); font-weight: 600; }
+
+/* ---------- ด่าน 1-3 ---------- */
+.lessonhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.lessonhead .dots { display: flex; gap: 3px; }
+.lessonhead .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); display: block; }
+.lessonhead .dots i.done { background: var(--teal); }
+.lessonhead .dots i.now { background: var(--gold); }
+
+.answers { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.answers.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ans {
+  text-align: left; padding: 13px 12px; border: 1.5px solid var(--line);
+  background: var(--card); border-radius: 12px; font-family: inherit;
+  font-size: 14px; line-height: 1.4; color: var(--ink); min-height: 52px;
+}
+.ans b { display: block; font-family: "Kanit", sans-serif; font-size: 15px; }
+.ans span { display: block; font-size: 11px; color: var(--muted); }
+.ans.wide { font-size: 14.5px; }
+.ans.ok { border-color: var(--good); background: var(--good-bg); }
+.ans.ok span { color: var(--good); }
+.ans.no { border-color: var(--bad); background: var(--bad-bg); }
+.ans.no span { color: var(--bad); }
+.ans.dim { opacity: .45; }
+.ans:disabled { cursor: default; }
+
+.fb { border-width: 1.5px; }
+.fb.right { border-color: var(--good); background: var(--good-bg); }
+.fb.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.fbtop { font-family: "Kanit", sans-serif; font-size: 16px; margin-bottom: 4px; }
+.fb.right .fbtop { color: var(--good); }
+.fb.wrong .fbtop { color: var(--bad); }
+.fb p { margin: 0; font-size: 14px; }
+
+/* packet ที่ค่อย ๆ ประกอบในด่าน 3 */
+.built { padding: 10px 14px; }
+.brow { display: flex; gap: 10px; padding: 5px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.brow:last-child { border-bottom: none; }
+.brow span { min-width: 96px; color: var(--muted); flex-shrink: 0; }
+.brow b { font-weight: 400; word-break: break-word; }
+
+/* ---------- ปุ่มดูใบ้ในด่าน 4 ---------- */
+.drillhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.hintbtn {
+  border: 1px solid var(--line); background: var(--card); color: var(--muted);
+  border-radius: 20px; padding: 4px 12px; font-family: inherit; font-size: 12.5px;
+}
+.hintbtn.on { border-color: var(--gold-deep); background: var(--warn-bg); color: var(--gold-deep); }
+.hintbox { background: var(--warn-bg); border-radius: 10px; padding: 10px 12px; margin-top: 8px; font-size: 13px; }
+.hintbox b { display: block; font-size: 12px; color: var(--gold-deep); margin-top: 6px; }
+.hintbox b:first-child { margin-top: 0; }
+.hintbox p { margin: 2px 0 0; }
