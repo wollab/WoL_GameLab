@@ -6,7 +6,8 @@
     const node=document.createElement(tag); if(className) node.className=className;
     if(text!==undefined) node.textContent=text; return node;
   };
-  const angleOrder=["explorer","listener","experimenter","connector","meaningmaker","creator","decider","synthesizer","reflector"];\n  const toOriginalId = id => ({communicator:"meaningmaker",summarizer:"synthesizer"}[id] || id);
+  const angleOrder=["explorer","listener","experimenter","connector","meaningmaker","creator","decider","synthesizer","reflector"];
+  const toOriginalId = id => ({communicator:"meaningmaker",summarizer:"synthesizer"}[id] || id);
   const angles=Object.fromEntries(angleOrder.map(id=>[id,MOVES[id]]));
   const memberCounts=Object.fromEntries(Object.keys(WIZARD_FAMILIES).map(f=>[f,WIZARD_ARCHETYPES.filter(x=>x.family===f).length]));
   const errors=WizardMatching.validateSignatures(WIZARD_ARCHETYPES);
