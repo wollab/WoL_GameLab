@@ -6,7 +6,7 @@
     const node=document.createElement(tag); if(className) node.className=className;
     if(text!==undefined) node.textContent=text; return node;
   };
-  const angleOrder=["explorer","listener","experimenter","connector","communicator","creator","decider","summarizer","reflector"];
+  const angleOrder=["explorer","listener","experimenter","connector","meaningmaker","creator","decider","synthesizer","reflector"];\n  const toOriginalId = id => ({communicator:"meaningmaker",summarizer:"synthesizer"}[id] || id);
   const angles=Object.fromEntries(angleOrder.map(id=>[id,MOVES[id]]));
   const memberCounts=Object.fromEntries(Object.keys(WIZARD_FAMILIES).map(f=>[f,WIZARD_ARCHETYPES.filter(x=>x.family===f).length]));
   const errors=WizardMatching.validateSignatures(WIZARD_ARCHETYPES);
@@ -70,10 +70,10 @@
     el("result-quest").textContent=winner.quest;
     const signature=el("signature");signature.replaceChildren();
     ["มุมหลัก","มุมรอง","มุมสนับสนุน"].forEach((name,i)=>{
-      const id=winner.sig[i],a=angles[id],row=$("div","sig");
+      const id=winner.sig[i],a=angles[toOriginalId(id)],row=$("div","sig");
       const img=$("img");img.src="../9-learning-angles/"+a.img;img.alt="";
       const copy=$("div");copy.append($("b","",a.thai),$("small","",a.guide));
-      row.append(img,copy,$("span","tier",name+" • "+answers[id]+" คะแนน"));
+      row.append(img,copy,$("span","tier",name+" • "+answers[toOriginalId(id)]+" คะแนน"));
       signature.append(row);
     });
     const note=el("close-note");
