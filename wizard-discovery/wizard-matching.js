@@ -7,7 +7,7 @@
   const ANGLES = ["explorer","listener","experimenter","connector","communicator","creator","decider","summarizer","reflector"];
   const safeScore = (n) => Number.isFinite(Number(n)) ? Math.max(0, Number(n)) : 0;
   function matchWizards(scores, archetypes) {
-    const values = Object.fromEntries(ANGLES.map(id => [id, safeScore(scores?.[id])]));
+    const values = Object.fromEntries(ANGLES.map(id => [id, safeScore(scores?.[id] ?? scores?.[({communicator:"meaningmaker",summarizer:"synthesizer"}[id] || id)])]));
     return archetypes.map(type => {
       const components = type.sig.map((id, i) => ({ id, weight: W[i], score: values[id], contribution: W[i] * values[id] }));
       return {
