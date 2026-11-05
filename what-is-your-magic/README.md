@@ -155,3 +155,5 @@ Exact enumeration of **all 177,147 legal answer paths** (3^9 × 9) reaches all 2
 The new audit regressions pass alongside the original quiz/profile tests. Full current-audit screenshots and six-step findings are delivered in chat; DESIGN.md records the decisions and evidence limits. Usability superiority over another site is a goal requiring real comparative user testing, not a claim established by these checks.
 
 2026-11-06 artwork update: core 12/12 + profile 10/10 + UX 5/5 + artwork 4/4 browser groups passed locally. Artwork checks cover five differentiated Families, 15 named representative images, actual logo, no overflow at 1440/390/320 px and all 27 named gallery images.
+
+Production artwork release verified 2026-11-06: [PR #3](https://github.com/wollab/WoL_GameLab/pull/3), merge `cefab292`, [Pages run 42070980949](https://github.com/wollab/WoL_GameLab/actions/runs/42070980949). Actual public URL: core 11/11, profiles 10/10, UX 5/5, artwork 4/4; zero healthy-flow console/runtime/asset failures. The isolated-localhost case is omitted from production checks. Original app desktop/mobile still passes.

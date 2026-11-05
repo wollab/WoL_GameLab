@@ -4,7 +4,7 @@
 Complete the separate `/WoL_GameLab/what-is-your-magic/` website: landing → ten original questions → one of 27 Wizards, preserving `/WoL_GameLab/9-learning-angles/`. Work on `feature/wizard-discovery-v1`. Original instruction held merge; Chief later explicitly authorized publishing the tested website. Do not infer blanket authorization for unrelated releases.
 
 ## Current status — 2026-11-06
-All 27 portraits are generated, named, visually inspected and integrated locally. The actual WoL logo is in header/footer/favicon. Five spacious illustrated Family rows explain distinct approaches, show three named representative Wizards each and link to all members. Accepted product name is 27 Wizards of Learning, tagline What Is Your Learning Magic?; public directory/URL remain unchanged. Current update is ready for feature commit/new PR and the authorized production release, pending final static checks.
+All 27 portraits are generated, named, visually inspected and integrated locally. The actual WoL logo is in header/footer/favicon. Five spacious illustrated Family rows explain distinct approaches, show three named representative Wizards each and link to all members. Accepted product name is 27 Wizards of Learning, tagline What Is Your Learning Magic?; public directory/URL remain unchanged. Current update is published and verified on the actual public website. PR #3 merged tested feature c119a325bc9b57ce62236ff6d67dcddec9943245 at cefab292032140a2968be061845080f32d3c1f65. Pages run 42070980949 completed build/deploy successfully.
 
 Chief approved the Necromancer style and all-27 scope, then explicitly asked to put each portrait onto the website, use the WoL logo and clarify Family differences. Asked whether the truncated “ถ้าวาง” implied another layout constraint; Chief answered “ไม่มีครับ”. Proceed with the spacious reading layout. This latest website-integration request and earlier explicit “Push ขึ้นเว็บเลยครับ :)” authorize publication of this scoped update.
 
@@ -21,12 +21,14 @@ Diviner must REMOVE the magnifying glass and extra upper arm/hand, RETAIN lower 
 
 Keep long-form scrolling profiles, chapter navigation, complete mobile 3×3 matrix, all tied high scores and readable pale 0–1 states. Original nine images/colors stay intact. Keep original ten questions, 19-point raw totals, legacy meaningmaker/synthesizer mapping, 3/2/1 matching and deterministic ties. The tool is a creative learning reflection, not a personality diagnosis or validated assessment. No account, analytics, persistent storage, backend or schedule.
 
-## Verification on current local artwork update
+## Verification on current artwork update
 - Chrome/Playwright: core 12/12, profile/reading 10/10, UX regressions 5/5, artwork/Family/gallery 4/4. All 27 outcomes through real ten-answer journeys, all 27 direct profile routes and correct decoded portraits.
 - Scoring 5/5: all 177,147 legal answer paths reach all 27 archetypes. Source snapshot and 11 original assets match; original-app diff against c836505 is empty.
 - Desktop 1440 and mobile 390/320: all five Families, 15 named representatives, actual square logo, no horizontal overflow. Gallery decodes all 27 images. Healthy flows have zero console/runtime errors, failed requests or 404s.
 - In-app browser separately inspected actual Family link → Healer profile, portrait/three-character hero, mobile landing/Family rows; error/warn console empty. Screenshots saved and inspected.
 - Screenshot helper now makes lazy off-screen images eager only during capture so decoding cannot hang; production lazy loading remains intact. Local preview servers had stopped during long art generation; restarted and verified current index/version. Gallery favicon 404 found by the new test and fixed with the real logo icon.
+- Public production Chrome/Playwright: core 11/11 (isolated localhost case omitted), profiles 10/10, UX 5/5, artwork 4/4; all 30 groups passed with zero healthy-flow errors/missing requests. Actual production site has all 27 outcomes via ten-answer journeys, mobile matrix/Family layouts and original desktop/mobile quiz regression. In-app browser independently opened the published Family A catalog and corrected Diviner profile; console error/warn log empty.
+- Strict static audit: zero findings; whitespace/source checks passed. Workspace health 30 pass, one existing tmp warning, zero failures.
 - Evidence: this chat visualization `art27/` contains browser/profile/audit/artwork JSON, screenshots, named contact-sheet.png and 27-wizards-of-learning-png.zip.
 - Physical-device/OS share-sheet, full screen-reader/WCAG and comparative user testing remain unverified. Author art QA is distinct from individual Chief review of every companion.
 
@@ -41,7 +43,7 @@ Prior public Chrome checks: core 11/11, profiles 10/10, audit 5/5; all outcomes,
 New app index.html, app.js, style.css, ui.js, wizard-pages.js, tests/browser.cjs, tests/profiles.cjs, tests/artwork.cjs, scripts/export-artwork.py, assets/archetypes/ (26 masters, 27 exports, manifest/gallery), assets/brand/wol-logo.png, README.md, DESIGN.md, ARTWORK.md; project TASK_STATE.md. No original-app files, questions or matching edits.
 
 ## Preview and exact next action
-Public: https://wollab.github.io/WoL_GameLab/what-is-your-magic/ (currently prior release until the authorized update deploys).
+Public: https://wollab.github.io/WoL_GameLab/what-is-your-magic/ (current 27-character update; public, no login required).
 Local checked: http://127.0.0.1:4187/WoL_GameLab/what-is-your-magic/ ; isolated root http://127.0.0.1:4188/ . Portable commands are in README; Python servers must remain running.
 
-Finish static/whitespace/source checks; inspect/stage only this repo's scoped files, commit and push feature, open a new PR (closed #2 cannot be updated). Validate changed paths preserve original app, merge exact tested head under the current publication authorization and wait for Pages. Re-run the browser suites and artwork/gallery checks on the actual public URL; inspect public site in the in-app browser. Then checkpoint actual release SHA/results, update existing PM records and usage evidence, and return public URL plus named art gallery/PNG ZIP. No technical blocker.
+Technical work and authorized release are complete. Final documentation checkpoint records the actual release/tests and may trigger a normal Pages rebuild; it changes no UI, image bytes, questions or matching. Existing PM portfolio/checkpoint and per-machine usage log are updated separately in the local workspace. Final delivery: public URL, named character gallery, PNG ZIP, production screenshots and reports. No blocker. Exact next action: Chief plays the public site on their own phone and reports any specific art/UI correction; keep the current long-form/mobile design and Diviner correction. Do not regenerate completed art or infer a new release policy from this scoped authorization.

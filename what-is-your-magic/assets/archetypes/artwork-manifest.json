@@ -498,7 +498,15 @@
       "acceptedOutput": "exec-8213d445-8c1c-476c-ba7e-fc11abded46c.png"
     }
   ],
-  "production": "Authorized by Chief for website integration and publication; local QA passed, deployment pending.",
+  "production": {
+    "url": "https://wollab.github.io/WoL_GameLab/what-is-your-magic/",
+    "artworkCommit": "c119a325bc9b57ce62236ff6d67dcddec9943245",
+    "mergeCommit": "cefab292032140a2968be061845080f32d3c1f65",
+    "pullRequest": 3,
+    "pagesRun": 42070980949,
+    "verified": "2026-11-06",
+    "status": "Deployed and verified on the public URL; 30 browser check groups passed."
+  },
   "export": {
     "format": "WebP",
     "width": 512,
