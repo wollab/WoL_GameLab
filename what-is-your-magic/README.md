@@ -1,9 +1,33 @@
 # What Is Your Magic? — 27 Wizard Archetypes (V1 Prototype)
 
-A separate, standalone experience from [9 Learning Angles](../9-learning-angles/) by Wizards of Learning. Both tools coexist as distinct websites under the same GitHub Pages project; this one reuses the underlying quiz definitions, without changing the original tool.
+A separate, standalone experience from [9 Learning Angles](../9-learning-angles/) by Wizards of Learning. Both tools coexist as distinct websites under the same GitHub Pages project. This app bundles a verified snapshot of the original quiz and existing assets; it has no runtime dependency on the original app directory.
+
+## Play the feature branch locally
+
+From the repository root (Python 3, no build/install step):
+
+```sh
+git switch feature/wizard-discovery-v1
+git pull --ff-only origin feature/wizard-discovery-v1
+python -m http.server 8000 --bind 127.0.0.1
+```
+
+Open [What Is Your Magic? local preview](http://127.0.0.1:8000/what-is-your-magic/) and [original local quiz](http://127.0.0.1:8000/9-learning-angles/). The server must stay running. In Codespaces, omit `--bind 127.0.0.1`, forward port 8000 in the Ports panel and open its forwarded URL with `/what-is-your-magic/` appended. If the port is private, sign in with the GitHub account allowed into that Codespace. Confirm the selected branch and stop any old server using that port first. A hard reload can refresh old assets, but cannot switch a server's branch or root.
+
+Serving only this app also works: `python -m http.server 8001 --bind 127.0.0.1 --directory what-is-your-magic`, then open [isolated preview](http://127.0.0.1:8001/).
+
+Production routes remain `/WoL_GameLab/9-learning-angles/` and `/WoL_GameLab/what-is-your-magic/`. GitHub Pages is configured for **main**, so the feature branch is not a hosted Pages preview. This PR stays Draft; no merge or production deployment is part of this fix.
+
+## Reproduced failure and fix — 2026-11-05
+
+- Earlier literal `\\n` in `app.js` prevented parsing and all initialization; upstream commit `3202640` already fixed that. On that revision, a repository-root server successfully completed ten questions in Chrome.
+- A server rooted at **only** `what-is-your-magic/` reproduced the reported symptom: `../9-learning-angles/data.js` returned 404, `MOVES is not defined` stopped initialization before both Family rendering and Start listener registration. The user's original preview URL/cache/root was unavailable, so this reproduction does not establish which preview setup they used.
+- The new app now bundles `quiz-data.js`, nine existing angle images and two existing Thai fonts. `scripts/sync-quiz.cjs --check` checks source text (LF-normalized for Windows/Linux) and exact asset bytes against the read-only originals. Scoped `.gitattributes` pins the generated data to LF, preserving the checksum across platforms. Explicit refresh command: `node what-is-your-magic/scripts/sync-quiz.cjs` from repository root. Review and re-test any refreshed source; importing data does not approve new content.
+- Ordered deferred scripts, versioned resource URLs, disabled-until-ready controls and visible startup recovery replace silent dead buttons. No service worker or browser storage is involved.
+- Result strength, complete manual share fallback, retake cleanup, keyboard focus and narrow-screen signature layout are included. The original app's files are unchanged.
 
 ## Scope
-- Original quiz: reuse `../9-learning-angles/data.js` without changing the original site.
+- Original quiz: snapshot `../9-learning-angles/data.js` without changing the original site.
 - The original 9 moves, 10 questions, and weight distribution remain the input source.
 - Show 1 suggested Wizard from 27 Archetypes grouped into 5 Families.
 - Explain the signature, show all 9 raw angle scores, display three alternatives, and suggest one Growth Quest.
@@ -14,6 +38,7 @@ A separate, standalone experience from [9 Learning Angles](../9-learning-angles/
 - `app.js`: UI and quiz flow.
 - `style.css`: responsive standalone page.
 - `index.html`: static HTML entry.
+- `startup.js`: dependency failure feedback; `quiz-data.js` and `assets/`: self-contained source snapshot.
 
 ## Scoring
 - Keep each question's original weight (nine primary questions worth 2 points, the last preference question worth 1).
@@ -63,15 +88,30 @@ Use the *visual language* shown in the existing 9 Learning Angles characters and
 - Resolve: Decider chooses, Summarizer distills, Reflector reviews what worked.
 Wizard identity offers one optional skill bonus in this fictional scenario; the user must also use at least one less-practiced Learning Angle. This adventure is not shipped in V1.
 
-## QA and deployment
-- Preview on the branch first; GitHub Pages from `main` will only show the new path after merging.
-- Check desktop and mobile rendering, accessible labels, keyboard usage, and all 10 question transitions.
-- Check scoring against `QUESTIONS`, especially `meaningmaker` / `synthesizer`.
-- Verify 27 unique IDs and 27 unique valid signatures, with valid A–E family IDs.
-- Check that alternative matches and close-match note reflect raw scores.
-- Test zero, tied, and near-tied profiles; no claim of diagnosis or personality certainty.
-- Open `/what-is-your-magic/` only after review and merge to `main`.
-- Do **not** replace `/9-learning-angles/`; preserve its inbound URLs.
+## Repeatable QA
 
-## Important validation note
-A seeded simulation of 60,000 randomly sampled answer sets over the original 9×3 core options and final one-point choice yielded all 27 archetypes at least once. This is only a structural reachability smoke check, not an estimate of real-world result distribution or psychometric validity. Unequal output frequencies remain possible and should be studied with real opt-in test data.
+From repository root:
+
+```sh
+node what-is-your-magic/scripts/sync-quiz.cjs --check
+node --test what-is-your-magic/tests/scoring.test.cjs
+```
+
+For browser acceptance, run the two servers described above on ports 8000/8001. Use an existing Playwright installation, or install a test-only copy outside the repo (PowerShell):
+
+```powershell
+npm install --prefix "$env:TEMP/magic-v1-qa" playwright@1.62.1
+$env:PLAYWRIGHT_MODULE = "$env:TEMP/magic-v1-qa/node_modules/playwright"
+# Point to an installed Chrome/Edge executable; omit to use Playwright's installed Chromium.
+$env:BROWSER_EXECUTABLE = 'C:/Program Files/Google/Chrome/Application/chrome.exe'
+$env:MAGIC_BASE_URL = 'http://127.0.0.1:8000/'
+$env:MAGIC_ISOLATED_URL = 'http://127.0.0.1:8001/'
+$env:TEST_OUTPUT_DIR = "$env:TEMP/magic-v1-evidence"
+node what-is-your-magic/tests/browser.cjs
+```
+
+Browser checks save `browser-results.json`, request statuses and desktop/mobile screenshots outside the repository. They use visible DOM controls and independent expected scores, including every Wizard's real answer path. Sharing API success/cancel/denial states are simulated; the operating system share sheet itself is not tested.
+
+2026-11-05 validation: Chrome via Playwright 1.62.1, desktop 1440 px and mobile emulation 390/320 px. Complete quiz, keyboard, all 27 outcomes, exact/near ties, score details, retake, share fallbacks, missing-script recovery/reload, isolated-root hosting, and original quiz desktop/mobile regression passed. Healthy flows had zero console/runtime errors and zero missing assets/404s. The unchanged original's browser-generated favicon request is fulfilled with HTTP 204 in its regression test; it has no app favicon declaration. New app favicon requests resolve normally.
+
+Exact enumeration of **all 177,147 legal answer paths** (3^9 × 9) reaches all 27 archetypes. This proves structural reachability only: unequal result frequencies, editorial signatures and unvalidated psychological interpretation remain. Real mobile devices, Safari/Firefox, real OS sharing and the user's former Codespaces URL have not been tested.

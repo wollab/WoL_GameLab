@@ -5,11 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="What Is Your Magic? — 27 Wizard Archetypes สำรวจเวทมนตร์ในการเรียนรู้ของคุณ">
   <title>What Is Your Magic? · 27 Wizard Archetypes · Wizards of Learning</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=20261105">
+  <script defer src="startup.js?v=20261105"></script>
+  <script defer src="quiz-data.js?v=20261105"></script>
+  <script defer src="wizard-data.js?v=20261105"></script>
+  <script defer src="wizard-matching.js?v=20261105"></script>
+  <script defer src="app.js?v=20261105"></script>
 </head>
 <body>
 <div class="app">
-  <header class="brand"><span class="brand-icon">✦</span><span>Wizards of Learning</span><a href="../9-learning-angles/" class="original-link">กลับไปแบบสอบถามเดิม ↗</a></header>
+  <header class="brand"><span class="brand-icon">✦</span><span>Wizards of Learning</span><a href="https://wollab.github.io/WoL_GameLab/9-learning-angles/" class="original-link">กลับไปแบบสอบถามเดิม ↗</a></header>
   <main>
     <section class="page active" id="home" aria-labelledby="main-title">
       <div class="hero">
@@ -17,7 +23,9 @@
         <h1 id="main-title">What Is <em>Your Magic?</em></h1>
         <p class="lead">ค้นพบเวทมนตร์แห่งการเรียนรู้ของตัวเอง ผ่านการค้นหา Wizard 1 ใน 27 Archetypes ที่ใกล้กับวิธีเรียนรู้ของคุณ</p>
         <div class="hero-orbs"><span>✧</span><span>☾</span><span>✦</span><span>❀</span><span>⚒</span></div>
-        <button type="button" id="start" class="primary">ค้นพบพลังเวทของฉัน <span aria-hidden="true">→</span></button>
+        <button type="button" id="start" class="primary" disabled>ค้นพบพลังเวทของฉัน <span aria-hidden="true">→</span></button>
+        <p id="startup-status" class="small" role="status">กำลังเตรียมแบบสอบถาม…</p>
+        <noscript><p>โปรดเปิด JavaScript ใน Browser แล้วโหลดหน้านี้ใหม่เพื่อเริ่มแบบสอบถาม</p></noscript>
         <p class="muted small">10 คำถามจาก 9 Learning Angles เดิม • ไม่มีถูกผิด • ไม่มีตัวตนตายตัว</p>
       </div>
       <div class="panel">
@@ -31,9 +39,9 @@
       </div>
     </section>
     <section class="page" id="quiz" aria-labelledby="quiz-title">
-      <div class="quiz-top"><button type="button" class="plain" id="quit">← กลับหน้าแรก</button><strong id="progress-label" aria-live="polite"></strong></div>
+      <div class="quiz-top"><button type="button" class="plain" id="quit" disabled>← กลับหน้าแรก</button><strong id="progress-label" aria-live="polite"></strong></div>
       <div class="progress" role="progressbar" aria-label="ความคืบหน้า" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progress"><div id="progress-fill"></div></div>
-      <div class="panel question-panel"><p class="eyebrow">DISCOVER YOUR MAGIC</p><h2 id="quiz-title">เลือกคำตอบที่ใกล้ตัวคุณที่สุด</h2><p id="question-note" class="muted small"></p><div class="options" id="options"></div></div>
+      <div class="panel question-panel"><p class="eyebrow">DISCOVER YOUR MAGIC</p><h2 id="quiz-title" tabindex="-1">เลือกคำตอบที่ใกล้ตัวคุณที่สุด</h2><p id="question-note" class="muted small"></p><div class="options" id="options"></div></div>
       <p class="center muted small">นึกถึงช่วง 1–2 เดือนที่ผ่านมา และเลือกสิ่งที่คุณมักทำจริง</p>
     </section>
     <section class="page" id="result" aria-labelledby="result-title">
@@ -41,12 +49,13 @@
         <p class="eyebrow">YOUR MAGIC REVEALED</p>
         <div class="result-art" id="result-art" aria-hidden="true">✧</div>
         <p id="result-family" class="family-title"></p>
-        <h1 id="result-title"></h1>
+        <h1 id="result-title" tabindex="-1"></h1>
         <p id="result-motto" class="motto"></p>
         <p id="result-description"></p>
       </div>
       <div class="panel">
         <h2>ทำไมคุณจึงใกล้เคียง Wizard สายนี้?</h2>
+        <p id="result-gift" class="strength"></p>
         <p id="result-reason"></p><div id="signature" class="signature"></div>
         <p id="close-note" class="callout" hidden></p>
       </div>
@@ -59,18 +68,18 @@
       <div class="panel"><h2>Wizard สายอื่นที่ใกล้เคียง</h2><div id="alternatives" class="alternatives"></div><p class="muted small">ทุกสายใช้คะแนนเดียวกัน แต่จับคู่กับรูปแบบการเรียนรู้คนละชุด</p></div>
       <div class="panel growth"><h2>Growth Quest ✨</h2><p id="result-quest"></p><p class="muted small">ภารกิจนี้ชวนให้ฝึกมุมอื่นเพิ่มเติม ไม่ได้บอกว่าคุณขาดทักษะใด</p></div>
       <div class="actions">
-        <button type="button" class="secondary" id="retake">ทำแบบสอบถามใหม่</button>
-        <button type="button" class="primary" id="share">แชร์ผลของฉัน</button>
+        <button type="button" class="secondary" id="retake" disabled>ทำแบบสอบถามใหม่</button>
+        <button type="button" class="primary" id="share" disabled>แชร์ผลของฉัน</button>
       </div>
       <p id="share-status" class="center muted small" aria-live="polite"></p>
-      <p class="center small"><a href="../9-learning-angles/">ดูแบบสอบถาม 9 Learning Angles ต้นฉบับ ↗</a></p>
+      <div id="share-fallback" class="panel" hidden>
+        <label for="share-text">ข้อความผลลัพธ์สำหรับคัดลอกและแชร์</label>
+        <textarea id="share-text" class="resize-none" rows="5" readonly></textarea>
+      </div>
+      <p class="center small"><a href="https://wollab.github.io/WoL_GameLab/9-learning-angles/">ดูแบบสอบถาม 9 Learning Angles ต้นฉบับ ↗</a></p>
     </section>
   </main>
   <footer>Wizards of Learning · Discovery Prototype V1 · Creative learning reflection, not a diagnosis</footer>
 </div>
-<script src="../9-learning-angles/data.js"></script>
-<script src="wizard-data.js"></script>
-<script src="wizard-matching.js"></script>
-<script src="app.js"></script>
 </body>
 </html>

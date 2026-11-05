@@ -11,11 +11,13 @@
   const angles=Object.fromEntries(angleOrder.map(id=>[id,MOVES[id]]));
   const memberCounts=Object.fromEntries(Object.keys(WIZARD_FAMILIES).map(f=>[f,WIZARD_ARCHETYPES.filter(x=>x.family===f).length]));
   const errors=WizardMatching.validateSignatures(WIZARD_ARCHETYPES);
-  if(errors.length){console.error("Wizard data:",errors);el("start").disabled=true;el("start").textContent="ข้อมูล Wizard ยังไม่พร้อม";return;}
+  if(errors.length)throw new Error("Wizard data: "+errors.join("; "));
   let answers={},questions=[],step=0,ranked=[];
   function show(page){
     Object.entries(pages).forEach(([key,element])=>element.classList.toggle("active",key===page));
     window.scrollTo({top:0,behavior:"instant"});
+    if(page==="home")el("start").focus({preventScroll:true});
+    if(page==="result")el("result-title").focus({preventScroll:true});
   }
   function shuffled(items){
     const copy=[...items];for(let i=copy.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy;
@@ -24,11 +26,12 @@
     const wrap=el("family-list");
     Object.entries(WIZARD_FAMILIES).forEach(([key,f])=>{
       const box=$("div","family");box.style.setProperty("--family",f.color);
-      box.append($("div","symbol",f.icon),$("b","",f.title),$("small","",memberCounts[key]+" Archetypes"));
+      box.append($("div","symbol",f.icon),$("b","",f.title),$("small","",f.thai),$("small","",memberCounts[key]+" Archetypes"));
       wrap.append(box);
     });
   }
   function begin(){
+    el("share-status").textContent="";el("share-fallback").hidden=true;el("share-text").value="";
     answers=Object.fromEntries(angleOrder.map(id=>[id,0]));
     questions=[...shuffled(QUESTIONS.slice(0,-1)).map(q=>({...q,options:shuffled(q.options)})), {...QUESTIONS[QUESTIONS.length-1],options:shuffled(QUESTIONS[QUESTIONS.length-1].options)}];
     step=0;show("quiz");renderQuestion();
@@ -37,6 +40,7 @@
     const q=questions[step];
     el("progress-label").textContent="คำถาม "+(step+1)+" / "+questions.length;
     el("progress").setAttribute("aria-valuenow",step);
+    el("progress").setAttribute("aria-valuetext","ตอบแล้ว "+step+" จาก "+questions.length+" ข้อ");
     el("progress-fill").style.width=(step/questions.length*100)+"%";
     el("quiz-title").textContent=q.text;
     el("question-note").textContent=q.note||"";
@@ -45,18 +49,21 @@
       const button=$("button","option"+(q.options.length>6?" thumb":""));
       button.type="button";
       if(q.options.length>6){
-        const img=$("img");img.src="../9-learning-angles/"+angles[opt.move].img;img.alt="";
+        const img=$("img");img.src=angles[opt.move].img;img.alt="";
         button.append(img);
       }else button.append($("span","bullet",String.fromCharCode(65+i)));
       button.append($("span","",opt.text));
       button.addEventListener("click",()=>{
+        if(!button.isConnected)return;
         answers[opt.move]+=q.weight||1;
         step++;
         if(step<questions.length)renderQuestion();
-        else{el("progress").setAttribute("aria-valuenow",questions.length);showResult();}
+        else{el("progress").setAttribute("aria-valuenow",questions.length);el("progress-fill").style.width="100%";showResult();}
       });
       wrap.append(button);
     });
+    el("quiz-title").focus({preventScroll:true});
+    window.scrollTo({top:0,behavior:"instant"});
   }
   function showResult(){
     ranked=WizardMatching.matchWizards(answers,WIZARD_ARCHETYPES);
@@ -67,12 +74,13 @@
     el("result-title").textContent=winner.name;
     el("result-motto").textContent="“"+f.motto+"”";
     el("result-description").textContent=winner.desc;
+    el("result-gift").textContent="จุดแข็งที่ชวนสำรวจ: "+winner.gift;
     el("result-reason").textContent="ผลคะแนนของคุณใกล้กับสายนี้ เพราะคุณใช้มุม "+winner.sig.map(id=>WIZARD_ANGLE_NAMES[id]).join(" / ")+" ในสัดส่วนที่สอดคล้องกับ Learning Signature ที่ออกแบบให้ Wizard นี้";
     el("result-quest").textContent=winner.quest;
     const signature=el("signature");signature.replaceChildren();
     ["มุมหลัก","มุมรอง","มุมสนับสนุน"].forEach((name,i)=>{
       const id=winner.sig[i],a=angles[toOriginalId(id)],row=$("div","sig");
-      const img=$("img");img.src="../9-learning-angles/"+a.img;img.alt="";
+      const img=$("img");img.src=a.img;img.alt="";
       const copy=$("div");copy.append($("b","",a.thai),$("small","",a.guide));
       row.append(img,copy,$("span","tier",name+" • "+answers[toOriginalId(id)]+" คะแนน"));
       signature.append(row);
@@ -103,7 +111,7 @@
         const a=Object.values(angles).find(item=>item.phase===phase&&item.source===source);
         const cell=$("td"),btn=$("button","angle-card");
         btn.type="button";btn.style.setProperty("--a",a.color);
-        const img=$("img");img.src="../9-learning-angles/"+a.img;img.alt="";
+        const img=$("img");img.src=a.img;img.alt="";
         btn.append(img,$("strong","",a.thai),$("span","",answers[a.id]+" คะแนน"));
         btn.addEventListener("click",()=>selectAngle(a.id));
         btn.dataset.angle=a.id;
@@ -121,13 +129,27 @@
   }
   async function share(){
     const winner=ranked[0];
-    const text="What Is Your Magic? ✨\nWizard ของฉันคือ "+winner.name+" ("+WIZARD_FAMILIES[winner.family].title+")\nมาค้นหาเวทมนตร์ของคุณ: "+location.origin+location.pathname;
+    const text="What Is Your Magic? ✨\nWizard ของฉันคือ "+winner.name+" ("+WIZARD_FAMILIES[winner.family].title+")\nเรื่องเล่าเพื่อสำรวจการเรียนรู้ ไม่ใช่ผลวินิจฉัยบุคลิกภาพ\nมาค้นหาเวทมนตร์ของคุณ: "+location.origin+location.pathname;
+    const button=el("share");button.disabled=true;
+    el("share-status").textContent="";el("share-fallback").hidden=true;
     try{
-      if(navigator.share){await navigator.share({title:"What Is Your Magic?",text});}
-      else if(navigator.clipboard){await navigator.clipboard.writeText(text);el("share-status").textContent="คัดลอกข้อความแชร์แล้ว";}
-      else el("share-status").textContent=text;
-    }catch(e){if(e.name!=="AbortError")el("share-status").textContent="แชร์ไม่สำเร็จ ลองคัดลอกลิงก์จากแถบที่อยู่";}
+      if(navigator.share){
+        try{await navigator.share({title:"What Is Your Magic?",text});el("share-status").textContent="แชร์ผลแล้ว";return;}
+        catch(e){if(e.name==="AbortError"){el("share-status").textContent="ยกเลิกการแชร์แล้ว";return;}}
+      }
+      if(navigator.clipboard){
+        try{await navigator.clipboard.writeText(text);el("share-status").textContent="คัดลอกข้อความผลลัพธ์แล้ว นำไปวางเพื่อแชร์ได้เลย";return;}catch(e){/* Manual fallback below. */}
+      }
+      el("share-status").textContent="เลือกและคัดลอกข้อความด้านล่างเพื่อแชร์ผลของคุณ";
+      el("share-text").value=text;el("share-fallback").hidden=false;
+      el("share-text").focus();el("share-text").select();
+    }finally{button.disabled=false;}
   }
-  families();el("start").addEventListener("click",begin);el("quit").addEventListener("click",()=>show("home"));
-  el("retake").addEventListener("click",begin);el("share").addEventListener("click",share);
+  families();
+  document.getElementById("start").addEventListener("click",begin);
+  document.getElementById("quit").addEventListener("click",()=>show("home"));
+  document.getElementById("retake").addEventListener("click",begin);
+  document.getElementById("share").addEventListener("click",share);
+  ["start","quit","retake","share"].forEach(id=>el(id).disabled=false);
+  el("startup-status").hidden=true;
 })();
