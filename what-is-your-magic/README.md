@@ -2,6 +2,11 @@
 
 A separate, standalone experience from [9 Learning Angles](../9-learning-angles/) by Wizards of Learning. Both tools coexist as distinct websites under the same GitHub Pages project. This app bundles a verified snapshot of the original quiz and existing assets; it has no runtime dependency on the original app directory.
 
+## Public website
+
+- [What Is Your Magic?](https://wollab.github.io/WoL_GameLab/what-is-your-magic/)
+- [Original 9 Learning Angles](https://wollab.github.io/WoL_GameLab/9-learning-angles/)
+
 ## Play the feature branch locally
 
 From the repository root (Python 3, no build/install step):
@@ -16,7 +21,7 @@ Open [What Is Your Magic? local preview](http://127.0.0.1:8000/what-is-your-magi
 
 Serving only this app also works: `python -m http.server 8001 --bind 127.0.0.1 --directory what-is-your-magic`, then open [isolated preview](http://127.0.0.1:8001/).
 
-Production routes remain `/WoL_GameLab/9-learning-angles/` and `/WoL_GameLab/what-is-your-magic/`. GitHub Pages is configured for **main**, so the feature branch is not a hosted Pages preview. This PR stays Draft; no merge or production deployment is part of this fix.
+Production routes remain `/WoL_GameLab/9-learning-angles/` and `/WoL_GameLab/what-is-your-magic/`. GitHub Pages is configured for **main**, so the feature branch is not a hosted Pages preview. Chief authorized the V1 production release on 2026-11-05. Publish through PR #2 into main using the existing Pages configuration; the earlier Draft/unmerged hold is superseded for this release. The app name stays unchanged pending a separate naming decision.
 
 ## Long-form UI and individual profiles — 2026-11-05 follow-up
 

@@ -3,6 +3,11 @@
 ## Original goal
 Complete the separate `/WoL_GameLab/what-is-your-magic/` website: landing → ten original questions → one of 27 Wizards, preserving `/WoL_GameLab/9-learning-angles/`. Commit on `feature/wizard-discovery-v1`, update existing Draft PR #2, never merge automatically.
 
+## Release authorization — 2026-11-05
+Chief explicitly requested “Push ขึ้นเว็บเลยครับ :)”. This supersedes the earlier hold on merge/deployment for this release. Publish the tested V1 through existing PR #2 into main (GitHub Pages legacy root source), preserving the original app. Keep the current app name: “27 Magic of Learning” is a naming question, not an approved rename. Only TASK_STATE/README release documentation changed after the tested 6e14645 source; no app code/scoring/assets changed.
+
+Release is in progress: verify PR head/base and changed paths, mark ready and merge with expected-head guard, wait for Pages build of the merge SHA, then play the production URL through ten answers and verify the original site. Target: https://wollab.github.io/WoL_GameLab/what-is-your-magic/. Checkpoint actual deployed commit and live tests after verification. This is a user-authorized release, not an automatic ongoing release rule.
+
 ## Current status — 2026-11-05 follow-up
 Chief-requested fresh Product Design audit and frontend refinement is implemented and verified locally from clean `ea68efa`. UX fix `78787335bacc15a6fd882dfaec92ff997b08c42a` is committed and pushed; existing Draft PR #2 metadata is updated and read back open, Draft and unmerged. Technical delivery is complete; Chief play/design review remains next. Chief explicitly freed this app from corporate color constraints; iris/ink/lilac and Bai Jamjuree body type are scoped to this app. Do not claim comparative superiority without real user testing.
 
@@ -60,5 +65,8 @@ No technical blocker or remaining UI implementation step. Chief review of the ac
 - Isolated root: http://127.0.0.1:4188/
 Local Python processes must remain running. Portable local/Codespaces commands are in the app README. No public hosted-preview claim.
 
-## Exact next action
+## Previous review next action (superseded by release authorization above)
 Chief opens the local preview, plays the corrected ten-question journey, deliberately changes one answer with Previous, then reviews the mobile matrix and catalog search. Record concrete feedback; real-user testing is needed before any better-than-16Personalities claim. Current full six-step report: this chat visualization audit3/report.html (also report.md); core/profile/audit/static JSON and accepted screenshots are alongside it. If the server stopped, use the already verified README commands. If the local server has stopped, use the README launch commands on `feature/wizard-discovery-v1`. Keep PR #2 Draft/unmerged until Chief's next release instruction. No automatic merge/deploy or remaining-art batch.
+
+## Exact next action — authorized release
+Merge the reviewed PR with expected-head protection, observe the Pages build for that merge commit and run the real production-browser journey/original regression; update this checkpoint and PM with actual results. Do not rename the app from a naming question.
