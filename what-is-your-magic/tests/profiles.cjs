@@ -8,7 +8,8 @@ const data=load(),fixtures=enumerate(data),base=process.env.MAGIC_BASE_URL||'htt
 const out=process.env.TEST_OUTPUT_DIR||path.join(os.tmpdir(),'what-is-your-magic-reading-qa');fs.mkdirSync(out,{recursive:true});
 const report={checks:[],errors:[],failedRequests:[],screenshots:[]};let browser;
 async function check(name,fn){await fn();report.checks.push({name,status:'passed'});console.log('PASS '+name);}
-async function snap(page,name,fullPage=false){await page.evaluate(()=>document.fonts.ready);await page.locator('.page.active img').evaluateAll(images=>Promise.all(images.map(img=>img.decode().catch(()=>{}))));await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await page.screenshot({path:path.join(out,name+'.png'),fullPage});report.screenshots.push(name+'.png');}
+// Make lazy off-screen art eager only for deterministic screenshot capture.
+async function snap(page,name,fullPage=false){await page.evaluate(()=>document.fonts.ready);await page.locator('.page.active img').evaluateAll(images=>Promise.all(images.map(img=>{img.loading='eager';return img.decode().catch(()=>{});})));await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await page.screenshot({path:path.join(out,name+'.png'),fullPage});report.screenshots.push(name+'.png');}
 async function page(width){const p=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'});p.on('pageerror',e=>report.errors.push(e.message));p.on('console',m=>{if(m.type()==='error')report.errors.push(m.text())});p.on('response',r=>{if(r.status()>=400)report.failedRequests.push({url:r.url(),status:r.status()})});p.on('requestfailed',r=>report.failedRequests.push({url:r.url(),error:r.failure()?.errorText}));return p;}
 async function noOverflow(p){assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'page horizontal overflow');}
 async function quiz(p,id){
@@ -28,7 +29,7 @@ async function quiz(p,id){
   let witness;
   await check('Hero: archetype sample plus three original signature characters',async()=>{
     witness=await quiz(p,'necromancer');assert.equal(await p.locator('#result-art .hero-angle img').count(),3);
-    await p.locator('#result-art .archetype-portrait img').waitFor();assert.ok(await p.locator('#result-art .archetype-portrait img').evaluate(async el=>{await el.decode();return el.complete&&el.naturalWidth>0}));
+    await p.locator('#result-art .archetype-portrait img').waitFor();assert.equal(await p.locator('#result-art .archetype-portrait img').getAttribute('src'),'assets/archetypes/necromancer.webp');assert.ok(await p.locator('#result-art .archetype-portrait img').evaluate(async el=>{await el.decode();return el.complete&&el.naturalWidth>0}));
     await p.evaluate(()=>document.fonts.ready);await snap(p,'new-result-hero-desktop');
   });
   await check('Nearby profile link, Browser Back and reload preserve all nine scores',async()=>{
@@ -53,7 +54,7 @@ async function quiz(p,id){
     for(const type of data.types){
       await p.goto(base+'what-is-your-magic/#wizard/'+type.id);await p.locator('#profile-title').filter({hasText:type.name}).waitFor();
       assert.equal(await p.locator('#profile-description').textContent(),type.desc);
-      assert.equal(await p.locator('#profile-art .hero-angle img').count(),3);
+      assert.equal(await p.locator('#profile-art .hero-angle img').count(),3);assert.equal(await p.locator('#profile-art .archetype-portrait img').getAttribute('src'),'assets/archetypes/'+type.id+'.webp');assert.ok(await p.locator('#profile-art .archetype-portrait img').evaluate(async img=>{await img.decode();return img.naturalWidth===512&&img.naturalHeight>600}));
       assert.equal(await p.locator('.profile-signature-row').count(),3);
       assert.equal(await p.locator('#profile-strength .large-copy').textContent(),type.gift);
       assert.equal(await p.locator('#profile-quest .large-copy').textContent(),type.quest);
@@ -62,7 +63,7 @@ async function quiz(p,id){
     await p.reload();await p.locator('#wizard-profile.active').waitFor();assert.equal(await p.locator('#profile-title').textContent(),'Blood Mage');
   });
   await check('Catalog has 27 distinct profile links and working Family filters',async()=>{
-    await p.goto(base+'what-is-your-magic/#wizards');await p.locator('#wizards.active').waitFor();assert.equal(await p.locator('#wizard-groups .wizard-card').count(),27);
+    await p.goto(base+'what-is-your-magic/#wizards');await p.locator('#wizards.active').waitFor();assert.equal(await p.locator('#wizard-groups .wizard-card').count(),27);assert.equal(await p.locator('#wizard-groups .card-portrait').count(),27);
     assert.equal(new Set(await p.locator('#wizard-groups .wizard-card').evaluateAll(items=>items.map(a=>a.hash))).size,27);
     await snap(p,'new-catalog-desktop');
     await p.locator('[data-family-filter="B"]').click();await p.locator('[data-family-filter="B"][aria-current="page"]').waitFor();assert.equal(await p.locator('#wizard-groups .wizard-card').count(),7);

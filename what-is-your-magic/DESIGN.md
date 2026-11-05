@@ -4,7 +4,7 @@ source_base: Chief's supplied 16Personalities references, original nine characte
 purpose: Maintain the approved scope and current visual implementation choices
 ---
 
-# What Is Your Magic? — web design direction
+# 27 Wizards of Learning — web design direction
 
 ## Intent and controlling correction
 
@@ -41,11 +41,15 @@ Use the original nine PNGs unchanged. All raw scores are bold. Scores ≥4 are a
 
 Use native buttons/links, keyboard focus, honest titles, startup recovery and selectable share fallback. All 27 direct profile routes and invalid-route recovery must work on static hosting without server rewrites. Browser Back and reload preserve the latest completed nine-score result through `history.state` on relevant entries, not analytics, cookies or persistent local storage. Retake clears this context. Profiles opened directly without an answer set do not invent personal scores.
 
-## Artwork status
+## Artwork and Family communication — 2026-11-06
 
-The nine source character images remain untouched and are used in the matrix, signatures and hero triads. The archetype portrait slot supports a review sample for Necromancer at `assets/archetypes/necromancer-sample.png`; the other 26 archetypes retain family-symbol placeholders. This is one style trial generated in this chat using the existing Reflector/Connector images as references, not approval of a complete 27-character set.
+Chief approved the Necromancer style, requested all 27 portraits with names, then asked to put them on the website with the actual Wizards of Learning logo. All 27 portraits are complete and visually inspected by the author. Approval of the reference and generation scope is distinct from Chief individually reviewing every new companion.
 
-Sample brief: friendly full-body semi-chibi learner retrieving forgotten knowledge, charcoal/plum wizard clothes, lantern and old storybook, crisp clean 2D angular cel shading and expressive face, white background, no horror or skulls. Built-in Image Gen; no source character edited. Review the sample with Chief before inferring an approved production art direction or generating the full set.
+Each result/profile hero combines its own portrait and the three untouched original Learning Angle characters. Directory and related-profile cards use the matching portrait. Full-body framing, readable silhouettes, angular cel shading and varied tools support recognition; names remain real HTML text. The Diviner specifically retains the card-holding hand and open palm after removing the magnifying glass and extra arm per Chief's mask. See ARTWORK.md and the prompt/hash manifest.
+
+27 WebP exports total 951,130 bytes, with eager hero and lazy directory/Family portraits. Original PNG masters are preserved byte-for-byte. The canonical WoL logo PNG is copied unchanged from the local brand source; its aspect ratio is preserved in the header, footer and favicon.
+
+Families now use five broad reading rows instead of five compact cards. Each has a distinct Thai action heading, the canonical description, an example under “เมื่อเจอโจทย์ใหม่”, three named representatives and a clear member-count link. On mobile the copy precedes a three-character strip. The explanation describes different approaches without ranking Families or claiming fixed abilities. The app retains the approved long-form reading structure and its scoped iris/ink/lilac palette.
 
 ## Visual comparison ledger
 
@@ -78,4 +82,4 @@ The visual risk is a fantasy field-guide reading palette independent of the corp
 
 Current validation: core Chrome browser 12/12, profile/reading 10/10, observed-issue regressions 5/5, scoring 5/5; all 27 outcomes through actual ten-answer journeys. Low-label contrast, chapter landing, input focus, score replacement and search recovery are measured in `tests/audit.cjs`. Screenshots and the full six-step report are external delivery artifacts under this audit's `audit3` folder. Current in-app browser journey also completed ten answers, profile exploration and search recovery with no console errors/warnings.
 
-This is an expert audit and implementation check, not evidence that real users perform better than on 16Personalities. Physical-device testing, assistive-technology evaluation, comprehensive WCAG verification and comparative usability research remain outside the current evidence. One Necromancer sample remains review-only; other 26 portraits remain placeholders.
+This is an expert audit and implementation check, not evidence that real users perform better than on 16Personalities. Physical-device testing, assistive-technology evaluation, comprehensive WCAG verification and comparative usability research remain outside the current evidence. The later full-character update supersedes the single-sample art status; the current cast is documented above.

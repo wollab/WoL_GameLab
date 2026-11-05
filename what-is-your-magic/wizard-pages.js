@@ -10,7 +10,7 @@
     const copy=node('div','wizard-card-copy');copy.append(node('h3','',type.name),node('p','',type.desc));
     const sig=node('div','mini-signature');type.sig.forEach(id=>{const img=node('img');img.src=MOVES[original(id)].img;img.alt=WIZARD_ANGLE_NAMES[id];sig.append(img);});
     const more=node('span','card-link','รู้จัก Wizard นี้');more.append(icon('arrow'));
-    a.append(emblem(type.family),copy,sig,more);return a;
+    a.append(WizardUI.portrait(type,'card-portrait',true),copy,sig,more);return a;
   }
   function catalog(family='all'){
     const wrap=document.getElementById('wizard-groups');wrap.replaceChildren();

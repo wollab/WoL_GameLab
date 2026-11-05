@@ -91,3 +91,17 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{font-family:Kanit,system-ui,sans-serif;line-hei
 .hero-close-note a{display:block;font-weight:600;margin-top:5px;text-decoration:underline;text-underline-offset:4px}
 .catalog-search{max-width:760px;margin:38px auto 0}.catalog-search label{display:block;font-weight:600;margin-bottom:12px}.search-controls{display:flex;gap:12px;align-items:center}.search-controls input{width:100%;min-width:0;min-height:56px;padding:12px 16px;border:1px solid #a7a0bb;border-radius:8px;background:white;color:var(--ink)}.search-controls button{white-space:nowrap}.catalog-status{font-size:15px;color:var(--muted);margin-bottom:28px}.catalog-empty{padding:40px 0 80px;max-width:700px}.family-filters{margin-bottom:24px}
 @media(max-width:760px){.chapter-picker{display:flex}.quiz-actions{position:sticky;bottom:0;padding:14px 0;background:#fffffff5;border-top:1px solid var(--border);z-index:5}.quiz-actions button{padding:12px 17px;font-size:15px}.hero-close-note{font-size:14px}.search-controls{align-items:stretch}.search-controls button{padding:10px 15px;font-size:14px}.search-controls input{font-size:15px;min-height:52px}.catalog-search{margin-top:26px}.catalog-search label{font-size:16px}}
+
+/* Original archetype portraits retain full-body framing and visible name labels. */
+.wizard-card>.card-portrait{width:100%;height:210px;object-fit:contain;mix-blend-mode:multiply;margin-bottom:22px}
+.related-chapter .wizard-card>.card-portrait{height:170px}
+@media(max-width:760px){.wizard-card>.card-portrait,.related-chapter .wizard-card>.card-portrait{height:240px}}
+
+/* Families explain distinct approaches before inviting a deeper browse. */
+.brand-logo{width:64px;height:64px;object-fit:contain;flex:none}
+.families{display:grid;grid-template-columns:1fr;gap:24px}
+.family{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:32px;padding:32px 36px;text-align:left;border:1px solid color-mix(in srgb,var(--family) 25%,white);border-left:5px solid var(--family);border-radius:16px}
+.family:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.family-copy{min-width:0}.family .family-english{font-size:14px;color:var(--muted);font-weight:400;margin-bottom:10px}.family h3{font-size:28px;margin:0 0 16px}.family-description{font-size:16px;margin:0 0 18px;color:var(--muted);line-height:1.85}.family-example{font-size:16px;line-height:1.85;margin:0 0 22px}.family-example>span{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:5px}.family-link{font-size:15px;font-weight:600;color:var(--accent)}.family-cast{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:end}.family-cast figure{margin:0;text-align:center;min-width:0}.family-cast img{width:100%;height:190px;object-fit:contain;mix-blend-mode:multiply}.family-cast figcaption{font-size:13px;line-height:1.5;margin-top:10px;color:var(--ink)}
+@media(max-width:760px){.brand-logo{width:48px;height:48px}.site-header .header-inner{gap:3px}.site-header nav{line-height:1.5}.family{grid-template-columns:1fr;padding:24px 20px;gap:25px}.family h3{font-size:25px}.family-description,.family-example{font-size:15px}.family-cast{gap:8px}.family-cast img{height:145px}.family-cast figcaption{font-size:12px}.families{gap:22px}.site-footer .brand-logo{width:64px;height:64px}}
+@media(max-width:350px){.family{padding:22px 16px}.family-cast img{height:125px}.family-cast figcaption{font-size:11px}}

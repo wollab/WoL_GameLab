@@ -11,11 +11,12 @@
   function profileLink(type,className='text-link',text){const a=node('a',className,text||'ดู Profile '+type.name);a.href=profileHref(type.id);return a;}
   function heading(title,name){const h=node('h2','section-heading');h.append(icon(name),node('span','',title));return h;}
   const toOriginal=id=>({communicator:'meaningmaker',summarizer:'synthesizer'}[id]||id);
+  function portrait(type,className='',lazy=false){
+    const img=node('img',className);img.src='assets/archetypes/'+type.id+'.webp';img.alt='ภาพ '+type.name;img.width=512;img.height=640;img.decoding='async';img.loading=lazy?'lazy':'eager';return img;
+  }
   function heroVisual(type){
     const stage=node('div','hero-visual'),portrait=node('div','archetype-portrait');
-    if(type.id==='necromancer'){
-      const img=node('img');img.src='assets/archetypes/necromancer-sample.png';img.alt='Necromancer ผู้ค้นความรู้จากเรื่องราวในอดีต';portrait.append(img);
-    }else portrait.append(emblem(type.family));
+    portrait.append(WizardUI.portrait(type));
     const triad=node('div','hero-triad');triad.setAttribute('aria-label','สามมุมใน Learning Signature');
     ['มุมหลัก','มุมรอง','มุมสนับสนุน'].forEach((role,i)=>{
       const angle=MOVES[toOriginal(type.sig[i])],figure=node('figure','hero-angle'),img=node('img');img.src=angle.img;img.alt='';
@@ -31,5 +32,5 @@
     items.forEach(([id,title])=>{const a=node('a','',title);a.href=prefix+'/'+id;a.append(icon('arrow'));wrap.append(a);});
   }
   function decorate(){document.querySelectorAll('[data-icon]').forEach(e=>{e.replaceChildren(icon(e.dataset.icon));});}
-  root.WizardUI={node,icon,emblem,profileHref,profileLink,heading,heroVisual,chapters,decorate};
+  root.WizardUI={node,icon,emblem,profileHref,profileLink,heading,heroVisual,chapters,portrait,decorate};
 })(window);

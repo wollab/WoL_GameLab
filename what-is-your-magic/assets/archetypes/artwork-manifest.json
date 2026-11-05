@@ -1,0 +1,508 @@
+{
+  "status": "27 portraits complete; author visual QA passed; owner review of new companions pending",
+  "reference": "necromancer-sample.png",
+  "tool": "built-in image_gen",
+  "style": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose. ",
+  "portraits": [
+    {
+      "id": "necromancer",
+      "status": "owner-approved reference",
+      "master": "necromancer-sample.png",
+      "name": "Necromancer",
+      "family": "C",
+      "description": "ผู้ค้นความรู้จากอดีตและสิ่งที่เคยถูกลืม",
+      "masterSha256": "fe3c5a5956a3c8c7861a3f62b0f820436cb79f19c89bcd260343ebc7559745bb",
+      "masterDimensions": [
+        1123,
+        1401
+      ],
+      "web": "necromancer.webp",
+      "webBytes": 28888
+    },
+    {
+      "id": "mage",
+      "status": "generated and visually inspected",
+      "master": "masters/mage.png",
+      "sourceFile": "exec-063b73b6-f9c8-4dc5-890b-ac27d1d89d37.png",
+      "brief": "Use case: stylized-concept. Create ONE original companion character portrait for the 27 Wizards of Learning cast. The attached Necromancer image is the approved RENDERING/PROPORTION reference, not the character to copy. Match its friendly modern 2D semi-chibi cartoon: very large expressive head/eyes, about 2.7 heads tall, crisp angular cel shading, clean confident shapes, bright controlled colors, detailed but readable fantasy clothing, same polished finish. Full body head to boots, 3/4 view, centered with generous clean white margin and tiny oval gray ground shadow, portrait 4:5 canvas, character fills about 82% height. Subject: MAGE / GENERALIST, a versatile learner who connects ideas, imagines alternatives and experiments, choosing tools to fit the problem. Design an independent cheerful young adult wizard with warm brown skin, short dark curly hair, broad soft blue pointed hat, navy/teal and ivory layered travel robes, small gold fasteners and a compact tool pouch. One hand holds a modular staff with three different geometric crystal pieces; the other open hand compares three small floating colorful geometric spell shapes, suggesting flexible approaches. Energetic confident smile, approachable and clever. Keep silhouette clean and prop count small. Do not repeat the Necromancer's book/lantern/ghost or exact hair/costume/pose. No words, title, lettering, numbers, logo, border, scenery, realistic rendering, 3D, horror, skulls or weapons. White background. This is a NEW project-owned character in the same illustration family.",
+      "finalPrompt": "Use case: stylized-concept. Create ONE original companion character portrait for the 27 Wizards of Learning cast. The attached Necromancer image is the approved RENDERING/PROPORTION reference, not the character to copy. Match its friendly modern 2D semi-chibi cartoon: very large expressive head/eyes, about 2.7 heads tall, crisp angular cel shading, clean confident shapes, bright controlled colors, detailed but readable fantasy clothing, same polished finish. Full body head to boots, 3/4 view, centered with generous clean white margin and tiny oval gray ground shadow, portrait 4:5 canvas, character fills about 82% height. Subject: MAGE / GENERALIST, a versatile learner who connects ideas, imagines alternatives and experiments, choosing tools to fit the problem. Design an independent cheerful young adult wizard with warm brown skin, short dark curly hair, broad soft blue pointed hat, navy/teal and ivory layered travel robes, small gold fasteners and a compact tool pouch. One hand holds a modular staff with three different geometric crystal pieces; the other open hand compares three small floating colorful geometric spell shapes, suggesting flexible approaches. Energetic confident smile, approachable and clever. Keep silhouette clean and prop count small. Do not repeat the Necromancer's book/lantern/ghost or exact hair/costume/pose. No words, title, lettering, numbers, logo, border, scenery, realistic rendering, 3D, horror, skulls or weapons. White background. This is a NEW project-owned character in the same illustration family.",
+      "name": "Mage / Generalist",
+      "family": "A",
+      "description": "นักเวทสารพัดศาสตร์ที่ยืดหยุ่นและเลือกวิธีเรียนรู้ตามโจทย์",
+      "masterSha256": "f8a2e2010301dba016125d1d63b0212828156cbcae536c15e70f015d7d0bd4e0",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "mage.webp",
+      "webBytes": 40096
+    },
+    {
+      "id": "scholar",
+      "status": "generated and visually inspected",
+      "master": "masters/scholar.png",
+      "sourceFile": "exec-d91cd206-02c1-4b8d-a4b1-20981a71cf9d.png",
+      "brief": "SCHOLAR: connects and distills knowledge into understandable principles (synthesizer, connector, reflector). A thoughtful smiling young woman with warm fair skin, auburn hair in a loose side braid, round glasses, short slate-lilac scholar's hat with a small quill pin, ivory/navy academic travel robes. Holds a folding notebook with blank diagram cards and a feather pen linking three small abstract geometric symbols. Clearly a friendly researcher comparing and organizing, not the reference lantern reader.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: SCHOLAR: connects and distills knowledge into understandable principles (synthesizer, connector, reflector). A thoughtful smiling young woman with warm fair skin, auburn hair in a loose side braid, round glasses, short slate-lilac scholar's hat with a small quill pin, ivory/navy academic travel robes. Holds a folding notebook with blank diagram cards and a feather pen linking three small abstract geometric symbols. Clearly a friendly researcher comparing and organizing, not the reference lantern reader.",
+      "name": "Scholar",
+      "family": "A",
+      "description": "ผู้เชื่อมและกลั่นความรู้ให้เป็นหลักการที่เข้าใจได้",
+      "masterSha256": "5f00d1a8521e747714a32bba8bd06ebb874404d2324398943e2bfed299f79e75",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "scholar.webp",
+      "webBytes": 39450
+    },
+    {
+      "id": "elementalist",
+      "status": "generated and visually inspected",
+      "master": "masters/elementalist.png",
+      "sourceFile": "exec-a3a736d8-d327-4dc2-8119-c51935ac1953.png",
+      "brief": "ELEMENTALIST: observes the world's forces and learns through experiments (explorer, experimenter, creator). A lively young wizard with copper skin, short wavy white hair and a curved blue pointed hat, cobalt and orange layered robes and practical boots. Both open palms balance a small spiral of FOUR distinct miniature elemental shapes: amber flame, clear blue water curl, green faceted stone and white wind ribbon. Joyful concentration, clean energetic silhouette, elements safely tiny and controlled.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: ELEMENTALIST: observes the world's forces and learns through experiments (explorer, experimenter, creator). A lively young wizard with copper skin, short wavy white hair and a curved blue pointed hat, cobalt and orange layered robes and practical boots. Both open palms balance a small spiral of FOUR distinct miniature elemental shapes: amber flame, clear blue water curl, green faceted stone and white wind ribbon. Joyful concentration, clean energetic silhouette, elements safely tiny and controlled.",
+      "name": "Elementalist",
+      "family": "A",
+      "description": "ผู้สังเกตพลังของโลกและเรียนรู้จากการทดลอง",
+      "masterSha256": "e627fe49a7162a835a47883a2ba8d9c4e056087f0f89c03c6c209c0263a4874b",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "elementalist.webp",
+      "webBytes": 40604
+    },
+    {
+      "id": "geomancer",
+      "status": "generated and visually inspected",
+      "master": "masters/geomancer.png",
+      "sourceFile": "exec-199478c0-c45b-4b68-9f1d-3b6eae997776.png",
+      "brief": "GEOMANCER: understands places and relationships through observation (explorer, connector, reflector). A young woman with tan skin, long black braid and moss-green sloping wizard hat, earthy ochre/forest layered travel cloak and sturdy boots. Holds a folded terrain map with ONLY abstract contour shapes and studies a small floating miniature rock island with a tree and river above her other palm. A simple compass hangs on belt. Friendly attentive smile; clean calm grounded stance.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: GEOMANCER: understands places and relationships through observation (explorer, connector, reflector). A young woman with tan skin, long black braid and moss-green sloping wizard hat, earthy ochre/forest layered travel cloak and sturdy boots. Holds a folded terrain map with ONLY abstract contour shapes and studies a small floating miniature rock island with a tree and river above her other palm. A simple compass hangs on belt. Friendly attentive smile; clean calm grounded stance.",
+      "name": "Geomancer",
+      "family": "A",
+      "description": "ผู้เข้าใจพื้นที่และความสัมพันธ์ของสิ่งรอบตัว",
+      "masterSha256": "df6989acbfbb6d360754c5172a32d497038ec3d32a0784a8c0a661f674c83448",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "geomancer.webp",
+      "webBytes": 36832
+    },
+    {
+      "id": "chronomancer",
+      "status": "generated and visually inspected",
+      "master": "masters/chronomancer.png",
+      "sourceFile": "exec-f593330a-4554-4821-86a1-5c36af6e5857.png",
+      "brief": "CHRONOMANCER: learns from sequence, timing and reflecting on events (decider, reflector, connector). An androgynous young wizard with pale warm skin and silver hair swept into a short braid, tall curved midnight-blue hat with a small brass cog pin, ivory/blue cloak with amber lining. Holds a beautiful small brass hourglass; other hand arranges THREE small plain circular memory tokens along a single curved golden time ribbon. No clock numerals. A thoughtful confident smile, one foot stepping deliberately.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: CHRONOMANCER: learns from sequence, timing and reflecting on events (decider, reflector, connector). An androgynous young wizard with pale warm skin and silver hair swept into a short braid, tall curved midnight-blue hat with a small brass cog pin, ivory/blue cloak with amber lining. Holds a beautiful small brass hourglass; other hand arranges THREE small plain circular memory tokens along a single curved golden time ribbon. No clock numerals. A thoughtful confident smile, one foot stepping deliberately.",
+      "name": "Chronomancer",
+      "family": "A",
+      "description": "ผู้เรียนรู้จากเวลา ลำดับเหตุการณ์ และจังหวะตัดสินใจ",
+      "masterSha256": "06bc3b45661bd6b4d232fa4d55b5ccd86e61802808a5a843ad48bd5af1b34fc2",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "chronomancer.webp",
+      "webBytes": 40954
+    },
+    {
+      "id": "diviner",
+      "status": "generated and visually inspected",
+      "master": "masters/diviner.png",
+      "sourceFile": "exec-8213d445-8c1c-476c-ba7e-fc11abded46c.png",
+      "brief": "DIVINER: finds patterns to imagine possible directions (connector, decider, reflector), never a frightening fortune teller. A young woman with deep brown skin, curly dark bob under a broad indigo wizard hat, plum/ivory robes with mint accents. Lifts a small brass circular viewing lens toward THREE softly glowing constellation points connected by fine lines over her palm; holds a compact fan of blank geometric diagram cards at the waist. Curious reassuring expression, elegant uncluttered silhouette.",
+      "editPrompt": "Edit this ORIGINAL Diviner image precisely as the user's removal request. REMOVE ONLY the extra THIRD arm/hand holding a magnifying glass near her face, including the magnifying glass. This is the narrow upper-central-right region approximately x=52–75% of canvas width, y=21–45% of canvas height: the lens beside the curls and its hand/sleeve behind the raised open palm. Inpaint that area naturally with white background, existing curls/robe edges as appropriate, leaving NO lens and NO extra arm/hand. KEEP the LOWER arm and hand holding the fan of THREE geometric cards exactly as in the original. KEEP the RIGHTMOST raised OPEN PALM under the three glowing constellation points exactly unchanged. The finished character must have exactly TWO arms/hands: card-holding hand and open raised palm. Preserve the original entire face, expression, eyes, curly hair, violet/mint hat, plum/ivory robes, green waist sash, pouch, cards, constellation, full body/boots, white background, oval ground shadow, original framing and crisp cel-shaded rendering. Do not move cards into pouch, do not remove the card-holding hand, do not add props or text. Change nothing outside the necessary lens/extra-arm removal area.",
+      "finalPrompt": "Edit this ORIGINAL Diviner image precisely as the user's removal request. REMOVE ONLY the extra THIRD arm/hand holding a magnifying glass near her face, including the magnifying glass. This is the narrow upper-central-right region approximately x=52–75% of canvas width, y=21–45% of canvas height: the lens beside the curls and its hand/sleeve behind the raised open palm. Inpaint that area naturally with white background, existing curls/robe edges as appropriate, leaving NO lens and NO extra arm/hand. KEEP the LOWER arm and hand holding the fan of THREE geometric cards exactly as in the original. KEEP the RIGHTMOST raised OPEN PALM under the three glowing constellation points exactly unchanged. The finished character must have exactly TWO arms/hands: card-holding hand and open raised palm. Preserve the original entire face, expression, eyes, curly hair, violet/mint hat, plum/ivory robes, green waist sash, pouch, cards, constellation, full body/boots, white background, oval ground shadow, original framing and crisp cel-shaded rendering. Do not move cards into pouch, do not remove the card-holding hand, do not add props or text. Change nothing outside the necessary lens/extra-arm removal area.",
+      "name": "Diviner",
+      "family": "A",
+      "description": "ผู้เชื่อมข้อมูลเพื่อมองเห็นแนวโน้มและความเป็นไปได้",
+      "masterSha256": "523c95f0deac516055c760eb667889de88ae8b2a90a69e8418ac6b5010081c36",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "diviner.webp",
+      "webBytes": 31374
+    },
+    {
+      "id": "force-mage",
+      "status": "generated and visually inspected",
+      "master": "masters/force-mage.png",
+      "sourceFile": "exec-e0c534a7-cf40-4413-ac3d-3b40dab4e69d.png",
+      "brief": "FORCE MAGE: experiments to understand the forces that move systems (experimenter, connector, decider). A cheerful young wizard with light tan skin and short spiky black hair, blue curved pointed hat with ivory band, teal/cobalt short travel coat and amber fasteners over dark trousers. A circular brass ring staff held in one hand contains a floating small faceted blue sphere; the other palm gently pushes a single curved force ripple toward the sphere. Braced playful stance, clearly testing a physical mechanism, no combat or explosion.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: FORCE MAGE: experiments to understand the forces that move systems (experimenter, connector, decider). A cheerful young wizard with light tan skin and short spiky black hair, blue curved pointed hat with ivory band, teal/cobalt short travel coat and amber fasteners over dark trousers. A circular brass ring staff held in one hand contains a floating small faceted blue sphere; the other palm gently pushes a single curved force ripple toward the sphere. Braced playful stance, clearly testing a physical mechanism, no combat or explosion.",
+      "name": "Force Mage",
+      "family": "A",
+      "description": "ผู้ทดลองเพื่อเข้าใจแรงและกลไกที่ขับเคลื่อนระบบ",
+      "masterSha256": "ba70991e5173acd278be346089a7ad8911c68bff9e5fd0b618865aa5c4ebef3a",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "force-mage.webp",
+      "webBytes": 37300
+    },
+    {
+      "id": "healer",
+      "status": "generated and visually inspected",
+      "master": "masters/healer.png",
+      "sourceFile": "exec-e1284687-489f-47d1-b74f-0566010dab20.png",
+      "brief": "HEALER: listens to needs and tries caring responses (listener, reflector, experimenter). A gentle young man with brown skin, soft short chestnut curls and an ivory pointed hat with sage ribbon, cream and leaf-green layered healer's robe, compact satchel of bandage rolls. Kneels slightly while cradling a small floating emerald light inside cupped hands; a tiny fresh sprout rises from it. Warm attentive smile and open welcoming posture. No religious emblems, medical cross or text, no injured person.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: HEALER: listens to needs and tries caring responses (listener, reflector, experimenter). A gentle young man with brown skin, soft short chestnut curls and an ivory pointed hat with sage ribbon, cream and leaf-green layered healer's robe, compact satchel of bandage rolls. Kneels slightly while cradling a small floating emerald light inside cupped hands; a tiny fresh sprout rises from it. Warm attentive smile and open welcoming posture. No religious emblems, medical cross or text, no injured person.",
+      "name": "Healer",
+      "family": "B",
+      "description": "ผู้รับฟังความต้องการและค้นหาวิธีเยียวยา",
+      "masterSha256": "a771d9b9f10f38fa19625b4d3b1879ba5234c25c5a3f0e65437de148d147b11d",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "healer.webp",
+      "webBytes": 32012
+    },
+    {
+      "id": "priest",
+      "status": "generated and visually inspected",
+      "master": "masters/priest.png",
+      "sourceFile": "exec-326b893d-c91c-4ef3-9e81-6914da8f0ce5.png",
+      "brief": "PRIEST: listens and communicates shared meaning (communicator, listener, reflector). A friendly young woman with light brown skin, shoulder-length dark wavy hair and a soft ivory hooded wizard cap with green-gold band, cream/emerald robes, short cloak. Holds a small open blank storybook near the waist; free open hand gathers three warm abstract speech-shaped light bubbles into one gentle gold star. Inclusive thoughtful expression, no specific real religion's symbols, no cross, halo, lantern or ghost.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: PRIEST: listens and communicates shared meaning (communicator, listener, reflector). A friendly young woman with light brown skin, shoulder-length dark wavy hair and a soft ivory hooded wizard cap with green-gold band, cream/emerald robes, short cloak. Holds a small open blank storybook near the waist; free open hand gathers three warm abstract speech-shaped light bubbles into one gentle gold star. Inclusive thoughtful expression, no specific real religion's symbols, no cross, halo, lantern or ghost.",
+      "name": "Priest",
+      "family": "B",
+      "description": "ผู้ใช้การฟังและสื่อสารเพื่อสร้างความหมายร่วม",
+      "masterSha256": "968a478c351f315a2e7030934466793f6754e1e40a59b6a3188673ffa5978c8f",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "priest.webp",
+      "webBytes": 33280
+    },
+    {
+      "id": "holy-knight",
+      "status": "generated and visually inspected",
+      "master": "masters/holy-knight.png",
+      "sourceFile": "exec-daf525f4-224d-49c7-a8fb-6e59c2cd5885.png",
+      "brief": "HOLY KNIGHT: puts important principles into considered action (decider, communicator, reflector). A courageous smiling young woman with medium brown skin and a short black side-swept haircut, ivory-and-green small pointed wizard helmet/hat, light rounded fantasy armor with gold trim and flowing emerald half-cape. Holds a simple upright shield with a sunlike geometric emblem, other hand open in a friendly guiding gesture; a sheathed short practice sword at belt only. Protective reassuring stance, no attack, menace or religious emblems.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: HOLY KNIGHT: puts important principles into considered action (decider, communicator, reflector). A courageous smiling young woman with medium brown skin and a short black side-swept haircut, ivory-and-green small pointed wizard helmet/hat, light rounded fantasy armor with gold trim and flowing emerald half-cape. Holds a simple upright shield with a sunlike geometric emblem, other hand open in a friendly guiding gesture; a sheathed short practice sword at belt only. Protective reassuring stance, no attack, menace or religious emblems. Exactly TWO arms and TWO hands only. Put any additional small accessories in pouches, never add a third arm.",
+      "name": "Holy Knight",
+      "family": "B",
+      "description": "ผู้เปลี่ยนหลักการที่เชื่อให้เป็นการกระทำ",
+      "masterSha256": "8648705972e89cea6d6a5de5864f461ac34a1565add6cfeb058f517899f24a2a",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "holy-knight.webp",
+      "webBytes": 33272
+    },
+    {
+      "id": "warden",
+      "status": "generated and visually inspected",
+      "master": "masters/warden.png",
+      "sourceFile": "exec-097a99f1-66d7-4aa7-957b-faf4df1e9245.png",
+      "brief": "WARDEN: assesses risk and creates safe conditions (decider, connector, listener). A kind sturdy young man with warm fair skin, dark red curly hair, forest-green hooded wizard cap and moss/ochre ranger cloak over light practical armor. Holds a short wooden staff planted beside his boot; free palm supports a translucent green protective dome above a single tiny seedling. Attentive listening expression, grounded guarding stance, small key ring on belt. No weapon action, walls or scenery.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: WARDEN: assesses risk and creates safe conditions (decider, connector, listener). A kind sturdy young man with warm fair skin, dark red curly hair, forest-green hooded wizard cap and moss/ochre ranger cloak over light practical armor. Holds a short wooden staff planted beside his boot; free palm supports a translucent green protective dome above a single tiny seedling. Attentive listening expression, grounded guarding stance, small key ring on belt. No weapon action, walls or scenery. Exactly TWO arms and TWO hands only. Put any additional small accessories in pouches, never add a third arm.",
+      "name": "Warden",
+      "family": "B",
+      "description": "ผู้ประเมินความเสี่ยงและสร้างเงื่อนไขที่ปลอดภัย",
+      "masterSha256": "edafd64db0a7e0eaa05aacab82e6e879a83288ab04dfbc0fba3471b509ded9ff",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "warden.webp",
+      "webBytes": 35846
+    },
+    {
+      "id": "beastmaster",
+      "status": "generated and visually inspected",
+      "master": "masters/beastmaster.png",
+      "sourceFile": "exec-2781ba52-7ed1-4331-bf48-0ec4c6f96d66.png",
+      "brief": "BEASTMASTER: learns by observing and cooperating with living things (explorer, listener, experimenter). A playful young woman with freckled tan skin, short chestnut ponytail, leafy olive pointed explorer hat, ochre/green tunic and practical traveling boots. One small friendly ordinary orange fox companion sits closely at one boot; a tiny blue bird perches on her open hand while she bends to listen, with a blank field-notebook tucked at belt. Warm curious face. Only ONE main humanoid, the two small ordinary animals are secondary, no recognizable fictional creatures.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: BEASTMASTER: learns by observing and cooperating with living things (explorer, listener, experimenter). A playful young woman with freckled tan skin, short chestnut ponytail, leafy olive pointed explorer hat, ochre/green tunic and practical traveling boots. One small friendly ordinary orange fox companion sits closely at one boot; a tiny blue bird perches on her open hand while she bends to listen, with a blank field-notebook tucked at belt. Warm curious face. Only ONE main humanoid, the two small ordinary animals are secondary, no recognizable fictional creatures. Exactly TWO arms and TWO hands only. Put any additional small accessories in pouches, never add a third arm.",
+      "name": "Beastmaster",
+      "family": "B",
+      "description": "ผู้เรียนรู้จากสิ่งมีชีวิตผ่านการสังเกตและร่วมมือ",
+      "masterSha256": "bd008f88c30244d1b35f7adea8c4c123f90b894a1d1a90228432ac05e324ee1c",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "beastmaster.webp",
+      "webBytes": 36616
+    },
+    {
+      "id": "transmuter",
+      "status": "generated and visually inspected",
+      "master": "masters/transmuter.png",
+      "sourceFile": "exec-c4b92c9e-fd24-47b0-9184-1cc71f9d9d62.png",
+      "brief": "TRANSMUTER: imagines alternative forms and experiments with change (creator, experimenter, reflector). An androgynous young wizard with warm pale skin, short fluffy lavender hair and asymmetrical mint pointed hat, sage/ivory coat with plum lining, practical rolled sleeves. Holds a plain wooden cube in one palm that transitions through a clean ribbon into a small faceted green geometric flower in the other palm. Delighted reflective smile, distinct clear before/after objects; no potion bottles as main prop.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: TRANSMUTER: imagines alternative forms and experiments with change (creator, experimenter, reflector). An androgynous young wizard with warm pale skin, short fluffy lavender hair and asymmetrical mint pointed hat, sage/ivory coat with plum lining, practical rolled sleeves. Holds a plain wooden cube in one palm that transitions through a clean ribbon into a small faceted green geometric flower in the other palm. Delighted reflective smile, distinct clear before/after objects; no potion bottles as main prop. Exactly TWO arms and TWO hands only. Keep small accessories on belt/pouches; no extra arm.",
+      "name": "Transmuter",
+      "family": "B",
+      "description": "ผู้มองเห็นรูปแบบใหม่และทดลองสร้างการเปลี่ยนแปลง",
+      "masterSha256": "6876d87af8575a6032011ad47db389c3a6314af5f4d3b6e66096a609383dfe31",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "transmuter.webp",
+      "webBytes": 32198
+    },
+    {
+      "id": "alchemist",
+      "status": "generated and visually inspected",
+      "master": "masters/alchemist.png",
+      "sourceFile": "exec-a5fef55d-c534-43ae-873f-de7caaf9b84a.png",
+      "brief": "ALCHEMIST: combines things and revises experiments from feedback (experimenter, creator, connector). A young woman with deep brown skin, black hair in two small puff buns, olive wizard hat with copper goggles perched on the brim, sage/apricot workshop coat, leather apron pouch and sturdy boots. Carefully tilts one small round amber flask toward a second turquoise triangular flask, one bright star spark hovering BETWEEN them without spills or danger. Excited thinking smile, sleeves rolled, no cauldron or science text.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: ALCHEMIST: combines things and revises experiments from feedback (experimenter, creator, connector). A young woman with deep brown skin, black hair in two small puff buns, olive wizard hat with copper goggles perched on the brim, sage/apricot workshop coat, leather apron pouch and sturdy boots. Carefully tilts one small round amber flask toward a second turquoise triangular flask, one bright star spark hovering BETWEEN them without spills or danger. Excited thinking smile, sleeves rolled, no cauldron or science text. Exactly TWO arms and TWO hands only. Keep small accessories on belt/pouches; no extra arm.",
+      "name": "Alchemist",
+      "family": "B",
+      "description": "นักทดลองที่นำสิ่งต่าง ๆ มาผสมจนเกิดสูตรใหม่",
+      "masterSha256": "e2e358410571593ee755d53a4bfa10cae5835a19ecb25e70c4c67a1cf3e05eaa",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "alchemist.webp",
+      "webBytes": 33076
+    },
+    {
+      "id": "warlock",
+      "status": "generated and visually inspected",
+      "master": "masters/warlock.png",
+      "sourceFile": "exec-5b5b6f08-3f4b-43d5-9e8e-95d45e9a72c1.png",
+      "brief": "WARLOCK / HEXER: questions trade-offs and chooses agreements thoughtfully (decider, reflector, creator). A friendly thoughtful young man with medium warm skin, dark plum wavy undercut hair and compact charcoal pointed hat with burgundy band, plum/charcoal layered coat, muted gold clasps. Holds a small brass balance scale with two simple glowing geometric tokens, one on each pan, and considers a folded blank parchment agreement in his other hand. Calm curious smile, warm amber light. No horror, curses, skulls, chains, blood, lantern or ghost.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: WARLOCK / HEXER: questions trade-offs and chooses agreements thoughtfully (decider, reflector, creator). A friendly thoughtful young man with medium warm skin, dark plum wavy undercut hair and compact charcoal pointed hat with burgundy band, plum/charcoal layered coat, muted gold clasps. Holds a small brass balance scale with two simple glowing geometric tokens, one on each pan, and considers a folded blank parchment agreement in his other hand. Calm curious smile, warm amber light. No horror, curses, skulls, chains, blood, lantern or ghost. Exactly TWO arms and TWO hands only. Keep small accessories on belt/pouches; no extra arm.",
+      "name": "Warlock / Hexer",
+      "family": "C",
+      "description": "ผู้ตั้งคำถามต่อสิ่งที่ต้องแลกและผลของการตัดสินใจ",
+      "masterSha256": "3beb0f4ca437646f56481695c95226bcb08fc625056544772559a0e5063bb85d",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "warlock.webp",
+      "webBytes": 30292
+    },
+    {
+      "id": "summoner",
+      "status": "generated and visually inspected",
+      "master": "masters/summoner.png",
+      "sourceFile": "exec-6425040a-de3b-434b-8cee-2e3585769c24.png",
+      "brief": "SUMMONER: connects people, knowledge and resources into cooperation (connector, summarizer, communicator). A cheerful young woman with brown skin, dark braided crown hairstyle and wide violet wizard hat, indigo/cream robe with magenta lining and gold knots. Her outstretched hands connect THREE small floating geometric companion lights of different colors using a simple circular gold thread; the shapes are abstract diamond, sphere and cube, not animals or faces. Welcoming conductor-like stance, clean airy silhouette, no extra people or giant creature.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: SUMMONER: connects people, knowledge and resources into cooperation (connector, summarizer, communicator). A cheerful young woman with brown skin, dark braided crown hairstyle and wide violet wizard hat, indigo/cream robe with magenta lining and gold knots. Her outstretched hands connect THREE small floating geometric companion lights of different colors using a simple circular gold thread; the shapes are abstract diamond, sphere and cube, not animals or faces. Welcoming conductor-like stance, clean airy silhouette, no extra people or giant creature. Exactly TWO arms and TWO hands only; no extra limb. Keep any spare accessories at the belt.",
+      "name": "Summoner",
+      "family": "C",
+      "description": "ผู้รวบรวมความสามารถหลายด้านให้ร่วมแก้ปัญหา",
+      "masterSha256": "bdf6bd4f2e25adcfabc436be6cb4c9ccc67303be092b0c4490e59a43c39d211e",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "summoner.webp",
+      "webBytes": 36092
+    },
+    {
+      "id": "spirit-medium",
+      "status": "generated and visually inspected",
+      "master": "masters/spirit-medium.png",
+      "sourceFile": "exec-de4c41b1-fb34-4b32-a67b-bb93ff113bfd.png",
+      "brief": "SPIRIT MEDIUM: listens carefully and makes sense of overlooked stories (listener, reflector, summarizer). An androgynous young wizard with light olive skin and straight silver chin-length hair, small soft lilac pointed hood/hat, flowing mauve/ivory robes and gold hair clasp. Holds a delicate shell-like listening charm near one ear while the other palm supports THREE small translucent pastel speech-ribbon wisps that resolve into one clear warm star. Gentle attentive smile, tranquil posture. Wisps have NO faces, no ghosts, lantern, book, skulls or horror.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: SPIRIT MEDIUM: listens carefully and makes sense of overlooked stories (listener, reflector, summarizer). An androgynous young wizard with light olive skin and straight silver chin-length hair, small soft lilac pointed hood/hat, flowing mauve/ivory robes and gold hair clasp. Holds a delicate shell-like listening charm near one ear while the other palm supports THREE small translucent pastel speech-ribbon wisps that resolve into one clear warm star. Gentle attentive smile, tranquil posture. Wisps have NO faces, no ghosts, lantern, book, skulls or horror. Exactly TWO arms and TWO hands only; no extra limb. Keep any spare accessories at the belt.",
+      "name": "Spirit Medium",
+      "family": "C",
+      "description": "ผู้รับฟังและถอดความหมายจากเรื่องราวที่ถูกมองข้าม",
+      "masterSha256": "de3a08409f45919bc7a7272c370b85a88f0b0d7311e537237a1f9e3726ce9d96",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "spirit-medium.webp",
+      "webBytes": 33710
+    },
+    {
+      "id": "shaman",
+      "status": "generated and visually inspected",
+      "master": "masters/shaman.png",
+      "sourceFile": "exec-3443836c-32e9-498f-911b-b77ae531c870.png",
+      "brief": "SHAMAN: builds understanding between people, nature and community (listener, connector, explorer). A warm young man with deep brown skin and black curly hair tied at the back, moss/lilac soft pointed travel hood, earthy green/plum patchwork fantasy robe and small woven satchel. Holds a plain small wooden hand drum with an abstract leaf-shaped motif; the other hand follows a soft circular trail joining three tiny leaves and light dots. Friendly listening expression and relaxed curious stance. Original fantasy design, no real indigenous regalia, sacred iconography or animal-headdress stereotypes.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: SHAMAN: builds understanding between people, nature and community (listener, connector, explorer). A warm young man with deep brown skin and black curly hair tied at the back, moss/lilac soft pointed travel hood, earthy green/plum patchwork fantasy robe and small woven satchel. Holds a plain small wooden hand drum with an abstract leaf-shaped motif; the other hand follows a soft circular trail joining three tiny leaves and light dots. Friendly listening expression and relaxed curious stance. Original fantasy design, no real indigenous regalia, sacred iconography or animal-headdress stereotypes. Exactly TWO arms and TWO hands only; no extra limb. Keep any spare accessories at the belt.",
+      "name": "Shaman",
+      "family": "C",
+      "description": "ผู้สร้างความเข้าใจระหว่างคน ธรรมชาติ และชุมชน",
+      "masterSha256": "7e00383ff25be3c3f949b2b1f5853126ba08777daf2a3f80711ba6f71a42b699",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "shaman.webp",
+      "webBytes": 31850
+    },
+    {
+      "id": "ritualist",
+      "status": "generated and visually inspected",
+      "master": "masters/ritualist.png",
+      "sourceFile": "exec-8465c9c2-1fbd-460f-b4cf-3730cafe063a.png",
+      "brief": "RITUALIST: turns knowledge into repeatable steps and reflects on the process (summarizer, experimenter, reflector). A focused smiling young woman with pale warm skin, neat dark bob and round small spectacles, structured violet pointed wizard hat with ivory band, plum/cream coat and neat gold buckles. Holds a fold-out blank process scroll showing ONLY three large geometric symbols joined in a simple sequence; free hand adjusts a small glowing cube at the final step. Measured deliberate stance, tidy silhouette, no letters, checkmarks, numbers or occult rituals.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: RITUALIST: turns knowledge into repeatable steps and reflects on the process (summarizer, experimenter, reflector). A focused smiling young woman with pale warm skin, neat dark bob and round small spectacles, structured violet pointed wizard hat with ivory band, plum/cream coat and neat gold buckles. Holds a fold-out blank process scroll showing ONLY three large geometric symbols joined in a simple sequence; free hand adjusts a small glowing cube at the final step. Measured deliberate stance, tidy silhouette, no letters, checkmarks, numbers or occult rituals. Exactly TWO arms and TWO hands only. Keep spare accessories tucked at belt, no extra limb.",
+      "name": "Ritualist",
+      "family": "C",
+      "description": "ผู้กลั่นความรู้เป็นขั้นตอนที่ทำซ้ำและทบทวนได้",
+      "masterSha256": "a1b40aacbf2514abe42b625f4beb1897d72cd9f27a02e345451316f2711f0bd3",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "ritualist.webp",
+      "webBytes": 33174
+    },
+    {
+      "id": "illusionist",
+      "status": "generated and visually inspected",
+      "master": "masters/illusionist.png",
+      "sourceFile": "exec-cb64da61-96fc-4be2-8e0f-40aefb3809e7.png",
+      "brief": "ILLUSIONIST: creates experiences that invite new perspectives (creator, communicator, experimenter). A playful young wizard with warm tan skin, tousled turquoise hair and a tilted violet pointed stage hat with apricot lining, purple/ivory short magician coat and flowing coral half-cape. One hand holds a small plain hand mirror; above the other palm one turquoise paper-like cube opens into a radiant origami butterfly, with a simple curved shimmer connecting mirror and butterfly. Bright mischievous but friendly grin, expressive open pose, no playing-card suits or recognizable magician character.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: ILLUSIONIST: creates experiences that invite new perspectives (creator, communicator, experimenter). A playful young wizard with warm tan skin, tousled turquoise hair and a tilted violet pointed stage hat with apricot lining, purple/ivory short magician coat and flowing coral half-cape. One hand holds a small plain hand mirror; above the other palm one turquoise paper-like cube opens into a radiant origami butterfly, with a simple curved shimmer connecting mirror and butterfly. Bright mischievous but friendly grin, expressive open pose, no playing-card suits or recognizable magician character. Exactly TWO arms and TWO hands only. Keep spare accessories tucked at belt, no extra limb.",
+      "name": "Illusionist",
+      "family": "D",
+      "description": "ผู้สร้างประสบการณ์ใหม่เพื่อชวนเปลี่ยนมุมมอง",
+      "masterSha256": "205163825e302399a5eba62ee0926de53647499e8bab7f14f2de72b23596dded",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "illusionist.webp",
+      "webBytes": 38020
+    },
+    {
+      "id": "enchanter",
+      "status": "generated and visually inspected",
+      "master": "masters/enchanter.png",
+      "sourceFile": "exec-6e43f6c9-0867-40ea-8c18-106cbd45dabe.png",
+      "brief": "ENCHANTER: understands listeners and adapts communication to context (communicator, listener, decider). A friendly young woman with deep warm brown skin, soft black shoulder-length curls, rose/apricot tilted pointed wizard hat and coral/plum/cream flowing cloak. Holds a small gold tuning-fork-like wand near an open palm; three gentle differently colored speech-shaped light ribbons turn toward a single clear glowing star. Warm eye contact, attentive open posture, no mind control, romance hearts or hypnotic spirals.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: ENCHANTER: understands listeners and adapts communication to context (communicator, listener, decider). A friendly young woman with deep warm brown skin, soft black shoulder-length curls, rose/apricot tilted pointed wizard hat and coral/plum/cream flowing cloak. Holds a small gold tuning-fork-like wand near an open palm; three gentle differently colored speech-shaped light ribbons turn toward a single clear glowing star. Warm eye contact, attentive open posture, no mind control, romance hearts or hypnotic spirals. Exactly TWO arms and TWO hands only. Keep spare accessories tucked at belt, no extra limb.",
+      "name": "Enchanter",
+      "family": "D",
+      "description": "ผู้เข้าใจผู้ฟังและเลือกวิธีสื่อสารให้เหมาะกับบริบท",
+      "masterSha256": "f79182ba692c3d755caa8e656e083a0af1d65f53b2221a1795325db3b96f9572",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "enchanter.webp",
+      "webBytes": 36314
+    },
+    {
+      "id": "bard",
+      "status": "generated and visually inspected",
+      "master": "masters/bard.png",
+      "sourceFile": "exec-3becdf02-c8bb-4b06-b23a-15dd396918f9.png",
+      "brief": "BARD / ARTIST MAGE: distills understanding into storytelling and art (communicator, creator, summarizer). A cheerful young man with light brown skin, short curly chestnut hair and an apricot pointed artist-wizard hat with a small teal feather, coral/ivory layered performer coat and plum boots. Plays a small elegant wooden lute across the body; a few abstract colorful brush-stroke ribbons curl from its strings into one clear star. Joyful expressive face, gently stepping pose, no musical notation, words or recognizable bard identity.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: BARD / ARTIST MAGE: distills understanding into storytelling and art (communicator, creator, summarizer). A cheerful young man with light brown skin, short curly chestnut hair and an apricot pointed artist-wizard hat with a small teal feather, coral/ivory layered performer coat and plum boots. Plays a small elegant wooden lute across the body; a few abstract colorful brush-stroke ribbons curl from its strings into one clear star. Joyful expressive face, gently stepping pose, no musical notation, words or recognizable bard identity. Exactly TWO arms and TWO hands only; no extra limb. Keep accessories at belt.",
+      "name": "Bard / Artist Mage",
+      "family": "D",
+      "description": "ผู้ถ่ายทอดความเข้าใจผ่านการเล่าเรื่องและศิลปะ",
+      "masterSha256": "527f639b02a414f06c20ae86c51a8b9c68320397e90772c8e9b7c40d36a5ddd0",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "bard.webp",
+      "webBytes": 39114
+    },
+    {
+      "id": "mimic",
+      "status": "generated and visually inspected",
+      "master": "masters/mimic.png",
+      "sourceFile": "exec-c65a3ea7-cc42-49dd-9b68-2b96268c8102.png",
+      "brief": "MIMIC / BLUE MAGE: learns rapidly by observing examples and trying skills (explorer, experimenter, listener). An androgynous young wizard with medium olive skin, short dark blue hair and a sky-blue tilted pointed hat, cobalt/ivory cloak with coral trim and compact explorer boots. Holds a small ordinary hand mirror that reflects ONLY a simple glowing geometric star; their free palm experimentally recreates the same star shape in blue light. Delighted curious grin, one knee slightly lifted as if practicing a new move. No copied faces, creatures, mouths, teeth or impersonation of the reference character.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: MIMIC / BLUE MAGE: learns rapidly by observing examples and trying skills (explorer, experimenter, listener). An androgynous young wizard with medium olive skin, short dark blue hair and a sky-blue tilted pointed hat, cobalt/ivory cloak with coral trim and compact explorer boots. Holds a small ordinary hand mirror that reflects ONLY a simple glowing geometric star; their free palm experimentally recreates the same star shape in blue light. Delighted curious grin, one knee slightly lifted as if practicing a new move. No copied faces, creatures, mouths, teeth or impersonation of the reference character. Exactly TWO arms and TWO hands only; no extra limb. Keep accessories at belt.",
+      "name": "Mimic / Blue Mage",
+      "family": "D",
+      "description": "ผู้สังเกตและเรียนรู้ความสามารถจากคนอื่น",
+      "masterSha256": "87e9a6e26fed8ef6a877e128beb3ad4c3c1f8c8de29687b8ed776b054aad2a09",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "mimic.webp",
+      "webBytes": 40734
+    },
+    {
+      "id": "artificer",
+      "status": "generated and visually inspected",
+      "master": "masters/artificer.png",
+      "sourceFile": "exec-546327be-4cdc-4917-a340-ce98e5664123.png",
+      "brief": "ARTIFICER: turns ideas into useful tools through prototypes and experiments (creator, experimenter, summarizer). A young woman with warm brown skin, short curly dark hair and a copper-red pointed workshop hat with small gold goggles, brick/apricot/ivory short coat, leather tool apron and practical boots. One hand holds a compact brass wrench; the other presents a tiny self-invented mechanical bird made from clean wood/brass geometric pieces with one blue crystal core. Proud curious smile, sleeves rolled, friendly tinkerer, no goggles covering eyes, no steampunk clutter or brand logos.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: ARTIFICER: turns ideas into useful tools through prototypes and experiments (creator, experimenter, summarizer). A young woman with warm brown skin, short curly dark hair and a copper-red pointed workshop hat with small gold goggles, brick/apricot/ivory short coat, leather tool apron and practical boots. One hand holds a compact brass wrench; the other presents a tiny self-invented mechanical bird made from clean wood/brass geometric pieces with one blue crystal core. Proud curious smile, sleeves rolled, friendly tinkerer, no goggles covering eyes, no steampunk clutter or brand logos. Exactly TWO arms and TWO hands only; no extra limb. Keep accessories at belt.",
+      "name": "Artificer",
+      "family": "E",
+      "description": "ผู้สร้างเครื่องมือและพัฒนาต้นแบบจากการทดลอง",
+      "masterSha256": "57cb79d121e200bbbb16926919bf512a33709e9f3f5c5898700aa8b30173f84f",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "artificer.webp",
+      "webBytes": 31544
+    },
+    {
+      "id": "spellblade",
+      "status": "generated and visually inspected",
+      "master": "masters/spellblade.png",
+      "sourceFile": "exec-800a7182-0086-450e-a726-1d5948f193ae.png",
+      "brief": "SPELLBLADE: learns by practice and choosing skills for the situation (experimenter, decider, reflector). A friendly young man with light tan skin, short spiky dark hair and an angled red pointed wizard hat, crimson/ivory short training coat, compact dark trousers and boots, small gold clasps. Holds a clearly blunt wooden practice sword angled down away from anyone; free open palm projects a small faceted blue geometric shield, showing controlled skill practice. Balanced agile stance and focused warm smile. No attack, battle, sharp blade, injury or large armor.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: SPELLBLADE: learns by practice and choosing skills for the situation (experimenter, decider, reflector). A friendly young man with light tan skin, short spiky dark hair and an angled red pointed wizard hat, crimson/ivory short training coat, compact dark trousers and boots, small gold clasps. Holds a clearly blunt wooden practice sword angled down away from anyone; free open palm projects a small faceted blue geometric shield, showing controlled skill practice. Balanced agile stance and focused warm smile. No attack, battle, sharp blade, injury or large armor. Exactly TWO arms and TWO hands only; no extra limb. Keep spare accessories at belt.",
+      "name": "Spellblade",
+      "family": "E",
+      "description": "ผู้เรียนรู้จากการฝึกและเลือกใช้ทักษะตามสถานการณ์",
+      "masterSha256": "0b73eb64f53848df81d8a13589e349eb91b4e3eeaacde7f2990c386c31e38003",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "spellblade.webp",
+      "webBytes": 34400
+    },
+    {
+      "id": "blood-mage",
+      "status": "generated and visually inspected",
+      "master": "masters/blood-mage.png",
+      "sourceFile": "exec-f742cf2a-fdd5-4b2c-8c2a-b0ce63606490.png",
+      "brief": "BLOOD MAGE: carefully weighs the cost and consequence of each choice (decider, reflector, experimenter). A thoughtful young woman with warm pale skin, dark burgundy chin-length hair under a plum pointed wizard hat, wine-red/ivory cloak with copper trim, charcoal trousers and boots. Holds a small glowing ruby geometric crystal in one open palm and a brass hourglass in the other; a single warm red ribbon connects them, suggesting limited energy and trade-offs. Calm confident friendly face. NO literal blood, wounds, gore, skulls, horror, cult imagery or self-harm; the red magic is an abstract resource crystal.",
+      "finalPrompt": "Use case: stylized-concept. Asset: ONE original full-body portrait for the 27 Wizards of Learning web cast. The attached Necromancer is the approved STYLE reference: borrow rendering/proportions only; create a distinct companion, not the same person or costume. Match its modern friendly 2D semi-chibi cartoon, very large expressive eyes and head, about 2.7 heads tall, crisp angular cel shading, clean shapes, bright controlled color, polished readable fantasy clothes. Full body from hat/hair to boots, 3/4 view, centered, portrait 4:5 white canvas, generous clean margin, character about 82% of height, tiny oval gray ground shadow. Warm, curious, approachable learner, never frightening. Keep silhouette/props clearly identifiable at small web scale. Small gold fasteners can tie the cast together. No text, letters, numbers, labels, logo, watermark, border, scenery, photorealism, 3D, painterly texture, horror or skulls. No reference lantern/ghost/book combination or exact face/hair/costume/pose.  CHARACTER IDENTITY: BLOOD MAGE: carefully weighs the cost and consequence of each choice (decider, reflector, experimenter). A thoughtful young woman with warm pale skin, dark burgundy chin-length hair under a plum pointed wizard hat, wine-red/ivory cloak with copper trim, charcoal trousers and boots. Holds a small glowing ruby geometric crystal in one open palm and a brass hourglass in the other; a single warm red ribbon connects them, suggesting limited energy and trade-offs. Calm confident friendly face. NO literal blood, wounds, gore, skulls, horror, cult imagery or self-harm; the red magic is an abstract resource crystal. Exactly TWO arms and TWO hands only; no extra limb. Keep spare accessories at belt.",
+      "name": "Blood Mage",
+      "family": "E",
+      "description": "ผู้ชั่งน้ำหนักต้นทุนและผลของทุกการตัดสินใจ",
+      "masterSha256": "c19f960971b68cc2022811227219f1a31c16c3500619f28770bfe1377da333bf",
+      "masterDimensions": [
+        1122,
+        1402
+      ],
+      "web": "blood-mage.webp",
+      "webBytes": 34088
+    }
+  ],
+  "corrections": [
+    {
+      "id": "diviner",
+      "status": "corrected per user mask and inspected",
+      "detail": "Remove magnifying glass and its extra arm/hand (marked upper-central-right area); retain original lower hand holding three cards and right open palm, preserving all other artwork.",
+      "supersededOutput": "exec-8054439b-b618-4076-a6f6-d7a46ac83066.png",
+      "acceptedOutput": "exec-8213d445-8c1c-476c-ba7e-fc11abded46c.png"
+    }
+  ],
+  "production": "Authorized by Chief for website integration and publication; local QA passed, deployment pending.",
+  "export": {
+    "format": "WebP",
+    "width": 512,
+    "quality": 88,
+    "sourcePngsModified": false
+  }
+}
