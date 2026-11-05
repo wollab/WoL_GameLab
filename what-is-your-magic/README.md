@@ -18,12 +18,25 @@ Serving only this app also works: `python -m http.server 8001 --bind 127.0.0.1 -
 
 Production routes remain `/WoL_GameLab/9-learning-angles/` and `/WoL_GameLab/what-is-your-magic/`. GitHub Pages is configured for **main**, so the feature branch is not a hosted Pages preview. This PR stays Draft; no merge or production deployment is part of this fix.
 
+## Long-form UI and individual profiles — 2026-11-05 follow-up
+
+Chief asked for the structure of the [16Personalities INTP profile](https://www.16personalities.com/intp-personality), with comfortable scrolling rather than a compact result dashboard. The app now uses a spacious hero, original signature-character triads, chapter navigation and sequential introduction/matrix/signature/strength/nearby/quest sections. The landing has three illustrated steps. Branding, text, scoring and assets are WoL's own; no 16Personalities character artwork or personality claims are copied.
+
+- `#wizards`: directory of all 27 Wizards; `#wizards/B`: a Family filter.
+- `#wizard/necromancer`: a direct, reloadable profile URL. Append `/signature`, `/strength`, `/quest` or `/related` for a chapter.
+- `#result/matrix`: the completed quiz's matrix chapter. This route needs a completed answer set in that browser entry; a profile does not require one.
+- Result alternatives and the main Wizard now link to profiles. Browser Back and reload preserve the completed scores with `history.state` across profile/directory/chapter entries. Retake clears current result context. No cookies, analytics, localStorage or server-side account is involved.
+- Mobile 320/390 px shows all nine matrix cells as a complete 3×3 board without horizontal panning. Original angle PNGs are unchanged. Scores are bold; ≥4 is accented; every tied maximum is highlighted; 0–1 uses pale/grayscale artwork while remaining readable and clickable.
+- `ui.js` provides shared SVG icons, hero compositions and chapter links; `wizard-pages.js` renders the catalog/profiles from existing archetype data. Invalid profile routes have catalog recovery.
+
+**Artwork review:** one Necromancer style sample was generated here using the existing Reflector/Connector art as style references, then placed beside its three original signature characters. It is a review sample at `assets/archetypes/necromancer-sample.png`, not approval of the full set. The other 26 archetypes retain family-symbol portrait placeholders. The source nine PNGs are untouched. Full art brief/status and source-to-render comparison are in [DESIGN.md](DESIGN.md).
+
 ## Reproduced failure and fix — 2026-11-05
 
 - Earlier literal `\\n` in `app.js` prevented parsing and all initialization; upstream commit `3202640` already fixed that. On that revision, a repository-root server successfully completed ten questions in Chrome.
 - A server rooted at **only** `what-is-your-magic/` reproduced the reported symptom: `../9-learning-angles/data.js` returned 404, `MOVES is not defined` stopped initialization before both Family rendering and Start listener registration. The user's original preview URL/cache/root was unavailable, so this reproduction does not establish which preview setup they used.
 - The new app now bundles `quiz-data.js`, nine existing angle images and two existing Thai fonts. `scripts/sync-quiz.cjs --check` checks source text (LF-normalized for Windows/Linux) and exact asset bytes against the read-only originals. Scoped `.gitattributes` pins the generated data to LF, preserving the checksum across platforms. Explicit refresh command: `node what-is-your-magic/scripts/sync-quiz.cjs` from repository root. Review and re-test any refreshed source; importing data does not approve new content.
-- Ordered deferred scripts, versioned resource URLs, disabled-until-ready controls and visible startup recovery replace silent dead buttons. No service worker or browser storage is involved.
+- Ordered deferred scripts, versioned resource URLs, disabled-until-ready controls and visible startup recovery replace silent dead buttons. No service worker is involved; the later profile-navigation update uses browser history state as described above.
 - Result strength, complete manual share fallback, retake cleanup, keyboard focus and narrow-screen signature layout are included. The original app's files are unchanged.
 
 ## Scope
@@ -39,6 +52,7 @@ Production routes remain `/WoL_GameLab/9-learning-angles/` and `/WoL_GameLab/wha
 - `style.css`: responsive standalone page.
 - `index.html`: static HTML entry.
 - `startup.js`: dependency failure feedback; `quiz-data.js` and `assets/`: self-contained source snapshot.
+- `ui.js` / `wizard-pages.js`: consistent shared visuals and static-host-compatible catalog/profile routes.
 
 ## Scoring
 - Keep each question's original weight (nine primary questions worth 2 points, the last preference question worth 1).
@@ -108,9 +122,12 @@ $env:MAGIC_BASE_URL = 'http://127.0.0.1:8000/'
 $env:MAGIC_ISOLATED_URL = 'http://127.0.0.1:8001/'
 $env:TEST_OUTPUT_DIR = "$env:TEMP/magic-v1-evidence"
 node what-is-your-magic/tests/browser.cjs
+node what-is-your-magic/tests/profiles.cjs
 ```
 
 Browser checks save `browser-results.json`, request statuses and desktop/mobile screenshots outside the repository. They use visible DOM controls and independent expected scores, including every Wizard's real answer path. Sharing API success/cancel/denial states are simulated; the operating system share sheet itself is not tested.
+
+The UI follow-up also passes **10 profile/reading-flow groups** in `tests/profiles.cjs`: all 27 direct profiles, source content, three signature characters, Family filters, invalid-route recovery, chapter navigation including reselecting an active chapter, result/profile Back and reload persistence, full mobile 3×3 visibility, faded low scores and tied-high emphasis. `profile-results.json` and reference-comparison screenshots are saved alongside the core browser report. The core 12-group quiz/original-app regression and 5 scoring tests also pass after the UI changes. Author QA is not Chief design/art acceptance.
 
 2026-11-05 validation: Chrome via Playwright 1.62.1, desktop 1440 px and mobile emulation 390/320 px. Complete quiz, keyboard, all 27 outcomes, exact/near ties, score details, retake, share fallbacks, missing-script recovery/reload, isolated-root hosting, and original quiz desktop/mobile regression passed. Healthy flows had zero console/runtime errors and zero missing assets/404s. The unchanged original's browser-generated favicon request is fulfilled with HTTP 204 in its regression test; it has no app favicon declaration. New app favicon requests resolve normally.
 

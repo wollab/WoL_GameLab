@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  const pages = { home:document.getElementById("home"), quiz:document.getElementById("quiz"), result:document.getElementById("result") };
+  const pages = Object.fromEntries(["home","quiz","result","wizards","wizard-profile","not-found"].map(id=>[id,document.getElementById(id)]));
   const el = id => document.getElementById(id);
   const $ = (tag, className, text) => {
     const node=document.createElement(tag); if(className) node.className=className;
@@ -13,11 +13,35 @@
   const errors=WizardMatching.validateSignatures(WIZARD_ARCHETYPES);
   if(errors.length)throw new Error("Wizard data: "+errors.join("; "));
   let answers={},questions=[],step=0,ranked=[];
-  function show(page){
+  function show(page,scroll=true){
     Object.entries(pages).forEach(([key,element])=>element.classList.toggle("active",key===page));
-    window.scrollTo({top:0,behavior:"instant"});
-    if(page==="home")el("start").focus({preventScroll:true});
-    if(page==="result")el("result-title").focus({preventScroll:true});
+    el("nav-result").hidden=!ranked.length;
+    document.querySelectorAll(".return-result").forEach(a=>a.hidden=!ranked.length);
+    document.querySelectorAll("[data-nav]").forEach(a=>a.setAttribute("aria-current",a.dataset.nav===(page==="wizard-profile"?"wizards":page)?"page":"false"));
+    if(scroll){
+      window.scrollTo({top:0,behavior:"instant"});
+      const title={home:"main-title",result:"result-title",wizards:"catalog-title","wizard-profile":"profile-title","not-found":"missing-title"}[page];
+      if(title)el(title).focus({preventScroll:true});
+    }
+    document.title=(page==="wizard-profile"?el("profile-title").textContent+" · ":"")+"What Is Your Magic? · 27 Wizard Archetypes · Wizards of Learning";
+  }
+  function route(){
+    const [name,id,part]=location.hash.slice(1).split("/");
+    if(ranked.length)history.replaceState({magicScores:{...answers}},"",location.href);
+    let chapter;
+    if(name==="wizard"){
+      if(!WizardPages.profile(id,{ranked})){show("not-found");return;}
+      show("wizard-profile",!part);chapter=part?el("profile-"+part):null;
+    }else if(name==="wizards"){
+      if(id&&!Object.hasOwn(WIZARD_FAMILIES,id)){show("not-found");return;}
+      WizardPages.catalog(id||"all");show("wizards");
+    }else if(name==="result"&&ranked.length){show("result",!id);chapter=id?el("result-"+id):null;}
+    else if(name==="quiz"){
+      if(questions.length&&step<questions.length){show("quiz");renderQuestion();}else begin();
+    }else if(!name||name==="home"||name==="result"){show("home");}
+    else show("not-found");
+    document.querySelectorAll(".chapter-nav a").forEach(a=>a.setAttribute("aria-current",a.hash===location.hash?"location":"false"));
+    if(chapter)chapter.scrollIntoView({block:"start",behavior:"instant"});
   }
   function shuffled(items){
     const copy=[...items];for(let i=copy.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy;
@@ -25,16 +49,19 @@
   function families(){
     const wrap=el("family-list");
     Object.entries(WIZARD_FAMILIES).forEach(([key,f])=>{
-      const box=$("div","family");box.style.setProperty("--family",f.color);
-      box.append($("div","symbol",f.icon),$("b","",f.title),$("small","",f.thai),$("small","",memberCounts[key]+" Archetypes"));
+      const box=$("a","family");box.href="#wizards/"+key;box.style.setProperty("--family",f.color);
+      box.append(WizardUI.emblem(key),$("b","",f.title),$("small","",f.thai),$("small","",memberCounts[key]+" Archetypes"));
       wrap.append(box);
     });
   }
   function begin(){
     el("share-status").textContent="";el("share-fallback").hidden=true;el("share-text").value="";
     answers=Object.fromEntries(angleOrder.map(id=>[id,0]));
+    ranked=[];
     questions=[...shuffled(QUESTIONS.slice(0,-1)).map(q=>({...q,options:shuffled(q.options)})), {...QUESTIONS[QUESTIONS.length-1],options:shuffled(QUESTIONS[QUESTIONS.length-1].options)}];
-    step=0;show("quiz");renderQuestion();
+    step=0;
+    if(location.hash!=="#quiz")history.pushState({},"","#quiz");else history.replaceState({},"","#quiz");
+    show("quiz");renderQuestion();
   }
   function renderQuestion(){
     const q=questions[step];
@@ -58,25 +85,31 @@
         answers[opt.move]+=q.weight||1;
         step++;
         if(step<questions.length)renderQuestion();
-        else{el("progress").setAttribute("aria-valuenow",questions.length);el("progress-fill").style.width="100%";showResult();}
+        else{
+          el("progress").setAttribute("aria-valuenow",questions.length);el("progress-fill").style.width="100%";
+          renderResult();history.replaceState({magicScores:{...answers}},"","#result");show("result");
+        }
       });
       wrap.append(button);
     });
     el("quiz-title").focus({preventScroll:true});
     window.scrollTo({top:0,behavior:"instant"});
   }
-  function showResult(){
+  function renderResult(){
     ranked=WizardMatching.matchWizards(answers,WIZARD_ARCHETYPES);
     const winner=ranked[0],f=WIZARD_FAMILIES[winner.family];
     el("result").style.setProperty("--family-color",f.color);
-    el("result-art").textContent=f.icon;
+    el("result-art").replaceChildren(WizardUI.heroVisual(winner));
+    el("winner-profile").href=WizardUI.profileHref(winner.id);
+    el("intro-profile-link").href=WizardUI.profileHref(winner.id);
     el("result-family").textContent="Family "+winner.family+" · "+f.title+" · "+f.thai;
     el("result-title").textContent=winner.name;
     el("result-motto").textContent="“"+f.motto+"”";
     el("result-description").textContent=winner.desc;
-    el("result-gift").textContent="จุดแข็งที่ชวนสำรวจ: "+winner.gift;
+    el("result-introduction").textContent=winner.desc;
+    el("result-gift").textContent=winner.gift;
     el("result-reason").textContent="ผลคะแนนของคุณใกล้กับสายนี้ เพราะคุณใช้มุม "+winner.sig.map(id=>WIZARD_ANGLE_NAMES[id]).join(" / ")+" ในสัดส่วนที่สอดคล้องกับ Learning Signature ที่ออกแบบให้ Wizard นี้";
-    el("result-quest").textContent=winner.quest;
+    el("result-quest-copy").textContent=winner.quest;
     const signature=el("signature");signature.replaceChildren();
     ["มุมหลัก","มุมรอง","มุมสนับสนุน"].forEach((name,i)=>{
       const id=winner.sig[i],a=angles[toOriginalId(id)],row=$("div","sig");
@@ -91,28 +124,35 @@
     note.textContent="ผลลัพธ์นี้มีสายที่ใกล้กันมาก ("+ranked[1].name+") คะแนนห่างเพียง "+gap+" คะแนน จึงควรมองทั้งสองสายเป็นความเป็นไปได้ ไม่ใช่คำตอบตายตัว";
     const alt=el("alternatives");alt.replaceChildren();
     ranked.slice(1,4).forEach(t=>{
-      const fam=WIZARD_FAMILIES[t.family],box=$("div","alternative");box.style.setProperty("--family",fam.color);
+      const fam=WIZARD_FAMILIES[t.family],box=WizardUI.profileLink(t,"alternative","");box.replaceChildren();box.style.setProperty("--family",fam.color);
       const label=$("div");label.append($("b","",t.name),$("small","",fam.title+" · "+t.sig.map(id=>WIZARD_ANGLE_NAMES[id]).join(" / ")));
-      box.append(label,$("span","small muted",t.matchScore+" แต้มจับคู่"));alt.append(box);
+      box.append(WizardUI.emblem(t.family),label,$("span","small muted",t.matchScore+" แต้มจับคู่"),WizardUI.icon("arrow"));alt.append(box);
     });
     renderMatrix();
-    show("result");
+    WizardUI.chapters("result-chapters","#result",[["intro","บทนำ"],["matrix","9 Learning Angles"],["signature","Learning Signature"],["strength","จุดแข็ง"],["nearby","Wizard ใกล้เคียง"],["quest","Growth Quest"]]);
   }
   function renderMatrix(){
     const wrap=el("angle-matrix");
+    const highest=Math.max(...Object.values(answers));
     const table=$("table","matrix"),thead=$("thead"),heading=$("tr");
-    ["", "โลกภายนอก", "คน / ความสัมพันธ์", "โลกภายใน"].forEach(t=>heading.append($("th","",t)));
+    ["", "โลกภายนอก", "คน / ความสัมพันธ์", "โลกภายใน"].forEach(t=>{const h=$("th","",t);h.scope="col";heading.append(h);});
     thead.append(heading);table.append(thead);
     const tbody=$("tbody");
     const phaseNames=[["receive","เปิดรับ"],["process","แปรรูป"],["distill","ตกผลึก"]];
     phaseNames.forEach(([phase,title])=>{
-      const row=$("tr");row.append($("th","",title));
+      const row=$("tr"),rowTitle=$("th","",title);rowTitle.scope="row";row.append(rowTitle);
       ["world","people","self"].forEach(source=>{
         const a=Object.values(angles).find(item=>item.phase===phase&&item.source===source);
         const cell=$("td"),btn=$("button","angle-card");
+        const score=answers[a.id];
+        btn.classList.toggle("score-low",score<=1);
+        btn.classList.toggle("score-high",score>=4);
+        btn.classList.toggle("is-peak",score===highest&&score>1);
         btn.type="button";btn.style.setProperty("--a",a.color);
         const img=$("img");img.src=a.img;img.alt="";
-        btn.append(img,$("strong","",a.thai),$("span","",answers[a.id]+" คะแนน"));
+        const scoreLabel=$("span","angle-score");scoreLabel.append($("b","",score),document.createTextNode(" คะแนน"));
+        btn.append(img,$("strong","",a.thai),scoreLabel);
+        if(score===highest&&score>1)btn.append($("small","peak-label","คะแนนสูงสุด"));
         btn.addEventListener("click",()=>selectAngle(a.id));
         btn.dataset.angle=a.id;
         cell.append(btn);row.append(cell);
@@ -124,7 +164,7 @@
     selectAngle(top);
   }
   function selectAngle(id){
-    const a=angles[id];document.querySelectorAll(".angle-card").forEach(e=>e.classList.toggle("selected",e.dataset.angle===id));
+    const a=angles[id];document.querySelectorAll(".angle-card").forEach(e=>{e.classList.toggle("selected",e.dataset.angle===id);e.setAttribute("aria-pressed",String(e.dataset.angle===id));});
     const box=el("angle-detail");box.replaceChildren($("strong","",a.thai+" · "+answers[id]+" คะแนน"),$("p","",a.detail));
   }
   async function share(){
@@ -146,10 +186,20 @@
     }finally{button.disabled=false;}
   }
   families();
+  WizardUI.decorate();
   document.getElementById("start").addEventListener("click",begin);
-  document.getElementById("quit").addEventListener("click",()=>show("home"));
+  document.getElementById("quit").addEventListener("click",()=>{history.pushState({},"","#home");show("home");});
   document.getElementById("retake").addEventListener("click",begin);
   document.getElementById("share").addEventListener("click",share);
   ["start","quit","retake","share"].forEach(id=>el(id).disabled=false);
   el("startup-status").hidden=true;
+  el("skip-content").addEventListener("click",event=>{event.preventDefault();el("main").focus();});
+  document.addEventListener("click",event=>{
+    const a=event.target.closest("a");
+    if(a&&a.id!=="skip-content"&&a.origin===location.origin&&a.pathname===location.pathname&&a.hash&&a.hash===location.hash){event.preventDefault();route();}
+  });
+  window.addEventListener("hashchange",route);
+  const saved=history.state?.magicScores;
+  if(saved&&angleOrder.every(id=>Number.isInteger(saved[id])&&saved[id]>=0&&saved[id]<=7)&&angleOrder.reduce((sum,id)=>sum+saved[id],0)===19){answers=Object.fromEntries(angleOrder.map(id=>[id,saved[id]]));renderResult();}
+  route();
 })();

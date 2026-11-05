@@ -51,16 +51,19 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
   const ranked=referenceRank(scores,data.types),winner=ranked[0];
   assert.equal(await page.locator('#result-title').textContent(),winner.name);
   assert.ok((await page.locator('#result-family').textContent()).includes(data.families[winner.family].title));
-  assert.equal(await page.locator('#result-quest').textContent(),winner.quest);
+  assert.equal(await page.locator('#result-quest-copy').textContent(),winner.quest);
   assert.ok((await page.locator('#result-gift').textContent()).includes(winner.gift));
   assert.equal(await page.locator('#signature .sig').count(),3);
   assert.equal(await page.locator('.angle-card').count(),9);
   for(const [id,n] of Object.entries(scores)){
     const card=page.locator('[data-angle="'+id+'"]');assert.equal(await card.locator('span').textContent(),n+' คะแนน');
+    assert.equal(await card.evaluate(el=>el.classList.contains('score-low')),n<=1);
+    assert.equal(await card.evaluate(el=>el.classList.contains('is-peak')),n===Math.max(...Object.values(scores))&&n>1);
+    assert.ok(Number(await card.locator('.angle-score b').evaluate(el=>getComputedStyle(el).fontWeight))>=600,'bold raw score');
   }
   const expectedAlts=ranked.slice(1,4);
   assert.deepEqual(await page.locator('#alternatives b').allTextContents(),expectedAlts.map(x=>x.name));
-  assert.deepEqual(await page.locator('#alternatives>div>span').allTextContents(),expectedAlts.map(x=>x.matchScore+' แต้มจับคู่'));
+  assert.deepEqual(await page.locator('#alternatives>a>span').allTextContents(),expectedAlts.map(x=>x.matchScore+' แต้มจับคู่'));
   assert.equal(await page.locator('#close-note').isVisible(),ranked[0].matchScore-ranked[1].matchScore<=2);
   assert.equal(await page.locator('#result-title').evaluate(el=>el===document.activeElement),true);
   await noOverflow(page);
@@ -124,8 +127,9 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
       assert.equal(await m.locator('.family').count(),5);await noOverflow(m);await snap(m,'landing-mobile-'+width);
       await m.locator('#start').tap();await play(m,fixtures.witnesses['holy-knight'],{screenshots:true});
       assert.ok(await m.locator('.sig>div').first().evaluate(el=>el.getBoundingClientRect().width>100),'signature text must remain readable on narrow screens');
-      const matrix=m.locator('.matrix-wrap');assert.ok(await matrix.evaluate(el=>el.scrollWidth>el.clientWidth),'matrix scrolls within its own panel');
-      await matrix.evaluate(el=>el.scrollLeft=el.scrollWidth);
+      const cards=await m.locator('.angle-card').evaluateAll(items=>items.map(el=>({left:el.getBoundingClientRect().left,right:el.getBoundingClientRect().right})));
+      assert.equal(cards.length,9);assert.ok(cards.every(card=>card.left>=0&&card.right<=width),'all nine matrix cards fit the mobile viewport');
+      await m.locator('#angle-matrix').scrollIntoViewIfNeeded();await snap(m,'matrix-mobile-'+width);
       await m.evaluate(()=>{Object.defineProperty(navigator,'share',{configurable:true,value:undefined});Object.defineProperty(navigator,'clipboard',{configurable:true,value:undefined});});
       await m.locator('#share').tap();assert.equal(await m.locator('#share-fallback').isVisible(),true);await noOverflow(m);
       await m.locator('#retake').tap();assert.equal(await m.locator('#quiz').isVisible(),true);
