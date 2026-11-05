@@ -1,10 +1,10 @@
-# What Is Your Magic? — 27 Wizard Archetypes (V1 Prototype)
+# 27 Wizards of Learning — What Is Your Learning Magic?
 
 A separate, standalone experience from [9 Learning Angles](../9-learning-angles/) by Wizards of Learning. Both tools coexist as distinct websites under the same GitHub Pages project. This app bundles a verified snapshot of the original quiz and existing assets; it has no runtime dependency on the original app directory.
 
 ## Public website
 
-- [What Is Your Magic?](https://wollab.github.io/WoL_GameLab/what-is-your-magic/)
+- [27 Wizards of Learning](https://wollab.github.io/WoL_GameLab/what-is-your-magic/)
 - [Original 9 Learning Angles](https://wollab.github.io/WoL_GameLab/9-learning-angles/)
 
 ## Play the feature branch locally
@@ -21,7 +21,7 @@ Open [What Is Your Magic? local preview](http://127.0.0.1:8000/what-is-your-magi
 
 Serving only this app also works: `python -m http.server 8001 --bind 127.0.0.1 --directory what-is-your-magic`, then open [isolated preview](http://127.0.0.1:8001/).
 
-Production routes remain `/WoL_GameLab/9-learning-angles/` and `/WoL_GameLab/what-is-your-magic/`. GitHub Pages is configured for **main**, so the feature branch is not a hosted Pages preview. Chief authorized the V1 production release on 2026-11-05. Publish through PR #2 into main using the existing Pages configuration; the earlier Draft/unmerged hold is superseded for this release. The app name stays unchanged pending a separate naming decision.
+Production routes remain `/WoL_GameLab/9-learning-angles/` and `/WoL_GameLab/what-is-your-magic/`. GitHub Pages is configured for **main**, so the feature branch is not a hosted Pages preview. Chief authorized the V1 production release on 2026-11-05. PR #2 was merged for that release. Chief subsequently approved the full character set and requested the actual WoL logo, all portraits on the website and clearer Families. The current update uses a new PR because #2 is closed. The public path remains unchanged.
 
 ## Long-form UI and individual profiles — 2026-11-05 follow-up
 
@@ -34,7 +34,9 @@ Chief asked for the structure of the [16Personalities INTP profile](https://www.
 - Mobile 320/390 px shows all nine matrix cells as a complete 3×3 board without horizontal panning. Original angle PNGs are unchanged. Scores are bold; ≥4 is accented; every tied maximum is highlighted; 0–1 uses pale/grayscale artwork while remaining readable and clickable.
 - `ui.js` provides shared SVG icons, hero compositions and chapter links; `wizard-pages.js` renders the catalog/profiles from existing archetype data. Invalid profile routes have catalog recovery.
 
-**Artwork review:** one Necromancer style sample was generated here using the existing Reflector/Connector art as style references, then placed beside its three original signature characters. It is a review sample at `assets/archetypes/necromancer-sample.png`, not approval of the full set. The other 26 archetypes retain family-symbol portrait placeholders. The source nine PNGs are untouched. Full art brief/status and source-to-render comparison are in [DESIGN.md](DESIGN.md).
+**Artwork:** all 27 named portraits now appear in results, profiles and the directory. The approved Necromancer remains unchanged; 26 companions follow its semi-chibi 2D style. The Diviner uses Chief's corrected mask version, with cards and an open palm retained and the extra magnifying-glass arm removed. Original PNGs, exact generation prompts, hashes and lightweight WebP exports are retained. See [ARTWORK.md](ARTWORK.md) and the [named gallery](assets/archetypes/contact-sheet.html).
+
+The actual WoL logo is used in the header, footer and favicon. Five spacious Family rows explain different ways of starting a new problem, with three named representative Wizards each and links to all members. Mobile stacks the explanation above the three portraits. These narrative groupings do not diagnose learning ability.
 
 ## Reproduced failure and fix — 2026-11-05
 
@@ -86,7 +88,7 @@ E — Magic & Combat (3): tools, applied action and the costs of choices.
 
 These families describe **fantasy methods of creating change**. They are not a statistical grouping of individuals.
 
-## Art direction — Phase 2 (NOT included yet)
+## Art direction — completed 27-character set
 Use the *visual language* shown in the existing 9 Learning Angles characters and the user-provided Wizards of Learning illustration moodboard:
 - Original, friendly 2D wizard characters, expressive readable poses, energetic but simple silhouettes.
 - Rounded/semi-chibi proportions (not hyperrealistic 3D, not dark cinematic fantasy).
@@ -94,11 +96,11 @@ Use the *visual language* shown in the existing 9 Learning Angles characters and
 - White/neutral backgrounds for individual cards, accent outlines by class/family.
 - Keep a coherent base design system while giving 27 archetypes recognizably different tools, hats, clothing, poses and magical effects.
 - Accent groups: A purple-blue, B green, C violet, D warm orange/gold, E red. Overall UI uses the separately scoped iris/ink palette documented in DESIGN.md; this does not change global WoL branding.
-- Produce **27 original character artworks**, ideally source files or layered vector, plus transparent PNG or WebP renders. Do not replicate existing artists' individual compositions or characters.
+- The 27 original raster portraits use a white background. High-resolution PNG masters and optimized WebP renders are retained; no layered/vector originals or transparency are claimed.
 - Asset naming: `assets/archetypes/<id>.webp`, file names must match the stable IDs in `wizard-data.js`.
-- Suggested crop: square 1024x1024 masters, with safe full-body character centered; export lightweight versions for web at 512 px or appropriate responsive srcset.
+- Current masters are portrait, approximately 1123×1402 px, with safe full-body framing. Web copies are 512 px wide.
 - Provide a visual QC sheet comparing all 27 characters for consistency, diversity of silhouettes and readability in 120 px cards.
-- Do not attempt to synthesize 27 bespoke images as a prerequisite for V1. Until the approved art exists, the UI uses family-symbol placeholders and the original 9 Learning Angle images for signature rows.
+- The full 27-character set was subsequently authorized and completed; see ARTWORK.md. Original nine Learning Angle images remain unchanged in signature rows and the matrix.
 
 ## Example Learning Adventure — separate future phase
 **The Forgotten Library:** a fictional library is losing visitors. Three phases:
@@ -129,6 +131,7 @@ $env:TEST_OUTPUT_DIR = "$env:TEMP/magic-v1-evidence"
 node what-is-your-magic/tests/browser.cjs
 node what-is-your-magic/tests/profiles.cjs
 node what-is-your-magic/tests/audit.cjs
+node what-is-your-magic/tests/artwork.cjs
 ```
 
 Browser checks save `browser-results.json`, request statuses and desktop/mobile screenshots outside the repository. They use visible DOM controls and independent expected scores, including every Wizard's real answer path. Sharing API success/cancel/denial states are simulated; the operating system share sheet itself is not tested.
@@ -150,3 +153,5 @@ Exact enumeration of **all 177,147 legal answer paths** (3^9 × 9) reaches all 2
 - New scoped iris/ink palette and local Bai Jamjuree body type with Kanit headings/scores. Both font licenses are bundled.
 
 The new audit regressions pass alongside the original quiz/profile tests. Full current-audit screenshots and six-step findings are delivered in chat; DESIGN.md records the decisions and evidence limits. Usability superiority over another site is a goal requiring real comparative user testing, not a claim established by these checks.
+
+2026-11-06 artwork update: core 12/12 + profile 10/10 + UX 5/5 + artwork 4/4 browser groups passed locally. Artwork checks cover five differentiated Families, 15 named representative images, actual logo, no overflow at 1440/390/320 px and all 27 named gallery images.

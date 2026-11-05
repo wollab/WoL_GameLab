@@ -23,7 +23,7 @@
       const title={home:"main-title",result:"result-title",wizards:"catalog-title","wizard-profile":"profile-title","not-found":"missing-title"}[page];
       if(title)el(title).focus({preventScroll:true});
     }
-    document.title=(page==="wizard-profile"?el("profile-title").textContent+" · ":"")+"What Is Your Magic? · 27 Wizard Archetypes · Wizards of Learning";
+    document.title=(page==="wizard-profile"?el("profile-title").textContent+" · ":"")+"27 Wizards of Learning · 27 Wizard Archetypes";
   }
   function route(){
     const [name,id,part]=location.hash.slice(1).split("/");
@@ -49,9 +49,22 @@
   }
   function families(){
     const wrap=el("family-list");
+    const stories={
+      A:{heading:"เข้าใจโลกผ่านความรู้",example:"เริ่มจากสำรวจว่าเรื่องนี้ทำงานอย่างไร และอะไรเชื่อมโยงกัน",cast:["mage","scholar","diviner"]},
+      B:{heading:"สร้างเงื่อนไขให้เติบโต",example:"เริ่มจากฟังว่าใครต้องการอะไร แล้วลองปรับสิ่งที่ช่วยให้เติบโต",cast:["healer","holy-knight","alchemist"]},
+      C:{heading:"ค้นคุณค่าในเรื่องราว",example:"เริ่มจากฟังประสบการณ์ ย้อนทบทวน และมองหาบทเรียนที่หลงลืม",cast:["necromancer","summoner","shaman"]},
+      D:{heading:"เปลี่ยนมุมมองด้วยการสื่อสาร",example:"เริ่มจากหาวิธีเล่าหรือสร้างประสบการณ์ให้คนเข้าใจเรื่องเดียวกันใหม่",cast:["bard","illusionist","enchanter"]},
+      E:{heading:"เปลี่ยนความคิดให้เป็นของจริง",example:"เริ่มจากทำต้นแบบ ฝึกใช้จริง และเลือกทางที่เหมาะกับข้อจำกัด",cast:["artificer","spellblade","blood-mage"]}
+    };
     Object.entries(WIZARD_FAMILIES).forEach(([key,f])=>{
+      const story=stories[key];
       const box=$("a","family");box.href="#wizards/"+key;box.style.setProperty("--family",f.color);
-      box.append(WizardUI.emblem(key),$("b","",f.title),$("small","",f.thai),$("small","",memberCounts[key]+" Archetypes"));
+      box.setAttribute("aria-label",f.title+" · "+story.heading+" · สำรวจ "+memberCounts[key]+" สาย");
+      const copy=$("div","family-copy");copy.append($("b","family-english",f.title),$("h3","",story.heading),$("p","family-description",f.description));
+      const example=$("p","family-example");example.append($("span","","เมื่อเจอโจทย์ใหม่"),document.createTextNode(story.example));copy.append(example,$("span","family-link","สำรวจ "+memberCounts[key]+" สายในกลุ่มนี้ →"));
+      const cast=$("div","family-cast");
+      story.cast.forEach(id=>{const type=WIZARD_ARCHETYPES.find(t=>t.id===id),figure=$("figure");figure.append(WizardUI.portrait(type,"",true),$("figcaption","",type.name));cast.append(figure);});
+      box.append(copy,cast);
       wrap.append(box);
     });
   }
@@ -190,12 +203,12 @@
   }
   async function share(){
     const winner=ranked[0];
-    const text="What Is Your Magic? ✨\nWizard ของฉันคือ "+winner.name+" ("+WIZARD_FAMILIES[winner.family].title+")\nเรื่องเล่าเพื่อสำรวจการเรียนรู้ ไม่ใช่ผลวินิจฉัยบุคลิกภาพ\nมาค้นหาเวทมนตร์ของคุณ: "+location.origin+location.pathname;
+    const text="27 Wizards of Learning ✨\nWizard ของฉันคือ "+winner.name+" ("+WIZARD_FAMILIES[winner.family].title+")\nเรื่องเล่าเพื่อสำรวจการเรียนรู้ ไม่ใช่ผลวินิจฉัยบุคลิกภาพ\nมาค้นหาเวทมนตร์ของคุณ: "+location.origin+location.pathname;
     const button=el("share");button.disabled=true;
     el("share-status").textContent="";el("share-fallback").hidden=true;
     try{
       if(navigator.share){
-        try{await navigator.share({title:"What Is Your Magic?",text});el("share-status").textContent="แชร์ผลแล้ว";return;}
+        try{await navigator.share({title:"27 Wizards of Learning",text});el("share-status").textContent="แชร์ผลแล้ว";return;}
         catch(e){if(e.name==="AbortError"){el("share-status").textContent="ยกเลิกการแชร์แล้ว";return;}}
       }
       if(navigator.clipboard){

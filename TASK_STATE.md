@@ -1,76 +1,47 @@
-# What Is Your Magic? V1 — task checkpoint
+# 27 Wizards of Learning — task checkpoint
 
-## Original goal
-Complete the separate `/WoL_GameLab/what-is-your-magic/` website: landing → ten original questions → one of 27 Wizards, preserving `/WoL_GameLab/9-learning-angles/`. Commit on `feature/wizard-discovery-v1`, update existing Draft PR #2, never merge automatically.
+## Original goal and scope
+Complete the separate `/WoL_GameLab/what-is-your-magic/` website: landing → ten original questions → one of 27 Wizards, preserving `/WoL_GameLab/9-learning-angles/`. Work on `feature/wizard-discovery-v1`. Original instruction held merge; Chief later explicitly authorized publishing the tested website. Do not infer blanket authorization for unrelated releases.
 
-## Release authorization — 2026-11-05
-Chief explicitly requested “Push ขึ้นเว็บเลยครับ :)”. This supersedes the earlier hold on merge/deployment for this release. Publish the tested V1 through existing PR #2 into main (GitHub Pages legacy root source), preserving the original app. Keep the current app name: “27 Magic of Learning” is a naming question, not an approved rename. Only TASK_STATE/README release documentation changed after the tested 6e14645 source; no app code/scoring/assets changed.
+## Current status — 2026-11-06
+All 27 portraits are generated, named, visually inspected and integrated locally. The actual WoL logo is in header/footer/favicon. Five spacious illustrated Family rows explain distinct approaches, show three named representative Wizards each and link to all members. Accepted product name is 27 Wizards of Learning, tagline What Is Your Learning Magic?; public directory/URL remain unchanged. Current update is ready for feature commit/new PR and the authorized production release, pending final static checks.
 
-Production release verified: PR #2 is merged at `7469a84c7abb830a9560f0e738bce38a1664550d`; GitHub Pages main/root run `42040669954` completed successfully (build + deploy). Public URL: https://wollab.github.io/WoL_GameLab/what-is-your-magic/. No login/private preview is needed. Original public URL remains https://wollab.github.io/WoL_GameLab/9-learning-angles/ and its source diff against c836505 is empty.
+Chief approved the Necromancer style and all-27 scope, then explicitly asked to put each portrait onto the website, use the WoL logo and clarify Family differences. Asked whether the truncated “ถ้าวาง” implied another layout constraint; Chief answered “ไม่มีครับ”. Proceed with the spacious reading layout. This latest website-integration request and earlier explicit “Push ขึ้นเว็บเลยครับ :)” authorize publication of this scoped update.
 
-Post-deploy Chrome/Playwright on the actual public URL: core 11/11 (isolated localhost-only case intentionally omitted), profiles/reading 10/10, UX regressions 5/5; all 27 outcomes through actual ten-answer journeys; 390/320 mobile matrix, correction/retake/share fallback, search/recovery, direct profile/reload/Back and original quiz desktop/mobile all passed. Zero healthy-flow console/runtime errors, failed requests or 404s. In-app browser separately completed ten answers to Force Mage with a clean error/warn console; production screenshot saved. This result is a test example, not Chief's personal result. Existing physical-device/OS-sheet/assistive-tech limitations remain.
+## Completed work
+- 26 new source-resolution PNGs in `what-is-your-magic/assets/archetypes/masters/`; approved `necromancer-sample.png` unchanged.
+- Full exact prompt/provenance/hash registry in `assets/archetypes/artwork-manifest.json`. Named HTML gallery and PNG handoff ZIP created; delivery evidence stays outside the repo.
+- 27 WebP portraits total 951,130 bytes. Format/resize export script preserves PNG masters byte-for-byte. Heroes load eagerly; directory/Family images lazily.
+- Result/profile heroes include the matching portrait plus the three original signature characters. Directory and nearby cards show the correct character with real text names.
+- Real WoL logo copied unchanged from the canonical local brand PNG. Five Family rows show Thai action heading, description, concrete starting approach, three portraits and member count.
+- Product title, share title and description updated; versioned CSS/JS URLs refreshed. No question, scoring, canonical archetype content or original-app changes.
 
-Current production evidence: this chat visualization `production/` contains browser-results.json, profile-results.json, audit-results.json, actual production screenshots and live-result.jpg. Only release documentation changed after tested app source 6e14645; app code/images/scoring remain identical. Final checkpoint commit may trigger the normal Pages rebuild without changing the playable app. Earlier review-only/unmerged statements below are retained milestone history, superseded by this explicit release instruction and verified release.
+## Controlling correction and decisions
+Diviner must REMOVE the magnifying glass and extra upper arm/hand, RETAIN lower hand holding three cards and raised open palm. Final accepted source `exec-8213d445-8c1c-476c-ba7e-fc11abded46c.png` is `masters/diviner.png`. Earlier `exec-8054439b` removed the wrong hand and is superseded. Exactly two hands. Do not regenerate finished artwork or undo this correction.
 
-## Current status — 2026-11-05 follow-up
-Chief-requested fresh Product Design audit and frontend refinement is implemented and verified locally from clean `ea68efa`. UX fix `78787335bacc15a6fd882dfaec92ff997b08c42a` is committed and pushed; existing Draft PR #2 metadata is updated and read back open, Draft and unmerged. Technical delivery is complete; Chief play/design review remains next. Chief explicitly freed this app from corporate color constraints; iris/ink/lilac and Bai Jamjuree body type are scoped to this app. Do not claim comparative superiority without real user testing.
+Keep long-form scrolling profiles, chapter navigation, complete mobile 3×3 matrix, all tied high scores and readable pale 0–1 states. Original nine images/colors stay intact. Keep original ten questions, 19-point raw totals, legacy meaningmaker/synthesizer mapping, 3/2/1 matching and deterministic ties. The tool is a creative learning reflection, not a personality diagnosis or validated assessment. No account, analytics, persistent storage, backend or schedule.
 
-Six fresh audit steps and accepted before/after evidence are in this chat's visualization `audit3/`. P1 fixes: choice + Next/Previous retain/revise answers without double counting; result distinguishes zero-score template components from actual answers and exposes close/tied matches at the hero. P2: every mobile chapter visible in a native selector, one scroll offset + heading focus; low labels improve 4.11→5.67 contrast with artwork still pale; >=10px highest badge; Thai Family labels/canonical counts, local search/count/Clear/empty recovery. Original questions, matching, source images and original app unchanged. No new artwork generated.
+## Verification on current local artwork update
+- Chrome/Playwright: core 12/12, profile/reading 10/10, UX regressions 5/5, artwork/Family/gallery 4/4. All 27 outcomes through real ten-answer journeys, all 27 direct profile routes and correct decoded portraits.
+- Scoring 5/5: all 177,147 legal answer paths reach all 27 archetypes. Source snapshot and 11 original assets match; original-app diff against c836505 is empty.
+- Desktop 1440 and mobile 390/320: all five Families, 15 named representatives, actual square logo, no horizontal overflow. Gallery decodes all 27 images. Healthy flows have zero console/runtime errors, failed requests or 404s.
+- In-app browser separately inspected actual Family link → Healer profile, portrait/three-character hero, mobile landing/Family rows; error/warn console empty. Screenshots saved and inspected.
+- Screenshot helper now makes lazy off-screen images eager only during capture so decoding cannot hang; production lazy loading remains intact. Local preview servers had stopped during long art generation; restarted and verified current index/version. Gallery favicon 404 found by the new test and fixed with the real logo icon.
+- Evidence: this chat visualization `art27/` contains browser/profile/audit/artwork JSON, screenshots, named contact-sheet.png and 27-wizards-of-learning-png.zip.
+- Physical-device/OS share-sheet, full screen-reader/WCAG and comparative user testing remain unverified. Author art QA is distinct from individual Chief review of every companion.
 
-Current checks: core browser 12/12, profiles/reading 10/10, UX audit regression 5/5, scoring 5/5; all 177,147 legal paths/all 27 reachable and all 27 through actual browser journeys. Healthy flows: zero errors/404s/failed assets. In-app browser ten-answer journey, ties, profile, mobile matrix and search recovery verified; accepted exact screenshots reopened/inspected. Source snapshot/11 assets unchanged; original-app diff against c836505 empty. Strict static audit clean; workspace health 30 pass/1 existing tmp warning/0 fail. Remaining validation limits: physical devices, real OS share sheet, screen readers/full WCAG and comparative user testing.
+## Prior release and root cause (retained evidence)
+PR #2 merged at 7469a84c7abb830a9560f0e738bce38a1664550d; verified Pages main/root release. Last pushed main/feature checkpoint 3b92cd09beeadb0ff5ccd609c9594140f77d2c1f. PR #2 is closed; use a new PR for this update.
 
-Previous completed UI milestone (retained history):
-UI/profile implementation and technical delivery complete. Commit `825caf0cde2932fab08200ce2d7a0300d9011a49` is pushed to `feature/wizard-discovery-v1`; existing Draft PR #2 has been updated with the current long-form/mobile/profile evidence and remains unmerged. Chief played and liked the functional V1, then requested modern reference-based UI, stronger matrix scores, subdued low scores, nearby Wizard links, 27 profile routes and illustrated headings. Chief subsequently rejected the compact generated result concept as cramped and asked for the long-form INTP profile structure. That correction controls this implementation. Author QA is not Chief design/art acceptance.
+Original failure: earlier literal backslash-n broke app.js parsing; upstream 3202640 fixed that syntax error. An app-only server still reproduced dead Start/missing Families because ../9-learning-angles/data.js returned 404 and MOVES was undefined before initialization. Fixed by a self-contained checked data/asset snapshot, ordered deferred scripts, explicit startup recovery and disabled-until-ready Start. The user's former preview root/cache was unavailable, so do not claim that precise preview environment was proven. Main/root GitHub Pages was verified; feature changes need main publication. Original site is preserved.
 
-## Important decisions and scope
-- Reference: https://www.16personalities.com/intp-personality — generous scrolling, spacious hero, chapter navigation, sequential reading. Landing also adapts the supplied free-test screenshot's three illustrated steps. WoL branding, Thai copy and original character art remain owners; no 16Personalities artwork, branding or personality claims copied.
-- Keep original ten questions, raw 19-point scores, legacy `meaningmaker`/`synthesizer` mapping, 3/2/1 matching and deterministic ties unchanged.
-- Matrix stays visibly 3×3 on 320/390 px mobile without horizontal panning. Keep source nine images/colors; bold all scores; accent ≥4 and all tied maxima; gray/pale 0–1 while readable/clickable. Low scores do not imply missing ability.
-- Hero supports archetype portrait plus the three original signature characters. One friendly Necromancer art sample was generated in this chat from the existing Reflector/Connector style references; it is review-only. Other 26 portraits remain family-symbol placeholders. A complete 27-character art set and production art direction are not approved or claimed complete.
-- Distinct static-host-compatible `#wizard/<id>` profile URLs; `#wizards[/Family]` catalog and chapter links. Completed scores survive profile/catalog/chapter Back and reload via browser `history.state`; retake clears current context. No account, analytics, cookies, localStorage, backend or new schedule.
-- Preserve separate original/new routes and all original-app files. This V1 release is explicitly approved by Chief and deployed through PR #2; do not infer an automatic future release policy.
+Prior public Chrome checks: core 11/11, profiles 10/10, audit 5/5; all outcomes, mobile matrix, correction/retake/share fallback, direct profile/reload/Back and original quiz desktop/mobile passed. A real in-app browser completed ten answers to Force Mage with clean console. This was a test fixture, not Chief's personal result.
 
-## Completed implementation
-- Restyled landing with an open header, lilac/white bands, large heading, Start and three illustrated steps; all five Families link into a browsable catalog.
-- Result is a long reading page: hero, introduction, complete matrix, signature, strength, nearby profiles and Growth Quest. Left sticky chapter rail on desktop; a native chapter selector on mobile. Sections use shared project-owned filled SVG icons.
-- Matrix has original character images, score-dependent emphasis, bold numeric scores, tied-maximum labels, pale 0–1 cards and retained interactive details/pressed state. Original narrow-screen overflow is removed; row labels remain readable.
-- All 27 profiles render existing desc/gift/signature/quest from source; three related profiles use shared signature overlap. Direct reloads, invalid-route recovery and Family filters work.
-- Main and alternative Wizards link to profiles. Fixed a real reload bug where native hash navigation dropped result history state; every relevant entry now retains it. Selecting an already-active chapter scrolls correctly.
-- Source image/style sample at `what-is-your-magic/assets/archetypes/necromancer-sample.png` is bundled in the new app; the nine source PNGs are untouched.
-- In-app browser verified the current profile preview, clean console and actual rendered hero/triad; a deliverable tab remains open. Preview servers restarted as hidden, on-demand local Python processes on 4187/4188, with no scheduler/service installation.
+## Files changed
+New app index.html, app.js, style.css, ui.js, wizard-pages.js, tests/browser.cjs, tests/profiles.cjs, tests/artwork.cjs, scripts/export-artwork.py, assets/archetypes/ (26 masters, 27 exports, manifest/gallery), assets/brand/wol-logo.png, README.md, DESIGN.md, ARTWORK.md; project TASK_STATE.md. No original-app files, questions or matching edits.
 
-## Prior functional baseline — retained evidence
-- Started from clean feature head `3202640`; previous clean local branch was `ux/wol-visual-faithful-2026-08-27`, preserved.
-- Earlier literal escaped newline prevented all initialization; `3202640` already fixed it. That revision played under repository-root hosting.
-- Reproduced dead Start + missing Families when only the new app folder was served: sibling data 404 → MOVES undefined → initialization stops before rendering/listeners. Fixed by a verified local source snapshot and existing assets, ordered deferred scripts, startup recovery and versioned URLs. Original user Codespaces/cache state was unavailable; no exact claim about that earlier setup.
-- Fix `5721e75` and checkpoint `dc5dda6` were pushed and PR #2 updated, Draft/open/unmerged. Pages was verified as serving main at `c836505`; no feature-branch hosted preview was created.
+## Preview and exact next action
+Public: https://wollab.github.io/WoL_GameLab/what-is-your-magic/ (currently prior release until the authorized update deploys).
+Local checked: http://127.0.0.1:4187/WoL_GameLab/what-is-your-magic/ ; isolated root http://127.0.0.1:4188/ . Portable commands are in README; Python servers must remain running.
 
-## Files changed in this follow-up
-`TASK_STATE.md`; new app `index.html`, `style.css`, `app.js`, `README.md`, `DESIGN.md`, `ui.js`, `wizard-pages.js`, `assets/icons.svg`, `assets/archetypes/necromancer-sample.png`, `tests/browser.cjs`, `tests/profiles.cjs`; current audit additionally bundles four Bai Jamjuree font subsets/two OFL notices and `tests/audit.cjs`. No changes to original questions, matching formula or any `9-learning-angles/` file. Evidence images/JSON remain outside committed source.
-
-## Tests and verification
-- `tests/browser.cjs`: 12/12 groups passed on Chrome / Playwright 1.62.1. Desktop 1440 px, mobile emulation 390/320 px, full ten-question journey, all 27 outcomes through real clicks, independent expected scores, legacy keys, exact/near ties, retake/quit, sharing fallbacks, startup failure/reload, prefixed/isolated hosting and original quiz desktop/mobile regression.
-- `tests/profiles.cjs`: 10/10 groups passed. All 27 direct profile routes and source copy; hero portrait plus three signature characters; Family filters; invalid-route recovery; sequential chapters and same-chapter re-selection; Browser Back/reload preservation; complete 3×3 mobile matrix with all nine cells visible together, low-state fading and all tied highs.
-- `tests/audit.cjs`: 5/5 current observed-issue regressions passed; score correction, truthful zero/tie copy, mobile navigation geometry/contrast, searchable catalog and healthy console/network.
-- `tests/scoring.test.cjs`: 5/5 passed. All 177,147 legal answer paths reach all 27 archetypes; formula unchanged. This is structural reachability, not psychometric validation or equal real-world result frequency.
-- Healthy browser/profile flows: zero console/runtime errors, 404s or failed requests. Original app's undeclared browser-generated favicon alone is stubbed HTTP 204 in regression. New assets resolve normally. Native-share APIs are simulated for deterministic success/cancel/denial; real OS share sheet not exercised.
-- Source snapshot check passed: LF-normalized source SHA-256 `3fbd82c9b241ce2e8c83992de915e13cb9f9aa8ba18a613ea6b59ff4024e05fa`, eleven original assets exact. Original-app diff against `c836505` remains empty.
-- Static UI audit, syntax checks and `git diff --check` passed. Workspace health before/after: 30 passed, 1 existing `tmp` warning, 0 failures. No cleanup/deletion performed.
-- Source references and actual screenshots inspected; comparison ledger in DESIGN.md. User's rejected compact concept is explicitly superseded. Prior UI evidence under this chat's visualization `ui2/`; current audit evidence in `audit3/`: browser-results.json, profile-results.json, premium-audit.json, desktop/mobile screenshots, matrix detail crops.
-- Real iOS/Android, Safari/Firefox, production and the former user Codespaces preview remain untested. Chief's current UI/art acceptance remains open.
-
-## Remaining work / blockers
-No technical blocker or remaining UI implementation step. Chief review of the actual page and one art sample is next. Full 27-character artwork is a separate pending design decision after the single sample; do not silently batch remaining portraits.
-
-## Preview
-- Main: http://127.0.0.1:4187/WoL_GameLab/what-is-your-magic/
-- Profile sample: http://127.0.0.1:4187/WoL_GameLab/what-is-your-magic/#wizard/necromancer
-- Catalog: http://127.0.0.1:4187/WoL_GameLab/what-is-your-magic/#wizards
-- Isolated root: http://127.0.0.1:4188/
-Local Python processes must remain running. Portable local/Codespaces commands are in the app README. The public production URL above is verified; local servers are optional for development.
-
-## Previous review next action (superseded by release authorization above)
-Chief opens the local preview, plays the corrected ten-question journey, deliberately changes one answer with Previous, then reviews the mobile matrix and catalog search. Record concrete feedback; real-user testing is needed before any better-than-16Personalities claim. Current full six-step report: this chat visualization audit3/report.html (also report.md); core/profile/audit/static JSON and accepted screenshots are alongside it. If the server stopped, use the already verified README commands. If the local server has stopped, use the README launch commands on `feature/wizard-discovery-v1`. Keep PR #2 Draft/unmerged until Chief's next release instruction. No automatic merge/deploy or remaining-art batch.
-
-## Exact next action — release complete
-Chief opens the public production URL on desktop/phone and plays without a local server. Capture concrete feedback or a chosen naming change before modifying branding. “27 Magic of Learning” was a naming question only; current title remains What Is Your Magic? / 27 Wizard Archetypes. Further art production and any subsequent code/release are separate scope. No technical deployment blocker remains.
+Finish static/whitespace/source checks; inspect/stage only this repo's scoped files, commit and push feature, open a new PR (closed #2 cannot be updated). Validate changed paths preserve original app, merge exact tested head under the current publication authorization and wait for Pages. Re-run the browser suites and artwork/gallery checks on the actual public URL; inspect public site in the in-app browser. Then checkpoint actual release SHA/results, update existing PM records and usage evidence, and return public URL plus named art gallery/PNG ZIP. No technical blocker.

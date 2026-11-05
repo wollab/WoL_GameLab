@@ -78,7 +78,7 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
   const desktop=await open({width:1440,height:1000}),p=desktop.page;
   await check('Landing identity, 5 Families, all dependencies local, no blank/overlay',async()=>{
     await p.goto(base+'what-is-your-magic/');await p.locator('#start:enabled').waitFor();await p.evaluate(()=>document.fonts.ready);
-    assert.ok((await p.title()).includes('27 Wizard Archetypes'));
+    assert.ok((await p.title()).includes('27 Wizards of Learning'));assert.ok((await p.locator('#main-title').textContent()).includes('27 Wizards'));
     assert.equal(await p.locator('.family').count(),5);
     assert.deepEqual(await p.locator('.family b').allTextContents(),Object.values(data.families).map(x=>x.title));
     assert.equal(await p.locator('#startup-status').isVisible(),false);
