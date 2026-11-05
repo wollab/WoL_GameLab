@@ -4,7 +4,7 @@
 Complete a playable, separate `/WoL_GameLab/what-is-your-magic/` experience: landing → ten original questions → one of 27 Wizards; preserve `/WoL_GameLab/9-learning-angles/`. Commit to `feature/wizard-discovery-v1`, update Draft PR #2, never merge automatically.
 
 ## Status — 2026-11-05
-Implementation and technical acceptance complete; preparing the feature-branch commit and PR #2 update. This is review-ready work, not Chief acceptance or production approval. Started from clean feature head `320264096d088b1ff887d698c93d1102d4f93cf2`. Previous local branch was `ux/wol-visual-faithful-2026-08-27`; its clean files/history are preserved.
+Implementation and technical delivery complete. Fix commit `5721e755214861876f4ef2ac2affd3b2ca56fee1` is pushed to `feature/wizard-discovery-v1`; existing [PR #2](https://github.com/wollab/WoL_GameLab/pull/2) is updated, open, Draft, unmerged and conflict-free on readback. This is review-ready work, not Chief acceptance or production approval. Started from clean feature head `320264096d088b1ff887d698c93d1102d4f93cf2`. Previous local branch was `ux/wol-visual-faithful-2026-08-27`; its clean files/history are preserved.
 
 ## Completed / evidence
 - Inspected all tracked paths and new app scripts, source questions, scoring, legacy keys, dependency order and original quiz flow.
@@ -22,7 +22,7 @@ Implementation and technical acceptance complete; preparing the feature-branch c
 - No public production deployment, merge, new analytics, automation or personality-diagnosis claims.
 
 ## Work in progress / remaining
-Commit/push the scoped change to the feature branch, update the existing Draft PR, verify remote head/diff and report to Chief/PM. No further product implementation is pending. Chief can then play the preview and review PR #2; do not merge automatically.
+No implementation work remains for this requested V1. PR description now records root-cause evidence/limits, checks and repeatable preview commands. Remote head and full PR file scope were verified; only this checkpoint and the new app differ from production. Final checkpoint/PM handoff is being persisted. Chief can play the preview and review PR #2; do not merge automatically.
 
 ## Files changed
 `TASK_STATE.md`; new app `.gitattributes`, `README.md`, `DESIGN.md`, `index.html`, `app.js`, `style.css`, `startup.js`, `favicon.svg`, generated `quiz-data.js`, eleven copied existing assets, `scripts/sync-quiz.cjs`, and three `tests/*.cjs` files. No original app files changed. Tests/screenshots/JSON outputs stay outside committed source.
@@ -39,4 +39,4 @@ Commit/push the scoped change to the feature branch, update the existing Draft P
 No required product question. No existing feature-branch hosted preview. Local verified preview is allowed by the delivery fallback and runs at `http://127.0.0.1:4187/WoL_GameLab/what-is-your-magic/` while its Python process remains running. Companion isolated-root preview: `http://127.0.0.1:4188/`. Portable launch commands for repository-root and Codespaces are in the app README. No public hosted-preview claim.
 
 ## Exact next action
-Commit/push `TASK_STATE.md` and `what-is-your-magic/` only to `feature/wizard-discovery-v1`; update Draft PR #2 description with root-cause limits and 12/12 browser results; verify remote SHA/files and Draft/open/unmerged state. Record delivery in local PM, then Chief plays the local preview and reviews the PR. No automatic merge/deploy.
+Chief opens the local preview, completes the quiz and reviews PR #2. If this Python preview process is no longer running, use the README's verified local/Codespaces commands on `feature/wizard-discovery-v1`. Capture actual Chief feedback before further changes. Merge/production publication requires Chief's next instruction; no automatic merge/deploy or additional feature work is pending.
