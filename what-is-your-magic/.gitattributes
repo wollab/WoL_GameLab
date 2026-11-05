@@ -1,0 +1,2 @@
+# Keep the generated checksum stable across Windows and Linux checkouts.
+quiz-data.js text eol=lf
