@@ -7,6 +7,12 @@ A separate, standalone experience from [9 Learning Angles](../9-learning-angles/
 - [27 Wizards of Learning](https://wollab.github.io/WoL_GameLab/what-is-your-magic/)
 - [Original 9 Learning Angles](https://wollab.github.io/WoL_GameLab/9-learning-angles/)
 
+## Social sharing image
+
+`assets/social/og-learning-magic-v1.jpg` is the 1200×630 JPEG cover (229,039 bytes). Five existing Wizards collaborate to turn book knowledge into a bridge and garden, alongside clear Thai introductory text. The static HTML includes Open Graph and Twitter large-image metadata, absolute public URLs, alt descriptions and canonical URL so crawlers can read it without JavaScript.
+
+The unchanged generated PNG master and exact built-in Image Gen prompt/provenance are retained beside the web copy. `python what-is-your-magic/scripts/export-og.py` derives the JPEG using Pillow resize/format export only. Broad scene-composition cues come from the referenced 16Personalities profile illustrations; all five character identities come from this project's approved cast. Social platforms may cache previously scraped cards; browser/source checks do not demonstrate their cache refresh.
+
 ## Play the feature branch locally
 
 From the repository root (Python 3, no build/install step):
