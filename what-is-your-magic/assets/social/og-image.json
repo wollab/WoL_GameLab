@@ -1,0 +1,36 @@
+{
+  "status": "generated and visually inspected; ready for website metadata",
+  "tool": "built-in image_gen",
+  "sourceFile": "exec-1b54fac3-5a1c-4c5a-bd8b-3eafbb1890ef.png",
+  "master": "og-learning-magic-v1-master.png",
+  "web": "og-learning-magic-v1.jpg",
+  "characters": [
+    "mage",
+    "healer",
+    "necromancer",
+    "bard",
+    "artificer"
+  ],
+  "copy": [
+    "Wizards of Learning",
+    "27 Wizards of Learning",
+    "ค้นพบเวทมนตร์ในวิธีเรียนรู้ของคุณ",
+    "10 คำถาม · 27 สายเวท"
+  ],
+  "reference": "https://www.16personalities.com/intp-personality",
+  "referenceUse": "Broad clean geometric narrative composition and light background; identities from the five existing project-owned portraits.",
+  "prompt": "Use case: ads-marketing.\nAsset: finished Open Graph social share cover for the Thai learning-reflection website \"27 Wizards of Learning\". Create a polished WIDE landscape image, 1200×630 composition, aspect ratio 1.905:1. Final artwork, not a mockup.\nInputs 1–5 are our OWN existing characters and MUST control their identities: 1 Mage/Generalist (brown skin, short dark curls, navy-teal robe/hat, modular crystal staff), 2 Healer (olive/cream leaf robe and hat, sprout), 3 Necromancer (black hair, charcoal/plum hat and robe, lantern and storybook, friendly tiny spirit), 4 Bard/Artist Mage (auburn curls, warm orange-red hat, lute), 5 Artificer (brown skin, dark curly bob, rust hat with goggles, tools and small mechanical bird). Preserve their recognizable faces, costumes, palette, proportions and bright angular cel shading; use fresh collaborative poses. Each has exactly two arms/hands. Do not invent replacement characters.\nVisual reference direction: the open, light-background, clean geometric narrative illustrations on 16Personalities profile pages, where characters doing meaningful activities tell a story. Borrow only broad qualities of composition, visual clarity, simplified environmental props and generous whitespace. Keep OUR modern friendly semi-chibi 2D cast, with expressive big heads, crisp angular facets and clean silhouettes. Do not copy 16Personalities characters, typography, branding or logo.\nComposition: left 45% is a very clear editorial text zone on warm near-white. Right 55% is ONE integrated story scene: five Wizards working together in an airy magical learning workshop. Foreground Necromancer opens a storybook and lights an idea with a lantern; Mage connects its floating colored geometric ideas into a curved path; Artificer builds a small bridge along it; Healer nurtures a leafy seedling at the destination; Bard plays a few flowing musical marks that help the group. A small floating garden platform and a few geometric stepping stones support the story of discovering, experimenting and growing together. Use three foreground figures and two slightly behind, natural attention directed toward their shared discovery. All five identifiable, avoid lineup of portrait cards. Their feet/props remain inside canvas. Small environment only, no huge castle, no busy background. Pale lilac, sage and apricot planar shapes, charcoal/iris typography, selective teal and warm gold accents. White/cream should dominate, no dark fantasy, no glow overload.\nTypography: professionally typeset, dark charcoal bold Thai-friendly sans headline and large confident clean English. Strong legibility at 600×315 thumbnail. Keep all key content inside 5% safe margins, ample breathing room, no overlap between art and copy. Use these EXACT text blocks with correct spelling and Thai vowels/tone marks:\n1. Main title, large, two lines: \"27 Wizards\" / \"of Learning\"\n2. Thai introduction, clearly readable, two lines: \"ค้นพบเวทมนตร์\" / \"ในวิธีเรียนรู้ของคุณ\"\n3. A simple iris rounded callout near lower left: \"10 คำถาม · 27 สายเวท\"\n4. Small publisher line near upper left: \"Wizards of Learning\"\nNo extra text, URL, percentages, badges, personality diagnosis claims, watermark, border or UI screenshot. Do not redraw a logo; use the publisher text only. The image should feel like an inviting book-cover invitation to discover your learning magic, not a game battle or a dense infographic.",
+  "export": {
+    "width": 1200,
+    "height": 630,
+    "format": "JPEG",
+    "quality": 90,
+    "semanticEditing": false
+  },
+  "masterDimensions": [
+    1731,
+    909
+  ],
+  "masterSha256": "622cc03c7b087f8775fdf1983e5faf82c3d3f4fe5d56ff48837ae8925aeffdaa",
+  "webBytes": 229039
+}

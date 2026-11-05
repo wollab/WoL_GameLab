@@ -53,6 +53,8 @@ Families now use five broad reading rows instead of five compact cards. Each has
 
 ## Visual comparison ledger
 
+The social cover extends the same open illustration direction into a single narrative scene: Necromancer retrieves an idea, Mage connects it, Artificer builds a bridge, Healer nurtures growth and Bard supports the shared discovery. Strong left-aligned English/Thai copy introduces the learning-reflection tool at thumbnail size. Five character PNGs were supplied as identity references to built-in Image Gen; no 16Personalities character artwork or logo is incorporated. Keep the unchanged PNG master and exact prompt in `assets/social/`; the 1200×630 JPEG is a format/resize export. No global brand change is inferred.
+
 | Reference evidence | Implemented treatment / deliberate adaptation |
 | --- | --- |
 | INTP wide tinted hero, large left title, right character | Same hierarchy and space; WoL typography, family tint and a portrait plus three source-angle characters |
