@@ -6,7 +6,11 @@ Complete the separate `/WoL_GameLab/what-is-your-magic/` website: landing → te
 ## Release authorization — 2026-11-05
 Chief explicitly requested “Push ขึ้นเว็บเลยครับ :)”. This supersedes the earlier hold on merge/deployment for this release. Publish the tested V1 through existing PR #2 into main (GitHub Pages legacy root source), preserving the original app. Keep the current app name: “27 Magic of Learning” is a naming question, not an approved rename. Only TASK_STATE/README release documentation changed after the tested 6e14645 source; no app code/scoring/assets changed.
 
-Release is in progress: verify PR head/base and changed paths, mark ready and merge with expected-head guard, wait for Pages build of the merge SHA, then play the production URL through ten answers and verify the original site. Target: https://wollab.github.io/WoL_GameLab/what-is-your-magic/. Checkpoint actual deployed commit and live tests after verification. This is a user-authorized release, not an automatic ongoing release rule.
+Production release verified: PR #2 is merged at `7469a84c7abb830a9560f0e738bce38a1664550d`; GitHub Pages main/root run `42040669954` completed successfully (build + deploy). Public URL: https://wollab.github.io/WoL_GameLab/what-is-your-magic/. No login/private preview is needed. Original public URL remains https://wollab.github.io/WoL_GameLab/9-learning-angles/ and its source diff against c836505 is empty.
+
+Post-deploy Chrome/Playwright on the actual public URL: core 11/11 (isolated localhost-only case intentionally omitted), profiles/reading 10/10, UX regressions 5/5; all 27 outcomes through actual ten-answer journeys; 390/320 mobile matrix, correction/retake/share fallback, search/recovery, direct profile/reload/Back and original quiz desktop/mobile all passed. Zero healthy-flow console/runtime errors, failed requests or 404s. In-app browser separately completed ten answers to Force Mage with a clean error/warn console; production screenshot saved. This result is a test example, not Chief's personal result. Existing physical-device/OS-sheet/assistive-tech limitations remain.
+
+Current production evidence: this chat visualization `production/` contains browser-results.json, profile-results.json, audit-results.json, actual production screenshots and live-result.jpg. Only release documentation changed after tested app source 6e14645; app code/images/scoring remain identical. Final checkpoint commit may trigger the normal Pages rebuild without changing the playable app. Earlier review-only/unmerged statements below are retained milestone history, superseded by this explicit release instruction and verified release.
 
 ## Current status — 2026-11-05 follow-up
 Chief-requested fresh Product Design audit and frontend refinement is implemented and verified locally from clean `ea68efa`. UX fix `78787335bacc15a6fd882dfaec92ff997b08c42a` is committed and pushed; existing Draft PR #2 metadata is updated and read back open, Draft and unmerged. Technical delivery is complete; Chief play/design review remains next. Chief explicitly freed this app from corporate color constraints; iris/ink/lilac and Bai Jamjuree body type are scoped to this app. Do not claim comparative superiority without real user testing.
@@ -24,7 +28,7 @@ UI/profile implementation and technical delivery complete. Commit `825caf0cde293
 - Matrix stays visibly 3×3 on 320/390 px mobile without horizontal panning. Keep source nine images/colors; bold all scores; accent ≥4 and all tied maxima; gray/pale 0–1 while readable/clickable. Low scores do not imply missing ability.
 - Hero supports archetype portrait plus the three original signature characters. One friendly Necromancer art sample was generated in this chat from the existing Reflector/Connector style references; it is review-only. Other 26 portraits remain family-symbol placeholders. A complete 27-character art set and production art direction are not approved or claimed complete.
 - Distinct static-host-compatible `#wizard/<id>` profile URLs; `#wizards[/Family]` catalog and chapter links. Completed scores survive profile/catalog/chapter Back and reload via browser `history.state`; retake clears current context. No account, analytics, cookies, localStorage, backend or new schedule.
-- Preserve separate original/new routes and all original-app files. No production deployment or automatic merge.
+- Preserve separate original/new routes and all original-app files. This V1 release is explicitly approved by Chief and deployed through PR #2; do not infer an automatic future release policy.
 
 ## Completed implementation
 - Restyled landing with an open header, lilac/white bands, large heading, Start and three illustrated steps; all five Families link into a browsable catalog.
@@ -63,10 +67,10 @@ No technical blocker or remaining UI implementation step. Chief review of the ac
 - Profile sample: http://127.0.0.1:4187/WoL_GameLab/what-is-your-magic/#wizard/necromancer
 - Catalog: http://127.0.0.1:4187/WoL_GameLab/what-is-your-magic/#wizards
 - Isolated root: http://127.0.0.1:4188/
-Local Python processes must remain running. Portable local/Codespaces commands are in the app README. No public hosted-preview claim.
+Local Python processes must remain running. Portable local/Codespaces commands are in the app README. The public production URL above is verified; local servers are optional for development.
 
 ## Previous review next action (superseded by release authorization above)
 Chief opens the local preview, plays the corrected ten-question journey, deliberately changes one answer with Previous, then reviews the mobile matrix and catalog search. Record concrete feedback; real-user testing is needed before any better-than-16Personalities claim. Current full six-step report: this chat visualization audit3/report.html (also report.md); core/profile/audit/static JSON and accepted screenshots are alongside it. If the server stopped, use the already verified README commands. If the local server has stopped, use the README launch commands on `feature/wizard-discovery-v1`. Keep PR #2 Draft/unmerged until Chief's next release instruction. No automatic merge/deploy or remaining-art batch.
 
-## Exact next action — authorized release
-Merge the reviewed PR with expected-head protection, observe the Pages build for that merge commit and run the real production-browser journey/original regression; update this checkpoint and PM with actual results. Do not rename the app from a naming question.
+## Exact next action — release complete
+Chief opens the public production URL on desktop/phone and plays without a local server. Capture concrete feedback or a chosen naming change before modifying branding. “27 Magic of Learning” was a naming question only; current title remains What Is Your Magic? / 27 Wizard Archetypes. Further art production and any subsequent code/release are separate scope. No technical deployment blocker remains.
