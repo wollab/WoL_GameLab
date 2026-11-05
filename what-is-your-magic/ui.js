@@ -24,6 +24,10 @@
   }
   function chapters(target,prefix,items){
     const wrap=document.getElementById(target);wrap.replaceChildren(node('h2','','สำรวจหัวข้อนี้'));
+    const label=node('label','chapter-picker','ไปยังหัวข้อ'),select=node('select','chapter-select');select.id=target+'-select';label.htmlFor=select.id;
+    items.forEach(([id,title])=>{const option=node('option','',title);option.value=prefix+'/'+id;select.append(option);});
+    select.value=items.some(([id])=>prefix+'/'+id===location.hash)?location.hash:prefix+'/'+items[0][0];
+    select.addEventListener('change',()=>{location.hash=select.value;});label.append(select);wrap.append(label);
     items.forEach(([id,title])=>{const a=node('a','',title);a.href=prefix+'/'+id;a.append(icon('arrow'));wrap.append(a);});
   }
   function decorate(){document.querySelectorAll('[data-icon]').forEach(e=>{e.replaceChildren(icon(e.dataset.icon));});}

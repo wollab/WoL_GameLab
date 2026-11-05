@@ -14,14 +14,19 @@
   }
   function catalog(family='all'){
     const wrap=document.getElementById('wizard-groups');wrap.replaceChildren();
+    const input=document.getElementById('catalog-search'),query=input.value.trim().toLocaleLowerCase('th');
+    const matches=WIZARD_ARCHETYPES.filter(t=>(family==='all'||t.family===family)&&[t.name,t.desc,WIZARD_FAMILIES[t.family].thai,...t.sig.map(id=>WIZARD_ANGLE_NAMES[id])].join(' ').toLocaleLowerCase('th').includes(query));
+    document.getElementById('catalog-status').textContent='พบ '+matches.length+' จาก 27 สาย'+(family==='all'?'':' · '+WIZARD_FAMILIES[family].thai);
+    document.getElementById('catalog-clear').disabled=!input.value;
     document.querySelectorAll('[data-family-filter]').forEach(a=>a.setAttribute('aria-current',a.dataset.familyFilter===family?'page':'false'));
-    Object.entries(WIZARD_FAMILIES).filter(([id])=>family==='all'||family===id).forEach(([id,f])=>{
+    Object.entries(WIZARD_FAMILIES).filter(([id])=>matches.some(t=>t.family===id)).forEach(([id,f])=>{
       const section=node('section','family-group');section.style.setProperty('--family',f.color);
       const intro=node('div','family-intro');intro.append(emblem(id),node('div'));
       intro.lastChild.append(node('p','family-kicker','Family '+id),node('h2','',f.title),node('p','',f.description));
-      const grid=node('div','wizard-grid');WIZARD_ARCHETYPES.filter(t=>t.family===id).forEach(t=>grid.append(card(t)));
+      const grid=node('div','wizard-grid');matches.filter(t=>t.family===id).forEach(t=>grid.append(card(t)));
       section.append(intro,grid);wrap.append(section);
     });
+    if(!matches.length){const empty=node('div','catalog-empty');empty.append(heading('ยังไม่พบ Wizard ที่ตรงกับคำค้น','book'),node('p','','ลองค้นด้วยชื่อ Wizard หรือมุมการเรียนรู้ เช่น นักสำรวจ หรือล้างคำค้นแล้วเลือกดูทุกสาย'));const reset=node('a','text-link','ล้างคำค้นและดูทั้ง 27 สาย →');reset.href='#wizards';reset.addEventListener('click',()=>{input.value='';catalog('all');});empty.append(reset);wrap.append(empty);}
   }
   function signature(type){
     const list=node('div','profile-signature');

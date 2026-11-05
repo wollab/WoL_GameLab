@@ -12,7 +12,7 @@
   const memberCounts=Object.fromEntries(Object.keys(WIZARD_FAMILIES).map(f=>[f,WIZARD_ARCHETYPES.filter(x=>x.family===f).length]));
   const errors=WizardMatching.validateSignatures(WIZARD_ARCHETYPES);
   if(errors.length)throw new Error("Wizard data: "+errors.join("; "));
-  let answers={},questions=[],step=0,ranked=[];
+  let answers={},questions=[],choices=[],step=0,ranked=[];
   function show(page,scroll=true){
     Object.entries(pages).forEach(([key,element])=>element.classList.toggle("active",key===page));
     el("nav-result").hidden=!ranked.length;
@@ -41,7 +41,8 @@
     }else if(!name||name==="home"||name==="result"){show("home");}
     else show("not-found");
     document.querySelectorAll(".chapter-nav a").forEach(a=>a.setAttribute("aria-current",a.hash===location.hash?"location":"false"));
-    if(chapter)chapter.scrollIntoView({block:"start",behavior:"instant"});
+    document.querySelectorAll(".chapter-select").forEach(select=>{select.value=[...select.options].some(opt=>opt.value===location.hash)?location.hash:select.options[0].value;});
+    if(chapter){chapter.scrollIntoView({block:"start",behavior:"instant"});const title=chapter.querySelector("h2");if(title){title.tabIndex=-1;title.focus({preventScroll:true});}}
   }
   function shuffled(items){
     const copy=[...items];for(let i=copy.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy;
@@ -59,22 +60,24 @@
     answers=Object.fromEntries(angleOrder.map(id=>[id,0]));
     ranked=[];
     questions=[...shuffled(QUESTIONS.slice(0,-1)).map(q=>({...q,options:shuffled(q.options)})), {...QUESTIONS[QUESTIONS.length-1],options:shuffled(QUESTIONS[QUESTIONS.length-1].options)}];
-    step=0;
+    step=0;choices=[];
     if(location.hash!=="#quiz")history.pushState({},"","#quiz");else history.replaceState({},"","#quiz");
     show("quiz");renderQuestion();
   }
   function renderQuestion(){
     const q=questions[step];
     el("progress-label").textContent="คำถาม "+(step+1)+" / "+questions.length;
-    el("progress").setAttribute("aria-valuenow",step);
-    el("progress").setAttribute("aria-valuetext","ตอบแล้ว "+step+" จาก "+questions.length+" ข้อ");
-    el("progress-fill").style.width=(step/questions.length*100)+"%";
+    const completed=choices.filter(Boolean).length;
+    el("progress").setAttribute("aria-valuenow",completed);
+    el("progress").setAttribute("aria-valuetext","เลือกคำตอบแล้ว "+completed+" จาก "+questions.length+" ข้อ");
+    el("progress-fill").style.width=(completed/questions.length*100)+"%";
     el("quiz-title").textContent=q.text;
     el("question-note").textContent=q.note||"";
     const wrap=el("options");wrap.replaceChildren();
     q.options.forEach((opt,i)=>{
       const button=$("button","option"+(q.options.length>6?" thumb":""));
       button.type="button";
+      button.setAttribute("aria-pressed",String(choices[step]===opt));
       if(q.options.length>6){
         const img=$("img");img.src=angles[opt.move].img;img.alt="";
         button.append(img);
@@ -82,18 +85,29 @@
       button.append($("span","",opt.text));
       button.addEventListener("click",()=>{
         if(!button.isConnected)return;
-        answers[opt.move]+=q.weight||1;
-        step++;
-        if(step<questions.length)renderQuestion();
-        else{
-          el("progress").setAttribute("aria-valuenow",questions.length);el("progress-fill").style.width="100%";
-          renderResult();history.replaceState({magicScores:{...answers}},"","#result");show("result");
-        }
+        choices[step]=opt;
+        wrap.querySelectorAll("button").forEach(item=>item.setAttribute("aria-pressed",String(item===button)));
+        el("quiz-next").disabled=false;
+        const count=choices.filter(Boolean).length;
+        el("progress").setAttribute("aria-valuenow",count);
+        el("progress").setAttribute("aria-valuetext","เลือกคำตอบแล้ว "+count+" จาก "+questions.length+" ข้อ");
+        el("progress-fill").style.width=(count/questions.length*100)+"%";
       });
       wrap.append(button);
     });
+    el("quiz-prev").disabled=step===0;
+    el("quiz-next").disabled=!choices[step];
+    el("quiz-next").textContent=step===questions.length-1?"ดู Wizard ของฉัน →":"ข้อถัดไป →";
     el("quiz-title").focus({preventScroll:true});
     window.scrollTo({top:0,behavior:"instant"});
+  }
+  function nextQuestion(){
+    if(!choices[step])return;
+    if(step<questions.length-1){step++;renderQuestion();return;}
+    answers=Object.fromEntries(angleOrder.map(id=>[id,0]));
+    choices.forEach((opt,i)=>{answers[opt.move]+=questions[i].weight||1;});
+    step=questions.length;
+    renderResult();history.replaceState({magicScores:{...answers}},"","#result");show("result");
   }
   function renderResult(){
     ranked=WizardMatching.matchWizards(answers,WIZARD_ARCHETYPES);
@@ -106,9 +120,13 @@
     el("result-title").textContent=winner.name;
     el("result-motto").textContent="“"+f.motto+"”";
     el("result-description").textContent=winner.desc;
-    el("result-introduction").textContent=winner.desc;
+    const highest=Math.max(...Object.values(answers));
+    const peaks=angleOrder.filter(id=>answers[id]===highest);
+    el("result-introduction").textContent="ในคำตอบชุดนี้ มุมที่คุณเลือกใช้มากที่สุดคือ "+peaks.map(id=>angles[id].thai).join(" / ")+" ("+highest+" คะแนน) ลองเทียบกับเหตุการณ์จริงของคุณว่าเห็นมุมเหล่านี้อย่างไร";
     el("result-gift").textContent=winner.gift;
-    el("result-reason").textContent="ผลคะแนนของคุณใกล้กับสายนี้ เพราะคุณใช้มุม "+winner.sig.map(id=>WIZARD_ANGLE_NAMES[id]).join(" / ")+" ในสัดส่วนที่สอดคล้องกับ Learning Signature ที่ออกแบบให้ Wizard นี้";
+    const contributed=winner.sig.filter(id=>answers[toOriginalId(id)]>0);
+    const unused=winner.sig.filter(id=>answers[toOriginalId(id)]===0);
+    el("result-reason").textContent="ระบบเทียบคะแนนทั้ง 9 มุมกับลายเซ็นที่ออกแบบให้ Wizard แต่ละสาย โดยมุมหลักมีน้ำหนักมากกว่ามุมรองและมุมสนับสนุน สำหรับสายนี้ คะแนนที่มีส่วนร่วมมาจาก "+contributed.map(id=>WIZARD_ANGLE_NAMES[id]+" "+answers[toOriginalId(id)]+" คะแนน").join(" / ")+(unused.length?" ส่วน "+unused.map(id=>WIZARD_ANGLE_NAMES[id]).join(" / ")+" ได้ 0 คะแนนในคำตอบชุดนี้ เป็นส่วนหนึ่งของลายเซ็น Wizard ไม่ใช่พฤติกรรมที่คุณเลือก":"")+" ผลนี้จึงเป็นข้อชวนสำรวจ ไม่ใช่คำอธิบายตัวคุณทุกด้าน";
     el("result-quest-copy").textContent=winner.quest;
     const signature=el("signature");signature.replaceChildren();
     ["มุมหลัก","มุมรอง","มุมสนับสนุน"].forEach((name,i)=>{
@@ -120,6 +138,9 @@
     });
     const note=el("close-note");
     const gap=ranked[0].matchScore-ranked[1].matchScore;
+    const topNote=el("hero-close-note");topNote.hidden=!WizardMatching.hasCloseMatch(ranked);
+    topNote.replaceChildren(document.createTextNode(gap===0?"มีมากกว่าหนึ่งสายที่ได้แต้มจับคู่สูงสุดเท่ากัน ":"มีอีกสายที่ใกล้กับคำตอบของคุณมาก "));
+    const closeLink=$("a","", "สำรวจ "+ranked[1].name+" และสายใกล้เคียง →");closeLink.href="#result/nearby";topNote.append(closeLink);
     note.hidden=!WizardMatching.hasCloseMatch(ranked);
     note.textContent="ผลลัพธ์นี้มีสายที่ใกล้กันมาก ("+ranked[1].name+") คะแนนห่างเพียง "+gap+" คะแนน จึงควรมองทั้งสองสายเป็นความเป็นไปได้ ไม่ใช่คำตอบตายตัว";
     const alt=el("alternatives");alt.replaceChildren();
@@ -152,7 +173,7 @@
         const img=$("img");img.src=a.img;img.alt="";
         const scoreLabel=$("span","angle-score");scoreLabel.append($("b","",score),document.createTextNode(" คะแนน"));
         btn.append(img,$("strong","",a.thai),scoreLabel);
-        if(score===highest&&score>1)btn.append($("small","peak-label","คะแนนสูงสุด"));
+        if(score===highest&&score>1)btn.append($("small","peak-label","สูงสุด"));
         btn.addEventListener("click",()=>selectAngle(a.id));
         btn.dataset.angle=a.id;
         cell.append(btn);row.append(cell);
@@ -186,11 +207,16 @@
     }finally{button.disabled=false;}
   }
   families();
+  document.querySelectorAll("[data-family-filter]").forEach(a=>{const id=a.dataset.familyFilter;a.textContent=id==="all"?"ทุกสาย · 27":WIZARD_FAMILIES[id].thai+" · "+memberCounts[id];});
   WizardUI.decorate();
   document.getElementById("start").addEventListener("click",begin);
   document.getElementById("quit").addEventListener("click",()=>{history.pushState({},"","#home");show("home");});
   document.getElementById("retake").addEventListener("click",begin);
   document.getElementById("share").addEventListener("click",share);
+  el("quiz-next").addEventListener("click",nextQuestion);
+  el("quiz-prev").addEventListener("click",()=>{if(step>0){step--;renderQuestion();}});
+  el("catalog-search").addEventListener("input",()=>WizardPages.catalog(location.hash.split("/")[1]||"all"));
+  el("catalog-clear").addEventListener("click",()=>{el("catalog-search").value="";WizardPages.catalog(location.hash.split("/")[1]||"all");el("catalog-search").focus();});
   ["start","quit","retake","share"].forEach(id=>el(id).disabled=false);
   el("startup-status").hidden=true;
   el("skip-content").addEventListener("click",event=>{event.preventDefault();el("main").focus();});

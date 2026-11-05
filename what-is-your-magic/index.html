@@ -6,14 +6,14 @@
   <meta name="description" content="What Is Your Magic? — 27 Wizard Archetypes สำรวจเวทมนตร์ในการเรียนรู้ของคุณ">
   <title>What Is Your Magic? · 27 Wizard Archetypes · Wizards of Learning</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=20261105-ui2">
-  <script defer src="startup.js?v=20261105-ui2"></script>
-  <script defer src="quiz-data.js?v=20261105-ui2"></script>
-  <script defer src="wizard-data.js?v=20261105-ui2"></script>
-  <script defer src="wizard-matching.js?v=20261105-ui2"></script>
-  <script defer src="ui.js?v=20261105-ui2"></script>
-  <script defer src="wizard-pages.js?v=20261105-ui2"></script>
-  <script defer src="app.js?v=20261105-ui2"></script>
+  <link rel="stylesheet" href="style.css?v=20261105-audit3">
+  <script defer src="startup.js?v=20261105-audit3"></script>
+  <script defer src="quiz-data.js?v=20261105-audit3"></script>
+  <script defer src="wizard-data.js?v=20261105-audit3"></script>
+  <script defer src="wizard-matching.js?v=20261105-audit3"></script>
+  <script defer src="ui.js?v=20261105-audit3"></script>
+  <script defer src="wizard-pages.js?v=20261105-audit3"></script>
+  <script defer src="app.js?v=20261105-audit3"></script>
 </head>
 <body>
 <a href="#main" class="skip-link" id="skip-content">ข้ามไปเนื้อหา</a>
@@ -58,12 +58,13 @@
     <div class="quiz-shell">
       <div class="quiz-top"><button type="button" class="plain" id="quit" disabled>← กลับหน้าแรก</button><strong id="progress-label" aria-live="polite"></strong></div>
       <div class="progress" role="progressbar" aria-label="ความคืบหน้า" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progress"><div id="progress-fill"></div></div>
-      <div class="question-panel"><span class="question-icon" data-icon="quiz"></span><h2 id="quiz-title" tabindex="-1">เลือกคำตอบที่ใกล้ตัวคุณที่สุด</h2><p id="question-note" class="muted small"></p><div class="options" id="options"></div></div>
+      <div class="question-panel"><span class="question-icon" data-icon="quiz"></span><h2 id="quiz-title" tabindex="-1">เลือกคำตอบที่ใกล้ตัวคุณที่สุด</h2><p id="question-note" class="muted small"></p><p id="quiz-instructions" class="small muted">เลือก 1 คำตอบ แล้วกดข้อถัดไป · ย้อนกลับมาแก้ได้</p><div class="options" id="options" role="group" aria-describedby="quiz-instructions" aria-label="คำตอบ"></div></div>
+      <div class="quiz-actions"><button type="button" id="quiz-prev" class="secondary" disabled>← ข้อก่อนหน้า</button><button type="button" id="quiz-next" class="primary" disabled>ข้อถัดไป →</button></div>
       <p class="center muted small">นึกถึงช่วง 1–2 เดือนที่ผ่านมา และเลือกสิ่งที่คุณมักทำจริง</p>
     </div>
   </section>
   <section class="page" id="result" aria-labelledby="result-title">
-    <div class="hero result-hero"><div class="content-width hero-split"><div><p class="hero-label">เวทมนตร์แห่งการเรียนรู้ของคุณ</p><h1 id="result-title" tabindex="-1"></h1><p id="result-family" class="family-title"></p><p id="result-description" class="lead"></p><p id="result-motto" class="motto"></p><a id="winner-profile" class="text-link" href="#wizards">รู้จัก Wizard สายนี้ <span data-icon="arrow"></span></a></div><div id="result-art" class="hero-emblem" aria-hidden="true"></div></div></div>
+    <div class="hero result-hero"><div class="content-width hero-split"><div><p class="hero-label">เวทมนตร์แห่งการเรียนรู้ของคุณ</p><h1 id="result-title" tabindex="-1"></h1><p id="result-family" class="family-title"></p><p id="result-description" class="lead"></p><p id="result-motto" class="motto"></p><p id="hero-close-note" class="hero-close-note" hidden></p><a id="winner-profile" class="text-link" href="#wizards">รู้จัก Wizard สายนี้ <span data-icon="arrow"></span></a></div><div id="result-art" class="hero-emblem" aria-hidden="true"></div></div></div>
     <div class="content-width reading-layout result-body">
       <nav id="result-chapters" class="chapter-nav" aria-label="อ่านผลลัพธ์ตามหัวข้อ"></nav>
       <div class="reading-content">
@@ -93,7 +94,7 @@
   </section>
   <section class="page" id="wizards" aria-labelledby="catalog-title">
     <div class="hero catalog-hero"><span class="hero-mark" data-icon="people"></span><h1 id="catalog-title" tabindex="-1">27 Wizard Archetypes</h1><p class="lead">แต่ละสายมีเวทมนตร์ต่างกัน ลองอ่านและค้นหามุมที่เชื่อมโยงกับคุณ</p></div>
-    <div class="content-width"><nav class="family-filters" aria-label="เลือก Wizard Family"><a href="#wizards" data-family-filter="all">ทุก Family</a><a href="#wizards/A" data-family-filter="A">Arcane</a><a href="#wizards/B" data-family-filter="B">Life</a><a href="#wizards/C" data-family-filter="C">Spirit</a><a href="#wizards/D" data-family-filter="D">Mind</a><a href="#wizards/E" data-family-filter="E">Magic</a></nav><div id="wizard-groups"></div></div>
+    <div class="content-width"><div class="catalog-search"><label for="catalog-search">ค้นหา Wizard ที่อยากรู้จัก</label><div class="search-controls"><input type="search" id="catalog-search" placeholder="ชื่อ Wizard หรือมุมการเรียนรู้ เช่น นักสำรวจ" aria-describedby="catalog-status"><button id="catalog-clear" type="button" class="secondary" disabled>ล้างคำค้น</button></div></div><nav class="family-filters" aria-label="เลือก Wizard Family"><a href="#wizards" data-family-filter="all">ทุกสาย · 27</a><a href="#wizards/A" data-family-filter="A">ศาสตร์เวทและความรู้ · 7</a><a href="#wizards/B" data-family-filter="B">ชีวิตและธรรมชาติ · 7</a><a href="#wizards/C" data-family-filter="C">วิญญาณและพลังลี้ลับ · 6</a><a href="#wizards/D" data-family-filter="D">จิตและการสื่อสาร · 4</a><a href="#wizards/E" data-family-filter="E">เวทประยุกต์และการลงมือทำ · 3</a></nav><p id="catalog-status" class="catalog-status" role="status"></p><div id="wizard-groups"></div></div>
   </section>
   <section class="page" id="wizard-profile" aria-labelledby="profile-title">
     <div class="hero profile-hero"><div class="content-width"><div class="profile-breadcrumb"><a href="#wizards">← Wizard ทั้ง 27 สาย</a><a href="#result" class="return-result" hidden>กลับไปผลของฉัน</a></div><div class="hero-split"><div><p id="profile-family" class="family-title"></p><h1 id="profile-title" tabindex="-1"></h1><p id="profile-description" class="lead"></p><p id="profile-motto" class="motto"></p><p id="profile-match" class="profile-match" hidden></p></div><div id="profile-art" class="hero-emblem"></div></div></div></div>

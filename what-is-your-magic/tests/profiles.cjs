@@ -15,7 +15,7 @@ async function quiz(p,id){
   const witness=fixtures.witnesses[id];await p.locator('#start').click();
   for(let i=0;i<10;i++){
     const text=await p.locator('#quiz-title').textContent(),index=data.questions.findIndex(q=>q.text===text);
-    await p.locator('#options button').filter({hasText:data.questions[index].options[witness.choices[index]].text}).click();
+    await p.locator('#options button').filter({hasText:data.questions[index].options[witness.choices[index]].text}).click();await p.locator('#quiz-next').click();
   }
   assert.equal(await p.locator('#result-title').textContent(),data.types.find(t=>t.id===id).name);return witness;
 }
@@ -76,7 +76,7 @@ async function quiz(p,id){
     const m=await page(width);await m.setViewportSize({width,height:844});await m.goto(base+'what-is-your-magic/');
     await check('Mobile '+width+': full 3×3 matrix, original images, faded 0–1, all tied highs',async()=>{
       await quiz(m,'necromancer');await m.evaluate(()=>document.fonts.ready);await snap(m,'new-result-hero-mobile-'+width);
-      await m.locator('#result-chapters a[href="#result/matrix"]').click();await m.locator('.matrix').scrollIntoViewIfNeeded();
+      await m.locator('#result-chapters-select').selectOption('#result/matrix');await m.locator('.matrix').scrollIntoViewIfNeeded();
       await noOverflow(m);
       const cells=await m.locator('.angle-card').evaluateAll(items=>items.map(el=>{const r=el.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,score:Number(el.querySelector('b').textContent),low:el.classList.contains('score-low'),peak:el.classList.contains('is-peak'),filter:getComputedStyle(el.querySelector('img')).filter,src:el.querySelector('img').getAttribute('src')};}));
       assert.equal(cells.length,9);assert.equal(new Set(cells.map(c=>Math.round(c.left))).size,3);assert.equal(new Set(cells.map(c=>Math.round(c.top))).size,3);

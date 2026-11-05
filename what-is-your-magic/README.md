@@ -66,7 +66,7 @@ Chief asked for the structure of the [16Personalities INTP profile](https://www.
 
 ## User journey
 1. Read landing screen, 5 Families and disclaimers.
-2. Answer the original 10 questions; question order and options shuffle; tie-break question stays last.
+2. Answer the original 10 questions; select a choice then press Next, or use Previous to correct it. Final selections determine scores without double counting. Question order and options shuffle; preference question stays last.
 3. Receive a main Wizard with family, motto and explanation.
 4. See three signature angles and the original score matrix with all nine.
 5. See next-best Wizards and Growth Quest; optionally retake or share.
@@ -88,7 +88,7 @@ Use the *visual language* shown in the existing 9 Learning Angles characters and
 - Crisp outlines, bright controlled color blocks, light cel-shading, restrained textures.
 - White/neutral backgrounds for individual cards, accent outlines by class/family.
 - Keep a coherent base design system while giving 27 archetypes recognizably different tools, hats, clothing, poses and magical effects.
-- Accent groups: A purple-blue, B green, C violet, D warm orange/gold, E red. Respect WoL's teal/orange/charcoal brand balance in overall UI.
+- Accent groups: A purple-blue, B green, C violet, D warm orange/gold, E red. Overall UI uses the separately scoped iris/ink palette documented in DESIGN.md; this does not change global WoL branding.
 - Produce **27 original character artworks**, ideally source files or layered vector, plus transparent PNG or WebP renders. Do not replicate existing artists' individual compositions or characters.
 - Asset naming: `assets/archetypes/<id>.webp`, file names must match the stable IDs in `wizard-data.js`.
 - Suggested crop: square 1024x1024 masters, with safe full-body character centered; export lightweight versions for web at 512 px or appropriate responsive srcset.
@@ -123,6 +123,7 @@ $env:MAGIC_ISOLATED_URL = 'http://127.0.0.1:8001/'
 $env:TEST_OUTPUT_DIR = "$env:TEMP/magic-v1-evidence"
 node what-is-your-magic/tests/browser.cjs
 node what-is-your-magic/tests/profiles.cjs
+node what-is-your-magic/tests/audit.cjs
 ```
 
 Browser checks save `browser-results.json`, request statuses and desktop/mobile screenshots outside the repository. They use visible DOM controls and independent expected scores, including every Wizard's real answer path. Sharing API success/cancel/denial states are simulated; the operating system share sheet itself is not tested.
@@ -132,3 +133,15 @@ The UI follow-up also passes **10 profile/reading-flow groups** in `tests/profil
 2026-11-05 validation: Chrome via Playwright 1.62.1, desktop 1440 px and mobile emulation 390/320 px. Complete quiz, keyboard, all 27 outcomes, exact/near ties, score details, retake, share fallbacks, missing-script recovery/reload, isolated-root hosting, and original quiz desktop/mobile regression passed. Healthy flows had zero console/runtime errors and zero missing assets/404s. The unchanged original's browser-generated favicon request is fulfilled with HTTP 204 in its regression test; it has no app favicon declaration. New app favicon requests resolve normally.
 
 Exact enumeration of **all 177,147 legal answer paths** (3^9 × 9) reaches all 27 archetypes. This proves structural reachability only: unequal result frequencies, editorial signatures and unvalidated psychological interpretation remain. Real mobile devices, Safari/Firefox, real OS sharing and the user's former Codespaces URL have not been tested.
+
+
+## UX audit refinements — 2026-11-05
+
+- Deliberate answer selection, retained choices, Next/Previous and correct replacement scoring.
+- Actual answer evidence distinguished from the authored Wizard signature, including zero-score components; tied/near matches linked in the result hero.
+- Every reading chapter is discoverable through a labeled native selector on mobile, with one scroll offset and heading focus. Desktop retains the chapter rail.
+- Original 3×3 images/colors retained; low labels darkened while artwork fades, and highest badges stay at least 10px.
+- Catalog search supports Wizard names and Thai learning angles, canonical Family counts and clear/empty-state recovery.
+- New scoped iris/ink palette and local Bai Jamjuree body type with Kanit headings/scores. Both font licenses are bundled.
+
+The new audit regressions pass alongside the original quiz/profile tests. Full current-audit screenshots and six-step findings are delivered in chat; DESIGN.md records the decisions and evidence limits. Usability superiority over another site is a goal requiring real comparative user testing, not a claim established by these checks.

@@ -44,6 +44,9 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
     const button=page.locator('#options button').filter({hasText:opt.text});assert.equal(await button.count(),1);
     if(keyboard){await page.keyboard.press('Tab');assert.ok(await page.locator('#options button').first().evaluate(el=>el===document.activeElement));await button.focus();await page.keyboard.press('Enter');}
     else await button.click();
+    assert.equal(await button.getAttribute('aria-pressed'),'true');
+    assert.equal(await page.locator('#quiz-title').textContent(),text,'choice remains visible until Next');
+    if(keyboard){await page.locator('#quiz-next').focus();await page.keyboard.press('Enter');}else await page.locator('#quiz-next').click();
     scores[opt.move]+=item.q.weight;
   }
   assert.equal(remaining.size,0);
