@@ -11,7 +11,7 @@ A separate, standalone experience from [9 Learning Angles](../9-learning-angles/
 
 `assets/social/og-learning-magic-v1.jpg` is the 1200×630 JPEG cover (229,039 bytes). Five existing Wizards collaborate to turn book knowledge into a bridge and garden, alongside clear Thai introductory text. The static HTML includes Open Graph and Twitter large-image metadata, absolute public URLs, alt descriptions and canonical URL so crawlers can read it without JavaScript.
 
-The unchanged generated PNG master and exact built-in Image Gen prompt/provenance are retained beside the web copy. `python what-is-your-magic/scripts/export-og.py` derives the JPEG using Pillow resize/format export only. Broad scene-composition cues come from the referenced 16Personalities profile illustrations; all five character identities come from this project's approved cast. Social platforms may cache previously scraped cards; browser/source checks do not demonstrate their cache refresh.
+The unchanged generated PNG master and exact built-in Image Gen prompt/provenance are retained beside the web copy. `python what-is-your-magic/scripts/export-og.py` derives the JPEG using Pillow resize/format export only. Broad scene-composition cues come from the referenced 16Personalities profile illustrations; all five character identities come from this project's approved cast. Published and read back on 2026-11-06 via PR #4 / Pages run 42073657154. Actual public HTML and exact JPEG bytes pass the focused Chrome check, including Start → quiz with no errors. Social platforms may cache previously scraped cards; browser/source checks do not demonstrate their cache refresh.
 
 ## Play the feature branch locally
 
