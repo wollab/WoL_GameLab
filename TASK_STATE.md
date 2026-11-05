@@ -4,7 +4,7 @@
 Complete the separate `/WoL_GameLab/what-is-your-magic/` website: landing → ten original questions → one of 27 Wizards, preserving `/WoL_GameLab/9-learning-angles/`. Commit on `feature/wizard-discovery-v1`, update existing Draft PR #2, never merge automatically.
 
 ## Current status — 2026-11-05 follow-up
-UI/profile implementation and technical acceptance complete; preparing the feature-branch commit and PR update. Chief played and liked the functional V1, then requested modern reference-based UI, stronger matrix scores, subdued low scores, nearby Wizard links, 27 profile routes and illustrated headings. Chief subsequently rejected the compact generated result concept as cramped and asked for the long-form INTP profile structure. That correction controls this implementation. Author QA is not Chief design/art acceptance.
+UI/profile implementation and technical delivery complete. Commit `825caf0cde2932fab08200ce2d7a0300d9011a49` is pushed to `feature/wizard-discovery-v1`; existing Draft PR #2 has been updated with the current long-form/mobile/profile evidence and remains unmerged. Chief played and liked the functional V1, then requested modern reference-based UI, stronger matrix scores, subdued low scores, nearby Wizard links, 27 profile routes and illustrated headings. Chief subsequently rejected the compact generated result concept as cramped and asked for the long-form INTP profile structure. That correction controls this implementation. Author QA is not Chief design/art acceptance.
 
 ## Important decisions and scope
 - Reference: https://www.16personalities.com/intp-personality — generous scrolling, spacious hero, chapter navigation, sequential reading. Landing also adapts the supplied free-test screenshot's three illustrated steps. WoL branding, Thai copy and original character art remain owners; no 16Personalities artwork, branding or personality claims copied.
@@ -43,7 +43,7 @@ UI/profile implementation and technical acceptance complete; preparing the featu
 - Real iOS/Android, Safari/Firefox, production and the former user Codespaces preview remain untested. Chief's current UI/art acceptance remains open.
 
 ## Remaining work / blockers
-No technical blocker. Commit/push this follow-up and update Draft PR #2, then deliver for Chief review. Full 27-character artwork is a separate pending design decision after the single sample; do not silently batch remaining portraits.
+No technical blocker or remaining UI implementation step. Chief review of the actual page and one art sample is next. Full 27-character artwork is a separate pending design decision after the single sample; do not silently batch remaining portraits.
 
 ## Preview
 - Main: http://127.0.0.1:4187/WoL_GameLab/what-is-your-magic/
@@ -53,4 +53,4 @@ No technical blocker. Commit/push this follow-up and update Draft PR #2, then de
 Local Python processes must remain running. Portable local/Codespaces commands are in the app README. No public hosted-preview claim.
 
 ## Exact next action
-Commit the scoped app/checkpoint files on `feature/wizard-discovery-v1`, push and update PR #2 with current long-form/mobile/profile evidence; verify remote scope and Draft/open/unmerged state; persist PM/usage handoff. Then Chief reviews the actual long-form UI, mobile matrix and one Necromancer art sample. No automatic merge/deploy or remaining-art batch.
+Chief opens the profile/catalog/quiz preview and reviews the actual long-form layout, mobile matrix and one Necromancer style sample. Record specific feedback before further UI/art changes. If the local server has stopped, use the README launch commands on `feature/wizard-discovery-v1`. Keep PR #2 Draft/unmerged until Chief's next release instruction. No automatic merge/deploy or remaining-art batch.
