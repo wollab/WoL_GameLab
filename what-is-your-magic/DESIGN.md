@@ -85,3 +85,23 @@ The visual risk is a fantasy field-guide reading palette independent of the corp
 Current validation: core Chrome browser 12/12, profile/reading 10/10, observed-issue regressions 5/5, scoring 5/5; all 27 outcomes through actual ten-answer journeys. Low-label contrast, chapter landing, input focus, score replacement and search recovery are measured in `tests/audit.cjs`. Screenshots and the full six-step report are external delivery artifacts under this audit's `audit3` folder. Current in-app browser journey also completed ten answers, profile exploration and search recovery with no console errors/warnings.
 
 This is an expert audit and implementation check, not evidence that real users perform better than on 16Personalities. Physical-device testing, assistive-technology evaluation, comprehensive WCAG verification and comparative usability research remain outside the current evidence. The later full-character update supersedes the single-sample art status; the current cast is documented above.
+
+
+## Result-sharing contract — 2026-11-06
+
+The requested channels are Facebook, LINE and Instagram Story. Share must be discoverable beside the result hero as well as at the end of the reading page. Both open the same native dialog and retain the established iris/ink/lilac, Kanit/Bai Jamjuree, button and focus system. The signature element is a downloadable Wizard card using that exact portrait plus its three original Learning Angle characters; no new character illustration or copied external identity is introduced.
+
+| Capability | Canonical owner | Behavior / verification |
+| --- | --- | --- |
+| Modal and formats | share.js + #share-dialog | Native modal top layer, focus trap/Escape/restore; post4:5 and Story9:16 use pressed buttons |
+| Export layout | share-card.js | Reuse unchanged high-resolution masters; PNG1080×1350/1920, static OG1200×630; Kanit text for legible raster labels |
+| Loading/failure | share.js | Disable only image actions until ready, keep link/copy available; error/retry; generation token ignores stale renders |
+| Feedback | #share-status | One stable live region; cancellation retains image; opening a native sheet is not proof of a published post |
+| Clipboard | share.js | Separate link/caption actions; denied/unavailable clipboard selects readonly text in the same dialog |
+| Recipient route/meta | scripts/build-share-pages.cjs + share/<id>/ | Real static HTML and unique OG image per type, usable without JS, no redirect-only or hash-only social metadata |
+| Sharing data | Wizard type/signature only | No scores/answers in URLs, exports or server storage; no backend/account/analytics; recipient is not assigned a personal result |
+| Styling/scrollbars | style.css | Reuse global theme and scrollbar baseline; modal owns its scroll, original document reading layout unchanged |
+
+Source data stays in wizard-data.js/quiz-data.js. Generated share pages/cards must be rebuilt through the script after canonical text/art changes, not edited independently. tests/sharing.cjs owns real download dimensions/files, native API success/cancel/denial simulations, manual fallback, all27 routes/cards, failure recovery, retake and mobile keyboard/geometry checks. Native app posting, actual Facebook/LINE cache appearance, real device OS sheets and assistive technology require separate evidence. This is a scoped enhancement to the existing site, not a new global visual preference.
+
+Current sharing verification: 13 browser groups plus the existing 31 local groups pass. The delayed mobile case measures no control movement, including intrinsic grid width during image readiness. Native image action stays visible with readiness/capability disabling, and the full-image link reserves its space. Focus is explicitly cycled at native modal edges. Exact templates/masters and the source scoring/quiz are unchanged.

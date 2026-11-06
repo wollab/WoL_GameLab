@@ -163,3 +163,17 @@ The new audit regressions pass alongside the original quiz/profile tests. Full c
 2026-11-06 artwork update: core 12/12 + profile 10/10 + UX 5/5 + artwork 4/4 browser groups passed locally. Artwork checks cover five differentiated Families, 15 named representative images, actual logo, no overflow at 1440/390/320 px and all 27 named gallery images.
 
 Production artwork release verified 2026-11-06: [PR #3](https://github.com/wollab/WoL_GameLab/pull/3), merge `cefab292`, [Pages run 42070980949](https://github.com/wollab/WoL_GameLab/actions/runs/42070980949). Actual public URL: core 11/11, profiles 10/10, UX 5/5, artwork 4/4; zero healthy-flow console/runtime/asset failures. The isolated-localhost case is omitted from production checks. Original app desktop/mobile still passes.
+
+
+## Sharing your Wizard — 2026-11-06
+
+Share from the result hero or the bottom of the result. One modal previews the matching Wizard card and offers post 4:5 (1080×1350) or Story 9:16 (1080×1920), real PNG download and native file sharing where supported. Copy the caption separately; use the Wizard link with Facebook/LINE or paste it into an Instagram Story link sticker. An unavailable/denied clipboard exposes selectable text. Cancellation retains the prepared image.
+
+`share/<id>/` is a static recipient page for each of the 27 Wizards, with unique crawler-visible title/image metadata and no JavaScript requirement. A recipient sees the Wizard that was shared and can read the full profile or start their own quiz. These links/images contain only the designed Wizard type/signature, with no personal answers or nine scores. No account, server storage or analytics is added.
+
+- `share.js`: shared native dialog, readiness/failure/retry, copy/native/download and retake cleanup.
+- `share-card.js`: raster export layout using untouched source PNG portraits and original signature characters; no new illustrations.
+- `scripts/build-share-pages.cjs`: derives all 27 static HTML entries and 1200×630 JPEG previews from canonical data and the same card renderer. Use the existing Playwright test environment (`PLAYWRIGHT_MODULE`, optional `BROWSER_EXECUTABLE`), then run `node what-is-your-magic/scripts/build-share-pages.cjs` from the repository root. It opens an ephemeral localhost build server and closes it after generation. Rebuild after canonical copy/art changes; do not edit generated pages independently.
+- `tests/sharing.cjs`: browser checks for real PNG downloads, all 27 exports/routes/OGs, file-share success/cancel/failure simulations, copy fallback, fresh recipient with JS disabled, stale renders, retake, keyboard, narrow screens and failed-art retry. Run alongside the existing core/profile/audit/artwork tests with `TEST_OUTPUT_DIR` outside the repo.
+
+The in-app browser was disabled in Work settings for this follow-up. Chrome/Playwright uses the original task's explicitly permitted E2E fallback; Work settings were not changed. Tests do not post to social media or prove actual platform preview-cache appearance or real OS share-sheet behavior. The public 16Personalities profile was inspected for visual context; its personal-results sharing flow was not audited.
