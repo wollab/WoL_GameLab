@@ -1,7 +1,7 @@
 // Build crawler-readable Wizard links and OG cards for static GitHub Pages.
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),vm=require('node:vm');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
-const root=path.resolve(__dirname,'..'),publicBase='https://yourmagic.vercel.app/';
+const root=path.resolve(__dirname,'..'),publicBase='https://yourmagic.wizardsoflearning.com/';
 const context=vm.createContext({});vm.runInContext(fs.readFileSync(path.join(root,'wizard-data.js'),'utf8')+';this.types=WIZARD_ARCHETYPES;this.families=WIZARD_FAMILIES;this.names=WIZARD_ANGLE_NAMES;',context);
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.webp':'image/webp','.png':'image/png','.ttf':'font/ttf','.woff2':'font/woff2','.svg':'image/svg+xml'};
