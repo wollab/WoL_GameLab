@@ -15,6 +15,7 @@
   let answers={},questions=[],choices=[],step=0,ranked=[];
   function show(page,scroll=true){
     Object.entries(pages).forEach(([key,element])=>element.classList.toggle("active",key===page));
+    document.body.dataset.family=pages[page]?.dataset.family||"";
     el("nav-result").hidden=!ranked.length;
     document.querySelectorAll(".return-result").forEach(a=>a.hidden=!ranked.length);
     document.querySelectorAll("[data-nav]").forEach(a=>a.setAttribute("aria-current",a.dataset.nav===(page==="wizard-profile"?"wizards":page)?"page":"false"));
@@ -92,7 +93,7 @@
       button.type="button";
       button.setAttribute("aria-pressed",String(choices[step]===opt));
       if(q.options.length>6){
-        const img=$("img");img.src=angles[opt.move].img;img.alt="";
+        const img=$("img");img.src=WizardArtwork.angle(opt.move);img.alt="";
         button.append(img);
       }else button.append($("span","bullet",String.fromCharCode(65+i)));
       button.append($("span","",opt.text));
@@ -126,13 +127,15 @@
     ranked=WizardMatching.matchWizards(answers,WIZARD_ARCHETYPES);
     const winner=ranked[0],f=WIZARD_FAMILIES[winner.family];
     el("result").style.setProperty("--family-color",f.color);
+    el("result").dataset.family=winner.family;
     el("result-art").replaceChildren(WizardUI.heroVisual(winner));
     el("winner-profile").href=WizardUI.profileHref(winner.id);
     el("intro-profile-link").href=WizardUI.profileHref(winner.id);
-    el("result-family").textContent="Family "+winner.family+" · "+f.title+" · "+f.thai;
+    el("result-family").textContent="Family "+winner.family+" · "+f.thai;
+    el("result-family").title=f.title;
     el("result-title").textContent=winner.name;
-    el("result-motto").textContent="“"+f.motto+"”";
-    el("result-description").textContent=winner.desc;
+    el("result-motto").textContent="“"+winner.quote+"”";
+    el("result-description").textContent=winner.name.split(" / ")[0]+" "+winner.desc;
     const highest=Math.max(...Object.values(answers));
     const peaks=angleOrder.filter(id=>answers[id]===highest);
     el("result-introduction").textContent="ในคำตอบชุดนี้ มุมที่คุณเลือกใช้มากที่สุดคือ "+peaks.map(id=>angles[id].thai).join(" / ")+" ("+highest+" คะแนน) ลองเทียบกับเหตุการณ์จริงของคุณว่าเห็นมุมเหล่านี้อย่างไร";
@@ -144,7 +147,7 @@
     const signature=el("signature");signature.replaceChildren();
     ["มุมหลัก","มุมรอง","มุมสนับสนุน"].forEach((name,i)=>{
       const id=winner.sig[i],a=angles[toOriginalId(id)],row=$("div","sig");
-      const img=$("img");img.src=a.img;img.alt="";
+      const img=$("img");img.src=WizardArtwork.angle(id);img.alt="";
       const copy=$("div");copy.append($("b","",a.thai),$("small","",a.guide));
       row.append(img,copy,$("span","tier",name+" • "+answers[toOriginalId(id)]+" คะแนน"));
       signature.append(row);
@@ -160,7 +163,7 @@
     ranked.slice(1,4).forEach(t=>{
       const fam=WIZARD_FAMILIES[t.family],box=WizardUI.profileLink(t,"alternative","");box.replaceChildren();box.style.setProperty("--family",fam.color);
       const label=$("div");label.append($("b","",t.name),$("small","",fam.title+" · "+t.sig.map(id=>WIZARD_ANGLE_NAMES[id]).join(" / ")));
-      box.append(WizardUI.emblem(t.family),label,$("span","small muted",t.matchScore+" แต้มจับคู่"),WizardUI.icon("arrow"));alt.append(box);
+      box.append(WizardUI.portrait(t,"alternative-portrait",true),label,$("span","small muted",t.matchScore+" แต้มจับคู่"),WizardUI.icon("arrow"));alt.append(box);
     });
     renderMatrix();
     WizardUI.chapters("result-chapters","#result",[["intro","บทนำ"],["matrix","9 Learning Angles"],["signature","Learning Signature"],["strength","จุดแข็ง"],["nearby","Wizard ใกล้เคียง"],["quest","Growth Quest"]]);
@@ -183,7 +186,7 @@
         btn.classList.toggle("score-high",score>=4);
         btn.classList.toggle("is-peak",score===highest&&score>1);
         btn.type="button";btn.style.setProperty("--a",a.color);
-        const img=$("img");img.src=a.img;img.alt="";
+        const img=$("img");img.src=WizardArtwork.angle(a.id);img.alt="";
         const scoreLabel=$("span","angle-score");scoreLabel.append($("b","",score),document.createTextNode(" คะแนน"));
         btn.append(img,$("strong","",a.thai),scoreLabel);
         if(score===highest&&score>1)btn.append($("small","peak-label","สูงสุด"));

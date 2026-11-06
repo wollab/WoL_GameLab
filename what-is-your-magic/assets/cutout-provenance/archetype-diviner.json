@@ -1,0 +1,11 @@
+{
+  "id": "diviner",
+  "name": "Diviner",
+  "kind": "archetype",
+  "tool": "Built-in image_gen background extraction",
+  "prompt": "Background extraction ONLY for the supplied existing Diviner illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly. Diviner must retain exactly TWO existing hands: the lower hand with three cards and the raised open palm. Do NOT add a magnifying glass or extra arm.",
+  "sourceOriginal": "assets/archetypes/masters/diviner.png",
+  "generatedFile": "exec-66d1f749-854a-4fca-8f68-0155ac4df8cd.png",
+  "master": "assets/archetypes/cutouts/masters/diviner.png",
+  "web": "assets/archetypes/cutouts/diviner.png"
+}

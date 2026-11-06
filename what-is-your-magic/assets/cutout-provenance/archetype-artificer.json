@@ -1,0 +1,11 @@
+{
+  "id": "artificer",
+  "name": "Artificer",
+  "kind": "archetype",
+  "tool": "Built-in image_gen background extraction",
+  "prompt": "Background extraction ONLY for the supplied existing Artificer illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+  "sourceOriginal": "assets/archetypes/masters/artificer.png",
+  "generatedFile": "exec-7035db5a-ce76-4125-908b-7ed95228cbe7.png",
+  "master": "assets/archetypes/cutouts/masters/artificer.png",
+  "web": "assets/archetypes/cutouts/artificer.png"
+}

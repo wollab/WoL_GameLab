@@ -1,0 +1,11 @@
+{
+  "id": "necromancer",
+  "name": "Necromancer",
+  "kind": "archetype",
+  "tool": "Built-in image_gen background extraction",
+  "prompt": "Background extraction ONLY for the supplied existing Necromancer illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+  "sourceOriginal": "assets/archetypes/necromancer-sample.png",
+  "generatedFile": "exec-4546ac11-5d1d-459a-9059-da78345e42f4.png",
+  "master": "assets/archetypes/cutouts/masters/necromancer.png",
+  "web": "assets/archetypes/cutouts/necromancer.png"
+}

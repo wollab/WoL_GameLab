@@ -8,7 +8,7 @@
   function card(type){
     const a=profileLink(type,'wizard-card','');a.replaceChildren();a.style.setProperty('--family',WIZARD_FAMILIES[type.family].color);
     const copy=node('div','wizard-card-copy');copy.append(node('h3','',type.name),node('p','',type.desc));
-    const sig=node('div','mini-signature');type.sig.forEach(id=>{const img=node('img');img.src=MOVES[original(id)].img;img.alt=WIZARD_ANGLE_NAMES[id];sig.append(img);});
+    const sig=node('div','mini-signature');type.sig.forEach(id=>{const img=node('img');img.src=WizardArtwork.angle(id);img.alt=WIZARD_ANGLE_NAMES[id];sig.append(img);});
     const more=node('span','card-link','รู้จัก Wizard นี้');more.append(icon('arrow'));
     a.append(WizardUI.portrait(type,'card-portrait',true),copy,sig,more);return a;
   }
@@ -31,7 +31,7 @@
   function signature(type){
     const list=node('div','profile-signature');
     ['มุมหลัก','มุมรอง','มุมสนับสนุน'].forEach((label,i)=>{
-      const a=MOVES[original(type.sig[i])],row=node('div','profile-signature-row'),img=node('img');img.src=a.img;img.alt='';
+      const a=MOVES[original(type.sig[i])],row=node('div','profile-signature-row'),img=node('img');img.src=WizardArtwork.angle(type.sig[i]);img.alt='';
       const copy=node('div');copy.append(node('small','',label),node('h3','',a.thai),node('p','',a.guide));row.append(img,copy);list.append(row);
     });return list;
   }
@@ -39,11 +39,15 @@
     const type=WIZARD_ARCHETYPES.find(t=>t.id===id);if(!type)return false;
     const family=WIZARD_FAMILIES[type.family],wrap=document.getElementById('profile-content');wrap.replaceChildren();
     document.getElementById('profile-title').textContent=type.name;
-    document.getElementById('profile-family').textContent='Family '+type.family+' · '+family.title;
+    document.getElementById('profile-family').textContent='Family '+type.family+' · '+family.thai;
+    document.getElementById('profile-family').title=family.title;
     document.getElementById('profile-description').textContent=type.desc;
-    document.getElementById('profile-motto').textContent='“'+family.motto+'”';
+    document.getElementById('profile-motto').textContent='“'+type.quote+'”';
     document.getElementById('profile-art').replaceChildren(WizardUI.heroVisual(type));
     document.getElementById('wizard-profile').style.setProperty('--family-color',family.color);
+    document.getElementById('wizard-profile').dataset.family=type.family;
+    const share=document.getElementById('profile-share');share.disabled=false;share.onclick=event=>WizardShare.openProfile(type.id,event.currentTarget);
+    const footerShare=document.getElementById('profile-share-footer');footerShare.disabled=false;footerShare.onclick=event=>WizardShare.openProfile(type.id,event.currentTarget);
     const context=document.getElementById('profile-match'),match=ranked.find(t=>t.id===id);context.hidden=!match;
     if(match)context.textContent=(ranked[0].id===id?'Wizard หลักจากคำตอบของคุณ':'จากคำตอบชุดเดียวกันของคุณ')+' · '+match.matchScore+' แต้มจับคู่';
     const intro=node('section','chapter');intro.id='profile-intro';intro.append(heading('รู้จัก '+type.name,'spark'),node('p','large-copy',type.desc),node('p','',family.description),node('p','muted','ลายเซ็นนี้เป็นวิธีเล่าเรื่องการเรียนรู้ ไม่ใช่เงื่อนไขว่าคุณต้องเป็นแบบนี้ทุกครั้งหรือใช้มุมอื่นไม่ได้'));

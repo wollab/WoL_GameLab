@@ -29,7 +29,7 @@ async function quiz(p,id){
   let witness;
   await check('Hero: archetype sample plus three original signature characters',async()=>{
     witness=await quiz(p,'necromancer');assert.equal(await p.locator('#result-art .hero-angle img').count(),3);
-    await p.locator('#result-art .archetype-portrait img').waitFor();assert.equal(await p.locator('#result-art .archetype-portrait img').getAttribute('src'),'assets/archetypes/necromancer.webp');assert.ok(await p.locator('#result-art .archetype-portrait img').evaluate(async el=>{await el.decode();return el.complete&&el.naturalWidth>0}));
+    await p.locator('#result-art .archetype-portrait img').waitFor();assert.equal(await p.locator('#result-art .archetype-portrait img').getAttribute('src'),'assets/archetypes/cutouts/necromancer.png');assert.ok(await p.locator('#result-art .archetype-portrait img').evaluate(async el=>{await el.decode();return el.complete&&el.naturalWidth>0}));
     await p.evaluate(()=>document.fonts.ready);await snap(p,'new-result-hero-desktop');
   });
   await check('Nearby profile link, Browser Back and reload preserve all nine scores',async()=>{
@@ -54,7 +54,7 @@ async function quiz(p,id){
     for(const type of data.types){
       await p.goto(base+'what-is-your-magic/#wizard/'+type.id);await p.locator('#profile-title').filter({hasText:type.name}).waitFor();
       assert.equal(await p.locator('#profile-description').textContent(),type.desc);
-      assert.equal(await p.locator('#profile-art .hero-angle img').count(),3);assert.equal(await p.locator('#profile-art .archetype-portrait img').getAttribute('src'),'assets/archetypes/'+type.id+'.webp');assert.ok(await p.locator('#profile-art .archetype-portrait img').evaluate(async img=>{await img.decode();return img.naturalWidth===512&&img.naturalHeight>600}));
+      assert.equal(await p.locator('#profile-art .hero-angle img').count(),3);assert.equal(await p.locator('#profile-art .archetype-portrait img').getAttribute('src'),'assets/archetypes/cutouts/'+type.id+'.png');assert.ok(await p.locator('#profile-art .archetype-portrait img').evaluate(async img=>{await img.decode();return img.naturalWidth===512&&img.naturalHeight>600}));
       assert.equal(await p.locator('.profile-signature-row').count(),3);
       assert.equal(await p.locator('#profile-strength .large-copy').textContent(),type.gift);
       assert.equal(await p.locator('#profile-quest .large-copy').textContent(),type.quest);

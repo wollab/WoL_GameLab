@@ -12,14 +12,14 @@
   function heading(title,name){const h=node('h2','section-heading');h.append(icon(name),node('span','',title));return h;}
   const toOriginal=id=>({communicator:'meaningmaker',summarizer:'synthesizer'}[id]||id);
   function portrait(type,className='',lazy=false){
-    const img=node('img',className);img.src='assets/archetypes/'+type.id+'.webp';img.alt='ภาพ '+type.name;img.width=512;img.height=640;img.decoding='async';img.loading=lazy?'lazy':'eager';return img;
+    const img=node('img',className);img.src=WizardArtwork.portrait(type.id);img.alt='ภาพ '+type.name;img.width=512;img.height=640;img.decoding='async';img.loading=lazy?'lazy':'eager';return img;
   }
   function heroVisual(type){
     const stage=node('div','hero-visual'),portrait=node('div','archetype-portrait');
     portrait.append(WizardUI.portrait(type));
     const triad=node('div','hero-triad');triad.setAttribute('aria-label','สามมุมใน Learning Signature');
     ['มุมหลัก','มุมรอง','มุมสนับสนุน'].forEach((role,i)=>{
-      const angle=MOVES[toOriginal(type.sig[i])],figure=node('figure','hero-angle'),img=node('img');img.src=angle.img;img.alt='';
+      const angle=MOVES[toOriginal(type.sig[i])],figure=node('figure','hero-angle'),img=node('img');img.src=WizardArtwork.angle(type.sig[i]);img.alt='';
       const caption=node('figcaption','',angle.thai);caption.append(node('small','',role));figure.append(img,caption);triad.append(figure);
     });stage.append(portrait,triad);return stage;
   }
