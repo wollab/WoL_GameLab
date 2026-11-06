@@ -69,7 +69,7 @@
     });
   }
   function begin(){
-    el("share-status").textContent="";el("share-fallback").hidden=true;el("share-text").value="";
+    WizardShare.reset();
     answers=Object.fromEntries(angleOrder.map(id=>[id,0]));
     ranked=[];
     questions=[...shuffled(QUESTIONS.slice(0,-1)).map(q=>({...q,options:shuffled(q.options)})), {...QUESTIONS[QUESTIONS.length-1],options:shuffled(QUESTIONS[QUESTIONS.length-1].options)}];
@@ -201,36 +201,21 @@
     const a=angles[id];document.querySelectorAll(".angle-card").forEach(e=>{e.classList.toggle("selected",e.dataset.angle===id);e.setAttribute("aria-pressed",String(e.dataset.angle===id));});
     const box=el("angle-detail");box.replaceChildren($("strong","",a.thai+" · "+answers[id]+" คะแนน"),$("p","",a.detail));
   }
-  async function share(){
-    const winner=ranked[0];
-    const text="27 Wizards of Learning ✨\nWizard ของฉันคือ "+winner.name+" ("+WIZARD_FAMILIES[winner.family].title+")\nเรื่องเล่าเพื่อสำรวจการเรียนรู้ ไม่ใช่ผลวินิจฉัยบุคลิกภาพ\nมาค้นหาเวทมนตร์ของคุณ: "+location.origin+location.pathname;
-    const button=el("share");button.disabled=true;
-    el("share-status").textContent="";el("share-fallback").hidden=true;
-    try{
-      if(navigator.share){
-        try{await navigator.share({title:"27 Wizards of Learning",text});el("share-status").textContent="แชร์ผลแล้ว";return;}
-        catch(e){if(e.name==="AbortError"){el("share-status").textContent="ยกเลิกการแชร์แล้ว";return;}}
-      }
-      if(navigator.clipboard){
-        try{await navigator.clipboard.writeText(text);el("share-status").textContent="คัดลอกข้อความผลลัพธ์แล้ว นำไปวางเพื่อแชร์ได้เลย";return;}catch(e){/* Manual fallback below. */}
-      }
-      el("share-status").textContent="เลือกและคัดลอกข้อความด้านล่างเพื่อแชร์ผลของคุณ";
-      el("share-text").value=text;el("share-fallback").hidden=false;
-      el("share-text").focus();el("share-text").select();
-    }finally{button.disabled=false;}
-  }
+  function share(event){if(ranked.length)WizardShare.open(ranked[0],event.currentTarget);}
   families();
   document.querySelectorAll("[data-family-filter]").forEach(a=>{const id=a.dataset.familyFilter;a.textContent=id==="all"?"ทุกสาย · 27":WIZARD_FAMILIES[id].thai+" · "+memberCounts[id];});
   WizardUI.decorate();
+  WizardShare.init();
   document.getElementById("start").addEventListener("click",begin);
   document.getElementById("quit").addEventListener("click",()=>{history.pushState({},"","#home");show("home");});
   document.getElementById("retake").addEventListener("click",begin);
   document.getElementById("share").addEventListener("click",share);
+  el("share-hero").addEventListener("click",share);
   el("quiz-next").addEventListener("click",nextQuestion);
   el("quiz-prev").addEventListener("click",()=>{if(step>0){step--;renderQuestion();}});
   el("catalog-search").addEventListener("input",()=>WizardPages.catalog(location.hash.split("/")[1]||"all"));
   el("catalog-clear").addEventListener("click",()=>{el("catalog-search").value="";WizardPages.catalog(location.hash.split("/")[1]||"all");el("catalog-search").focus();});
-  ["start","quit","retake","share"].forEach(id=>el(id).disabled=false);
+  ["start","quit","retake","share","share-hero"].forEach(id=>el(id).disabled=false);
   el("startup-status").hidden=true;
   el("skip-content").addEventListener("click",event=>{event.preventDefault();el("main").focus();});
   document.addEventListener("click",event=>{

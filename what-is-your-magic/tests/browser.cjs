@@ -93,22 +93,26 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
     await p.locator('[data-angle="meaningmaker"]').click();assert.ok((await p.locator('#angle-detail').textContent()).includes(data.moves.meaningmaker.detail));
     await p.locator('[data-angle="synthesizer"]').click();assert.ok((await p.locator('#angle-detail').textContent()).includes(data.moves.synthesizer.detail));
   });
-  await check('Share: clipboard success, native success/cancel/failure, manual fallback',async()=>{
+  await check('Share: correct Wizard link/caption, native cancel/failure and manual fallback',async()=>{
     await p.evaluate(()=>{Object.defineProperty(navigator,'share',{configurable:true,value:undefined});Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copiedResult=text}}});});
-    await p.locator('#share').click();assert.ok((await p.locator('#share-status').textContent()).includes('คัดลอกข้อความผลลัพธ์แล้ว'));
+    await p.locator('#share').click();await p.locator('#share-copy-caption').click();
     assert.ok((await p.evaluate(()=>window.copiedResult)).includes('Bard / Artist Mage'));
-    await p.evaluate(()=>Object.defineProperty(navigator,'share',{configurable:true,value:async data=>{window.sharedResult=data.text}}));
-    await p.locator('#share').click();assert.equal(await p.locator('#share-status').textContent(),'แชร์ผลแล้ว');
-    assert.ok((await p.evaluate(()=>window.sharedResult)).includes('Bard / Artist Mage'));
+    assert.ok((await p.evaluate(()=>window.copiedResult)).includes('/share/bard/'));
+    await p.locator('#share-close').click();
+    await p.evaluate(()=>Object.defineProperty(navigator,'share',{configurable:true,value:async data=>{window.sharedResult=data}}));
+    await p.locator('#share').click();await p.locator('#share-native-link').click();assert.equal(await p.locator('#share-status').textContent(),'เปิดเมนูแชร์ลิงก์แล้ว');
+    assert.ok((await p.evaluate(()=>window.sharedResult.text)).includes('Bard / Artist Mage'));
+    assert.equal((await p.evaluate(()=>window.sharedResult.url)),base+'what-is-your-magic/share/bard/');
     await p.evaluate(()=>Object.defineProperty(navigator,'share',{configurable:true,value:async()=>{throw new DOMException('cancel','AbortError')}}));
-    await p.locator('#share').click();assert.equal(await p.locator('#share-status').textContent(),'ยกเลิกการแชร์แล้ว');
+    await p.locator('#share-native-link').click();assert.equal(await p.locator('#share-status').textContent(),'ยกเลิกการแชร์แล้ว');
     await p.evaluate(()=>{
       Object.defineProperty(navigator,'share',{configurable:true,value:async()=>{throw new Error('not supported')}});
       Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{throw new Error('denied')}}});
     });
-    await p.locator('#share').click();assert.equal(await p.locator('#share-fallback').isVisible(),true);
-    const text=await p.locator('#share-text').inputValue();assert.ok(text.includes('Bard / Artist Mage'));assert.ok(text.includes('ไม่ใช่ผลวินิจฉัย'));
-    assert.ok(text.includes(base+'what-is-your-magic/'));await snap(p,'share-fallback');
+    await p.locator('#share-copy-caption').click();assert.equal(await p.locator('#share-fallback').isVisible(),true);
+    const text=await p.locator('#share-text').inputValue();assert.ok(text.includes('Bard / Artist Mage'));assert.ok(text.includes(base+'what-is-your-magic/share/bard/'));
+    await p.locator('#share-native-link').click();assert.equal(await p.locator('#share-text').inputValue(),base+'what-is-your-magic/share/bard/');
+    await snap(p,'share-fallback');await p.locator('#share-close').click();
   });
   await check('Retake clears scores/share state; quit returns to home',async()=>{
     await p.locator('#retake').click();assert.equal(await p.locator('#progress').getAttribute('aria-valuenow'),'0');
@@ -134,7 +138,7 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
       assert.equal(cards.length,9);assert.ok(cards.every(card=>card.left>=0&&card.right<=width),'all nine matrix cards fit the mobile viewport');
       await m.locator('#angle-matrix').scrollIntoViewIfNeeded();await snap(m,'matrix-mobile-'+width);
       await m.evaluate(()=>{Object.defineProperty(navigator,'share',{configurable:true,value:undefined});Object.defineProperty(navigator,'clipboard',{configurable:true,value:undefined});});
-      await m.locator('#share').tap();assert.equal(await m.locator('#share-fallback').isVisible(),true);await noOverflow(m);
+      await m.locator('#share').tap();await m.locator('#share-copy-caption').tap();assert.equal(await m.locator('#share-fallback').isVisible(),true);await noOverflow(m);await m.locator('#share-close').tap();
       await m.locator('#retake').tap();assert.equal(await m.locator('#quiz').isVisible(),true);
     });await mobile.context.close();
   }
@@ -143,6 +147,7 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
     await check('Isolated app server root: all local assets and complete playable flow',async()=>{
       await standalone.page.goto(isolated);await standalone.page.locator('#start:enabled').waitFor();assert.equal(await standalone.page.locator('.family').count(),5);
       await standalone.page.locator('#start').click();await play(standalone.page,fixtures.witnesses.ritualist);
+      await standalone.page.locator('#share-hero').click();assert.equal(await standalone.page.locator('#share-link').inputValue(),isolated+'share/ritualist/');const recipient=await standalone.context.newPage();await recipient.goto(isolated+'share/ritualist/');assert.equal(await recipient.locator('h1').textContent(),'Ritualist');await recipient.close();await standalone.page.locator('#share-close').click();
     });await standalone.context.close();
   }
   for(const width of [1440,390]){
