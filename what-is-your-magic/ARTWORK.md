@@ -20,7 +20,7 @@ Chief explicitly requested background removal. The website now uses real RGBA PN
 - The named27-character gallery offers PNG downloads and a dark-background switch for edge inspection. `export-artwork.py` preserves this current gallery when historical WebPs are re-exported.
 - Five Family scene masters, WebPs and exact prompts/hashes are in `assets/families/`; `scripts/export-family-scenes.py` only resizes/formats them. A library/observatory, healing garden, moonlit memory garden, art/story studio and maker courtyard express the five Families.
 
-UI and card export use ordinary source-over compositing with the transparent PNGs; multiply compositing is removed. Main/miniatures preserve aspect with contain. Browser alpha checks cover all36 images; light/dark gallery and actual Family compositions were visually inspected. New artwork integration is local/review pending; original27 portrait generation and old WebP derivatives below are retained history.
+UI and card export use ordinary source-over compositing with the transparent PNGs; multiply compositing is removed. Main/miniatures preserve aspect with contain. Browser alpha checks cover all36 images; light/dark gallery and actual Family compositions were visually inspected. New artwork integration was explicitly approved and published through PR #7 / Pages42188947767, with58 actual-public Chrome groups passing; original27 portrait generation and old WebP derivatives below are retained history.
 
 ## Retained original files and reproduction
 
