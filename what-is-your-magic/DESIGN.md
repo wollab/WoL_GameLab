@@ -89,7 +89,7 @@ This is an expert audit and implementation check, not evidence that real users p
 
 ## Result-sharing contract — 2026-11-06
 
-The requested channels are Facebook, LINE and Instagram Story. Share must be discoverable beside the result hero as well as at the end of the reading page. Both open the same native dialog and retain the established iris/ink/lilac, Kanit/Bai Jamjuree, button and focus system. The signature element is a downloadable Wizard card using that exact portrait plus its three original Learning Angle characters; no new character illustration or copied external identity is introduced.
+The requested channels are Facebook, LINE and Instagram Story. Chief's controlling correction: share each person's result after completing the questionnaire, accompanied by the matched Archetype's details link. Both hero/footer open the same dialog using a frozen snapshot of actual scores; winner is recomputed rather than supplied as an arbitrary type. The personal PNG includes the matched portrait plus all nine original Learning Angle characters and exact scores, with all tied highs highlighted and 0–1 artwork faded. Captions include actual peaks. Keep the established iris/ink/lilac, Kanit/Bai Jamjuree, button/focus system and unchanged character masters.
 
 | Capability | Canonical owner | Behavior / verification |
 | --- | --- | --- |
@@ -99,7 +99,9 @@ The requested channels are Facebook, LINE and Instagram Story. Share must be dis
 | Feedback | #share-status | One stable live region; cancellation retains image; opening a native sheet is not proof of a published post |
 | Clipboard | share.js | Separate link/caption actions; denied/unavailable clipboard selects readonly text in the same dialog |
 | Recipient route/meta | scripts/build-share-pages.cjs + share/<id>/ | Real static HTML and unique OG image per type, usable without JS, no redirect-only or hash-only social metadata |
-| Sharing data | Wizard type/signature only | No scores/answers in URLs, exports or server storage; no backend/account/analytics; recipient is not assigned a personal result |
+| Sharing data | Completed respondent scores → canonical match | Actual scores in deliberately shared image/text; no answers/scores in type URL, static OG or server storage; no backend/account/analytics; recipient is not assigned a personal result |
+| Recipient content | Canonical profile renderer | Static full introduction/signature/strengths/quest/related content; native chapter links work with JS disabled |
+| Facebook preparation | Personal PNG + caption/details link | Download and clipboard/manual fallback; respondent adds these to their own post; no automated publication |
 | Styling/scrollbars | style.css | Reuse global theme and scrollbar baseline; modal owns its scroll, original document reading layout unchanged |
 
 Source data stays in wizard-data.js/quiz-data.js. Generated share pages/cards must be rebuilt through the script after canonical text/art changes, not edited independently. tests/sharing.cjs owns real download dimensions/files, native API success/cancel/denial simulations, manual fallback, all27 routes/cards, failure recovery, retake and mobile keyboard/geometry checks. Native app posting, actual Facebook/LINE cache appearance, real device OS sheets and assistive technology require separate evidence. This is a scoped enhancement to the existing site, not a new global visual preference.

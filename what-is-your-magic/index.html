@@ -23,16 +23,16 @@
   <meta name="twitter:image" content="https://wollab.github.io/WoL_GameLab/what-is-your-magic/assets/social/og-learning-magic-v1.jpg">
   <meta name="twitter:image:alt" content="ค้นพบเวทมนตร์ในวิธีเรียนรู้ของคุณ · 10 คำถาม · 27 สายเวท พร้อม Wizard ทั้งห้าร่วมสร้างสะพานจากความรู้">
   <link rel="icon" href="assets/brand/wol-logo.png" type="image/png">
-  <link rel="stylesheet" href="style.css?v=20261106-share">
+  <link rel="stylesheet" href="style.css?v=20261106-personal">
   <script defer src="startup.js?v=20261105-art27"></script>
   <script defer src="quiz-data.js?v=20261105-art27"></script>
   <script defer src="wizard-data.js?v=20261105-art27"></script>
   <script defer src="wizard-matching.js?v=20261105-art27"></script>
   <script defer src="ui.js?v=20261105-art27"></script>
   <script defer src="wizard-pages.js?v=20261105-art27"></script>
-  <script defer src="share-card.js?v=20261106-share"></script>
-  <script defer src="share.js?v=20261106-share"></script>
-  <script defer src="app.js?v=20261106-share"></script>
+  <script defer src="share-card.js?v=20261106-personal"></script>
+  <script defer src="share.js?v=20261106-personal"></script>
+  <script defer src="app.js?v=20261106-personal"></script>
 </head>
 <body>
 <a href="#main" class="skip-link" id="skip-content">ข้ามไปเนื้อหา</a>
@@ -122,7 +122,8 @@
 </main>
 <dialog id="share-dialog" class="share-dialog" aria-labelledby="share-heading" aria-describedby="share-intro">
   <div class="share-dialog-header"><div><p class="eyebrow">27 Wizards of Learning</p><h2 id="share-heading">แชร์ Wizard ของคุณ</h2></div><button type="button" class="secondary share-close" id="share-close" disabled autofocus>ปิด</button></div>
-  <p id="share-intro">ให้เพื่อนรู้จัก Wizard ของคุณ แล้วชวนมาค้นหาของตัวเอง</p>
+  <p id="share-intro">แชร์ผลจากคำตอบของคุณ พร้อมลิงก์อ่านรายละเอียด Archetype ที่คุณได้</p>
+  <p id="share-personal-summary" class="share-personal-summary"></p>
   <div class="share-workspace">
     <div>
       <div class="share-formats" role="group" aria-label="รูปแบบภาพ"><button type="button" class="secondary" data-share-format="post" disabled aria-pressed="true">โพสต์ 4:5</button><button type="button" class="secondary" data-share-format="story" disabled aria-pressed="false">Story 9:16</button></div>
@@ -131,14 +132,14 @@
       <div id="share-error" class="share-error" hidden><p>ยังเตรียมภาพไม่สำเร็จ ลองอีกครั้ง หรือแชร์ลิงก์ด้านข้างได้เลย</p><button type="button" class="secondary" id="share-retry" disabled>ลองเตรียมภาพอีกครั้ง</button></div>
     </div>
     <div class="share-options">
-      <h3>แชร์เป็นภาพ</h3><p class="small muted">เลือกภาพสำหรับโพสต์หรือ Story ได้จากตัวอย่าง</p>
-      <div class="share-buttons"><button type="button" id="share-image" class="primary" disabled>ส่งภาพไปแอป…</button><button type="button" id="share-download" class="secondary" disabled>บันทึกภาพ PNG</button></div>
+      <h3>ภาพผลลัพธ์ของฉัน</h3><p class="small muted">ตัวละครและคะแนนทั้ง 9 มุมมาจากคำตอบของคุณครั้งนี้</p>
+      <div class="share-buttons"><button type="button" id="share-image" class="primary" disabled>แชร์ภาพผลลัพธ์…</button><button type="button" id="share-download" class="secondary" disabled>บันทึกภาพ PNG</button></div>
       <p id="share-image-help" class="small muted">หากส่งภาพตรงไม่ได้ ให้บันทึก PNG · Instagram Story ใช้สติกเกอร์ลิงก์เพิ่มลิงก์ด้านล่าง</p>
-      <button type="button" class="secondary share-caption" id="share-copy-caption" disabled>คัดลอกข้อความสำหรับโพสต์</button>
+      <button type="button" class="secondary share-caption" id="share-copy-caption" disabled>คัดลอกผลลัพธ์พร้อมลิงก์</button>
       <hr>
-      <h3>ส่งลิงก์ให้เพื่อน</h3><label for="share-link" class="small">ลิงก์ Wizard ของฉัน</label><div class="share-link-row"><input id="share-link" type="url" readonly><button type="button" class="secondary" id="share-copy-link" disabled>คัดลอกลิงก์</button></div>
-      <p class="small muted">ลิงก์แสดง Wizard สายนี้ พร้อมลายเซ็นการเรียนรู้ ไม่รวมคำตอบและคะแนนส่วนตัวของคุณ</p>
-      <div class="share-social"><a id="share-facebook" class="secondary button-link" target="_blank" rel="noopener noreferrer">Facebook</a><a id="share-line" class="secondary button-link" target="_blank" rel="noopener noreferrer">LINE</a><button type="button" class="secondary" id="share-native-link" disabled>แอปอื่น…</button></div>
+      <h3>รายละเอียด Archetype ที่ฉันได้</h3><label for="share-link" class="small">ลิงก์อ่านรายละเอียด Archetype</label><div class="share-link-row"><input id="share-link" type="url" readonly><button type="button" class="secondary" id="share-copy-link" disabled>คัดลอกลิงก์</button></div>
+      <p class="small muted">ภาพและข้อความด้านบนเป็นผลส่วนตัวของคุณ ส่วนลิงก์นี้เปิดคำอธิบาย จุดแข็ง และ Growth Quest ของ Archetype ที่ได้</p>
+      <div class="share-social"><button type="button" id="share-facebook" class="secondary" disabled>เตรียมโพสต์ Facebook</button><a id="share-line" class="secondary button-link" target="_blank" rel="noopener noreferrer">ส่งผลทาง LINE</a><button type="button" class="secondary" id="share-native-link" disabled>ส่งข้อความผลลัพธ์…</button></div>
       <p id="share-status" class="small" role="status" aria-live="polite"></p>
       <div id="share-fallback" class="share-panel" hidden><label for="share-text">ข้อความสำหรับเลือกและคัดลอก</label><textarea id="share-text" class="resize-none" rows="6" readonly></textarea></div>
     </div>

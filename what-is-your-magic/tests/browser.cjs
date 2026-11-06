@@ -100,7 +100,7 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
     assert.ok((await p.evaluate(()=>window.copiedResult)).includes('/share/bard/'));
     await p.locator('#share-close').click();
     await p.evaluate(()=>Object.defineProperty(navigator,'share',{configurable:true,value:async data=>{window.sharedResult=data}}));
-    await p.locator('#share').click();await p.locator('#share-native-link').click();assert.equal(await p.locator('#share-status').textContent(),'เปิดเมนูแชร์ลิงก์แล้ว');
+    await p.locator('#share').click();await p.locator('#share-native-link').click();assert.equal(await p.locator('#share-status').textContent(),'เปิดเมนูแชร์ข้อความผลลัพธ์แล้ว');
     assert.ok((await p.evaluate(()=>window.sharedResult.text)).includes('Bard / Artist Mage'));
     assert.equal((await p.evaluate(()=>window.sharedResult.url)),base+'what-is-your-magic/share/bard/');
     await p.evaluate(()=>Object.defineProperty(navigator,'share',{configurable:true,value:async()=>{throw new DOMException('cancel','AbortError')}}));
@@ -111,7 +111,7 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
     });
     await p.locator('#share-copy-caption').click();assert.equal(await p.locator('#share-fallback').isVisible(),true);
     const text=await p.locator('#share-text').inputValue();assert.ok(text.includes('Bard / Artist Mage'));assert.ok(text.includes(base+'what-is-your-magic/share/bard/'));
-    await p.locator('#share-native-link').click();assert.equal(await p.locator('#share-text').inputValue(),base+'what-is-your-magic/share/bard/');
+    await p.locator('#share-native-link').click();assert.equal(await p.locator('#share-text').inputValue(),text);assert.ok(text.includes('คะแนน'));
     await snap(p,'share-fallback');await p.locator('#share-close').click();
   });
   await check('Retake clears scores/share state; quit returns to home',async()=>{

@@ -201,7 +201,7 @@
     const a=angles[id];document.querySelectorAll(".angle-card").forEach(e=>{e.classList.toggle("selected",e.dataset.angle===id);e.setAttribute("aria-pressed",String(e.dataset.angle===id));});
     const box=el("angle-detail");box.replaceChildren($("strong","",a.thai+" · "+answers[id]+" คะแนน"),$("p","",a.detail));
   }
-  function share(event){if(ranked.length)WizardShare.open(ranked[0],event.currentTarget);}
+  function share(event){if(ranked.length)WizardShare.open(answers,event.currentTarget);}
   families();
   document.querySelectorAll("[data-family-filter]").forEach(a=>{const id=a.dataset.familyFilter;a.textContent=id==="all"?"ทุกสาย · 27":WIZARD_FAMILIES[id].thai+" · "+memberCounts[id];});
   WizardUI.decorate();

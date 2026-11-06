@@ -2,8 +2,9 @@
 (function(root){
   'use strict';
   const ink='#26243b',muted='#626178';
-  const original=id=>({communicator:'meaningmaker',summarizer:'synthesizer'}[id]||id);
   const sizes={post:[1080,1350],story:[1080,1920],og:[1200,630]};
+  const order=['explorer','listener','experimenter','connector','meaningmaker','creator','decider','synthesizer','reflector'];
+  function validScores(scores){return Boolean(scores&&order.every(id=>Number.isInteger(scores[id])&&scores[id]>=0&&scores[id]<=7)&&order.reduce((sum,id)=>sum+scores[id],0)===19);}
   const images=new Map();
   function image(src){
     if(!images.has(src))images.set(src,new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=()=>{images.delete(src);reject(new Error('โหลดภาพตัวละครไม่สำเร็จ'));};i.src=src;}));
@@ -20,19 +21,20 @@
   function block(ctx,copy,x,y,width,size,color=ink,weight=400,align='left'){
     ctx.font=`${weight} ${size}px Kanit`;const rows=lines(ctx,copy,width);rows.forEach((s,i)=>text(ctx,s,x,y+i*size*1.3,size,color,weight,align));return rows.length*size*1.3;
   }
-  async function render(type,format='post'){
+  async function render(type,format='post',scores){
     if(!sizes[format])throw new Error('Unknown share format');
+    if(format!=='og'&&(!validScores(scores)||WizardMatching.matchWizards(scores,WIZARD_ARCHETYPES)[0].id!==type.id))throw new Error('ต้องใช้ผลจากแบบสอบถามที่ทำครบแล้ว');
     await Promise.all([document.fonts.load('600 64px Kanit'),document.fonts.load('400 32px Kanit')]);
     const family=WIZARD_FAMILIES[type.family];
     const master=type.id==='necromancer'?'necromancer-sample.png':'masters/'+type.id+'.png';
-    const [portrait,logo,...triad]=await Promise.all([image('assets/archetypes/'+master),image('assets/brand/wol-logo.png'),...type.sig.map(id=>image(MOVES[original(id)].img))]);
+    const [portrait,logo,...angles]=await Promise.all([image('assets/archetypes/'+master),image('assets/brand/wol-logo.png'),...order.map(id=>image(MOVES[id].img))]);
     const canvas=document.createElement('canvas');[canvas.width,canvas.height]=sizes[format];const ctx=canvas.getContext('2d');
     ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
     ctx.fillStyle=family.color+'12';ctx.fillRect(0,0,canvas.width,canvas.height-112);
     ctx.fillStyle=family.color;ctx.fillRect(0,0,canvas.width,12);
     fit(ctx,logo,50,34,72,72,false);text(ctx,'27 Wizards of Learning',140,82,32,ink,600);
     if(format==='og'){
-      text(ctx,'Wizard ที่ฉันค้นพบ',64,186,27,muted);
+      text(ctx,'รายละเอียด Archetype',64,186,27,muted);
       block(ctx,type.name,60,268,620,65,ink,600);
       text(ctx,family.title,64,370,28,ink,600);
       block(ctx,type.desc,64,422,630,28,muted);
@@ -42,23 +44,28 @@
       text(ctx,'Wizards of Learning',1138,581,24,muted,400,'right');
     }else{
       const story=format==='story',center=540;
-      text(ctx,'Wizard ของฉันคือ',center,story?205:170,32,muted,400,'center');
+      text(ctx,'ผลจากคำตอบของฉัน',center,story?205:170,32,muted,400,'center');
       const height=block(ctx,type.name,center,story?292:245,950,70,ink,600,'center');
       text(ctx,family.title,center,(story?292:245)+height+12,30,ink,600,'center');
-      fit(ctx,portrait,story?220:280,story?420:380,story?640:520,story?700:485);
-      block(ctx,type.desc,center,story?1220:940,940,story?36:30,ink,400,'center');
-      const labelY=story?1360:1020;
-      text(ctx,'Learning Signature ของสายนี้',center,labelY,25,muted,400,'center');
-      type.sig.forEach((id,i)=>{
-        const x=180+i*360;
-        fit(ctx,triad[i],x-55,labelY+20,110,story?150:120);
-        text(ctx,WIZARD_ANGLE_NAMES[id],x,labelY+(story?210:182),27,ink,600,'center');
+      fit(ctx,portrait,story?290:90,story?430:365,story?500:350,story?490:350);
+      if(story)block(ctx,type.desc,center,970,930,33,ink,400,'center');
+      else {block(ctx,type.desc,500,455,510,34,ink,400);text(ctx,'ผลจาก 10 คำถาม · 19 คะแนน',500,650,25,muted);}
+      text(ctx,'คะแนน 9 Learning Angles ของฉัน',center,story?1080:765,32,ink,600,'center');
+      const top=Math.max(...order.map(id=>scores[id]));
+      order.forEach((id,i)=>{
+        const a=MOVES[id],value=scores[id],peak=value===top,x=60+(i%3)*320,y=(story?1110:790)+Math.floor(i/3)*(story?175:148),h=story?165:140;
+        ctx.fillStyle=value<=1?'#f1f0f4':peak?a.color+'18':'#ffffffb3';ctx.fillRect(x,y,300,h);
+        ctx.strokeStyle=peak?a.color:'#dedbe8';ctx.lineWidth=peak?4:1;ctx.strokeRect(x,y,300,h);
+        ctx.save();if(value<=1){ctx.globalAlpha=.35;ctx.filter='grayscale(1)';}fit(ctx,angles[i],x+22,y+8,story?110:90,story?108:87);ctx.restore();
+        text(ctx,String(value),x+265,y+(story?76:65),peak?54:46,ink,600,'right');
+        text(ctx,'คะแนน',x+265,y+(story?107:92),20,muted,400,'right');
+        text(ctx,a.thai,x+150,y+h-14,story?30:27,ink,600,'center');
       });
-      if(story){text(ctx,'คุณเรียนรู้ด้วยเวทมนตร์แบบไหน?',center,1680,36,ink,600,'center');text(ctx,'ค้นพบของคุณได้ใน 10 คำถาม',center,1730,29,muted,400,'center');}
-      text(ctx,'ทุกคนเรียนรู้ได้หลายแบบ · Wizards of Learning',center,canvas.height-40,24,muted,400,'center');
+      if(story){text(ctx,'คุณได้ Wizard แบบไหน? มาลองกัน',center,1720,34,ink,600,'center');text(ctx,'อ่านรายละเอียด Archetype จากลิงก์ที่แชร์',center,1770,27,muted,400,'center');}
+      text(ctx,'คะแนนสะท้อนคำตอบครั้งนี้ · ทุกคนเรียนรู้ได้หลายแบบ',center,canvas.height-40,24,muted,400,'center');
     }
     const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('สร้างไฟล์ภาพไม่สำเร็จ')),format==='og'?'image/jpeg':'image/png',.9));
     return {blob,width:canvas.width,height:canvas.height};
   }
-  root.WizardShareCard={render};
+  root.WizardShareCard={render,validScores,angleOrder:order};
 })(window);
