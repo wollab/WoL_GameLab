@@ -2,13 +2,13 @@
 
 A separate, standalone experience from [9 Learning Angles](../9-learning-angles/) by Wizards of Learning. Both tools coexist as distinct websites under the same GitHub Pages project. This app bundles a verified snapshot of the original quiz and existing assets; it has no runtime dependency on the original app directory.
 
-## Current transparent PNG / Family revision — local review ready
+## Current transparent PNG / Family revision — published 2026-11-06
 
 All27 Wizards and nine small characters now have genuine transparent PNGs. The app, share exports, gallery and27 static profiles use these cutouts without multiply compositing. Original art/source quiz and the original website are preserved. The result description starts with the short Wizard name and is centered. The result/mobile hero keeps all three small characters visible in the first view; desktop portrait grows to390px, mobile remains225px.
 
 Five Family palettes/scenes and27 distinct centered italic quotes now appear on results, profiles and share images. Both personal results and individual profiles open the sharing popup with visible caption, PNG download, details/quiz links and Facebook/LINE/Story paths. Personal images contain the respondent's actual nine scores; profile sharing describes the viewed type without inventing scores.
 
-Local Chrome acceptance59 groups, scoring5/5, source snapshot/11 assets and strict audit pass. All27 types are achieved through real ten-answer browser journeys; all36 PNGs have actual browser-verified alpha; all27 static profile pages read without JS. Original quiz desktop/mobile passes. Native/clipboard/FB popup simulations do not prove physical OS/social posts or platform cache refresh. See project TASK_STATE for exact evidence/release state. PR #6 was explicitly approved and published; this later Family/PNG revision requires its own reviewed merge approval.
+Local Chrome acceptance59 groups, scoring5/5, source snapshot/11 assets and strict audit pass. All27 types are achieved through real ten-answer browser journeys; all36 PNGs have actual browser-verified alpha; all27 static profile pages read without JS. Original quiz desktop/mobile passes. Native/clipboard/FB popup simulations do not prove physical OS/social posts or platform cache refresh. See project TASK_STATE for exact evidence/release state. Chief explicitly approved this later revision, PR #7 merged atad5c3ab, and Pages run42188947767 succeeded. Actual-public58 Chrome groups passed with zero healthy errors/missing assets; original quiz desktop/mobile remains playable. The local-only isolated-root group accounts for59 locally versus58 public groups. Physical-device native sheets/social posts/cache refresh remain unverified.
 
 Transparent downloads: [named27-character PNG gallery](assets/archetypes/contact-sheet.html). Manifest/provenance and reproduction: [ARTWORK.md](ARTWORK.md).
 
