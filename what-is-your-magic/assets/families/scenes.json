@@ -1,0 +1,73 @@
+{
+  "tool": "Built-in image_gen",
+  "date": "2026-11-06",
+  "styleReference": "assets/archetypes/masters/mage.png",
+  "sourceMastersModified": false,
+  "scenes": [
+    {
+      "family": "A",
+      "prompt": "Create ONE wide landscape background illustration for the existing 27 Wizards of Learning website and its social cards. Use the provided project-owned Mage image ONLY as a style reference: clean modern 2D semi-chibi fantasy world, polished cel shading, crisp simple silhouettes, bright but gentle colors. NO people, no characters, no animals, no writing, no letters, no symbols that read as text, no logo, no border or panels. One coherent quiet environment with a large clean light central clearing (middle 55% is open pale space for a separate unchanged full-body portrait overlay); decorative storytelling objects sit around left/right edges and lower corners, a low ground plane. Landscape composition approximately 3:2. Light, welcoming, whimsical, not photorealistic, no 3D render, no grain. Treat this as a usable web scene, not a poster. Each object must communicate the family learning approach. Arcane & Knowledge: a pale periwinkle-blue magical observatory/library. Side-edge floating books with blank pages, a simple gold armillary sphere, blue/violet crystals and softly suspended geometric constellations; distant rounded arched academy shelves. The middle stays mostly empty pale lilac. Palette periwinkle #6354b8, ink blue and a little cyan/gold. Communicate exploring patterns and connecting knowledge.",
+      "source": "exec-42a8ef9b-6f78-428c-a4ef-6f26e6ab3dee.png",
+      "master": "masters/a.png",
+      "web": "a.webp",
+      "masterDimensions": [
+        1536,
+        1024
+      ],
+      "masterSha256": "45d6d579291f7b6c200e5a5758c074e559b4601bc29150271e6c6378fb59ade9",
+      "webBytes": 114408
+    },
+    {
+      "family": "B",
+      "prompt": "Create ONE wide landscape background illustration for the existing 27 Wizards of Learning website and its social cards. Use the provided project-owned Mage image ONLY as a style reference: clean modern 2D semi-chibi fantasy world, polished cel shading, crisp simple silhouettes, bright but gentle colors. NO people, no characters, no animals, no writing, no letters, no symbols that read as text, no logo, no border or panels. One coherent quiet environment with a large clean light central clearing (middle 55% is open pale space for a separate unchanged full-body portrait overlay); decorative storytelling objects sit around left/right edges and lower corners, a low ground plane. Landscape composition approximately 3:2. Light, welcoming, whimsical, not photorealistic, no 3D render, no grain. Treat this as a usable web scene, not a poster. Each object must communicate the family learning approach. Life & Nature: a pale mint-green healing garden. Edge clusters of soft ferns, growing saplings, a small clear spring, round stepping stones, a few glowing seed-like lights and leafy stone arches; central light mint clearing. Palette green #31985c, mint, gentle cream sunlight. Communicate listening, caring and nurturing growth.",
+      "source": "exec-dabec28f-9742-4ee5-9ddf-cdbfce845842.png",
+      "master": "masters/b.png",
+      "web": "b.webp",
+      "masterDimensions": [
+        1536,
+        1024
+      ],
+      "masterSha256": "3d7607deface40c3191b9c1fa8b67894a1c47cba06d74cbdbc5375c7c6603061",
+      "webBytes": 131256
+    },
+    {
+      "family": "C",
+      "prompt": "Create ONE wide landscape background illustration for the existing 27 Wizards of Learning website and its social cards. Use the provided project-owned Mage image ONLY as a style reference: clean modern 2D semi-chibi fantasy world, polished cel shading, crisp simple silhouettes, bright but gentle colors. NO people, no characters, no animals, no writing, no letters, no symbols that read as text, no logo, no border or panels. One coherent quiet environment with a large clean light central clearing (middle 55% is open pale space for a separate unchanged full-body portrait overlay); decorative storytelling objects sit around left/right edges and lower corners, a low ground plane. Landscape composition approximately 3:2. Light, welcoming, whimsical, not photorealistic, no 3D render, no grain. Treat this as a usable web scene, not a poster. Each object must communicate the family learning approach. Spirit & Occult: a gentle violet moonlit memory garden, welcoming not frightening. Edge hanging paper lanterns, rounded old stone arches, a few floating blank book pages, pale wisp-like lights and delicate moon motifs reflected in a quiet pool; central very pale lavender clearing. Palette violet #8842ac and dusty lilac with tiny warm gold lantern lights. Communicate listening to overlooked stories and reconnecting memories. No skulls, no horror.",
+      "source": "exec-a9064ea3-427b-47b4-98fa-585ce282163d.png",
+      "master": "masters/c.png",
+      "web": "c.webp",
+      "masterDimensions": [
+        1536,
+        1024
+      ],
+      "masterSha256": "ba0487a910be5fd159bcd6815ce0f1263bb7f6e16797aa805da182e6fabc78b8",
+      "webBytes": 156622
+    },
+    {
+      "family": "D",
+      "prompt": "Create ONE wide landscape background illustration for the existing 27 Wizards of Learning website and its social cards. Use the provided project-owned Mage image ONLY as a style reference: clean modern 2D semi-chibi fantasy world, polished cel shading, crisp simple silhouettes, bright but gentle colors. NO people, no characters, no animals, no writing, no letters, no symbols that read as text, no logo, no border or panels. One coherent quiet environment with a large clean light central clearing (middle 55% is open pale space for a separate unchanged full-body portrait overlay); decorative storytelling objects sit around left/right edges and lower corners, a low ground plane. Landscape composition approximately 3:2. Light, welcoming, whimsical, not photorealistic, no 3D render, no grain. Treat this as a usable web scene, not a poster. Each object must communicate the family learning approach. Mind & Expression: a warm peach-gold open-air storytelling studio. Side-edge graceful ribbons, floating colorful blank paper sheets, simple musical instruments (lyre and chimes), paint/color shapes, small rounded stage arches and expressive speech-bubble-shaped blank lights; central pale peach clearing. Palette amber #d57b28, coral, a few turquoise accents. Communicate imagination, art, dialogue and seeing new perspectives.",
+      "source": "exec-e06af3ae-2717-47ce-a587-ae60daeb669e.png",
+      "master": "masters/d.png",
+      "web": "d.webp",
+      "masterDimensions": [
+        1536,
+        1024
+      ],
+      "masterSha256": "057a3c0386cbcb13058ce521b714c6c0b903d41eebdd79cb6055655ee582520c",
+      "webBytes": 126016
+    },
+    {
+      "family": "E",
+      "prompt": "Create ONE wide landscape background illustration for the existing 27 Wizards of Learning website and its social cards. Use the provided project-owned Mage image ONLY as a style reference: clean modern 2D semi-chibi fantasy world, polished cel shading, crisp simple silhouettes, bright but gentle colors. NO people, no characters, no animals, no writing, no letters, no symbols that read as text, no logo, no border or panels. One coherent quiet environment with a large clean light central clearing (middle 55% is open pale space for a separate unchanged full-body portrait overlay); decorative storytelling objects sit around left/right edges and lower corners, a low ground plane. Landscape composition approximately 3:2. Light, welcoming, whimsical, not photorealistic, no 3D render, no grain. Treat this as a usable web scene, not a poster. Each object must communicate the family learning approach. Magic & Combat: a welcoming coral-red maker workshop and practice courtyard. Edge small brass gears, a tidy wooden workbench with simple harmless tools, unfinished wooden prototype shapes, rounded training platforms and glowing geometric energy stones; central very pale blush clearing. Palette coral #cb4b49, muted terracotta, warm brass, charcoal accents. Communicate making, testing, choosing and acting. No weapons, no violence, no fire.",
+      "source": "exec-16aea101-b675-4305-90bc-37e2159ef9b6.png",
+      "master": "masters/e.png",
+      "web": "e.webp",
+      "masterDimensions": [
+        1536,
+        1024
+      ],
+      "masterSha256": "460798fc05ab38109f655967da5d0d1bd16d07a3be777a783383c7d0130e3fdc",
+      "webBytes": 127036
+    }
+  ]
+}

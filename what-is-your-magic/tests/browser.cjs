@@ -53,7 +53,8 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
   assert.equal(await page.locator('#result').isVisible(),true);
   const ranked=referenceRank(scores,data.types),winner=ranked[0];
   assert.equal(await page.locator('#result-title').textContent(),winner.name);
-  assert.ok((await page.locator('#result-family').textContent()).includes(data.families[winner.family].title));
+  assert.equal(await page.locator('#result-family').textContent(),'Family '+winner.family+' · '+data.families[winner.family].thai);
+  assert.equal(await page.locator('#result-family').getAttribute('title'),data.families[winner.family].title);
   assert.equal(await page.locator('#result-quest-copy').textContent(),winner.quest);
   assert.ok((await page.locator('#result-gift').textContent()).includes(winner.gift));
   assert.equal(await page.locator('#signature .sig').count(),3);

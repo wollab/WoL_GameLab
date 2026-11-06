@@ -1,0 +1,20 @@
+{
+  "id": "summoner",
+  "name": "Summoner",
+  "kind": "archetype",
+  "tool": "Built-in image_gen background extraction",
+  "prompt": "Clean up the alpha matte of this existing transparent PNG only. Keep this exact character and every solid object unchanged in shape, face, pose, costume, scale and original canvas aspect ratio. REMOVE ALL stray semi-transparent colored haze, mottled noise, pale fog and white residue around the OUTSIDE of the figure, including around hat, body, legs, feet and floating objects. Outside the precisely defined character/accessory silhouettes must be completely transparent, with only a very narrow clean antialias edge. Do not keep broad glows or ground shadows. Keep the actual solid magical geometric shapes / arrows and their fine connecting lines; remove just the noisy cloud around them. Keep internal white/cream clothing, eyes and highlights fully intact. No added background, no checkerboard, no text, no redesign. Output a genuine transparent RGBA PNG.",
+  "sourceOriginal": "assets/archetypes/masters/summoner.png",
+  "generatedFile": "exec-8a2a30cb-550c-43c1-8c5e-7699881cb11a.png",
+  "master": "assets/archetypes/cutouts/masters/summoner-v2.png",
+  "web": "assets/archetypes/cutouts/summoner.png",
+  "previousExtractions": [
+    {
+      "generatedFile": "exec-92de7bad-b78a-4164-9405-90198fcc35de.png",
+      "master": "assets/archetypes/cutouts/masters/summoner.png",
+      "prompt": "Background extraction ONLY for the supplied existing Summoner illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly."
+    }
+  ],
+  "editReference": "assets/archetypes/cutouts/masters/summoner.png",
+  "note": "Targeted alpha cleanup removes broad exterior haze; original and first cutout retained."
+}

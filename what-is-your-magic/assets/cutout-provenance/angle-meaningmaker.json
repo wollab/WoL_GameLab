@@ -1,0 +1,11 @@
+{
+  "id": "meaningmaker",
+  "name": "นักสื่อสาร",
+  "kind": "angle",
+  "tool": "Built-in image_gen background extraction",
+  "prompt": "Background extraction ONLY for the supplied existing นักสื่อสาร illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+  "sourceOriginal": "assets/characters/meaningmaker.png",
+  "generatedFile": "exec-bcba24ee-7ac3-4d6b-828d-db945a0ffff0.png",
+  "master": "assets/characters/cutouts/masters/meaningmaker.png",
+  "web": "assets/characters/cutouts/meaningmaker.png"
+}

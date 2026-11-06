@@ -1,0 +1,11 @@
+{
+  "id": "mage",
+  "name": "Mage / Generalist",
+  "kind": "archetype",
+  "tool": "Built-in image_gen background extraction",
+  "prompt": "Edit the supplied project-owned Mage / Generalist illustration ONLY to remove its plain white background and produce a genuinely transparent RGBA PNG cutout. Preserve the exact existing character, face, expression, hair, skin tone, costume colors, hat, staff, floating gems, all details, pose, full-body framing and proportions. Do not redraw, redesign, reinterpret, add or remove any part of the character. Keep white highlights and all white areas INSIDE the character. Remove the exterior white canvas completely, including between staff, arms and legs, with clean antialiased edges and no white halo. The existing faint contact shadow may remain as subtle semitransparent gray. No added scene, text, logo, border, checkerboard or matte. Keep the same image aspect ratio and whole figure visible. This is background extraction, not new artwork.",
+  "sourceOriginal": "assets/archetypes/masters/mage.png",
+  "generatedFile": "exec-72d93d5e-38ef-41ff-a557-a8a236b8cdc1.png",
+  "master": "assets/archetypes/cutouts/masters/mage.png",
+  "web": "assets/archetypes/cutouts/mage.png"
+}

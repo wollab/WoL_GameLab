@@ -28,6 +28,7 @@ const server=http.createServer((req,res)=>{
     WizardPages.profile(id);
     const copy=document.getElementById('wizard-profile').cloneNode(true);
     copy.querySelectorAll('.return-result,.chapter-picker,#profile-match').forEach(e=>e.remove());
+    copy.querySelectorAll('button').forEach(e=>e.disabled=true);
     copy.querySelectorAll('[src]').forEach(e=>{if(e.getAttribute('src').startsWith('assets/'))e.setAttribute('src','../../'+e.getAttribute('src'));});
     copy.querySelectorAll('a[href],use[href]').forEach(e=>{
      const href=e.getAttribute('href');
@@ -40,14 +41,16 @@ const server=http.createServer((req,res)=>{
     const label=document.createElement('p');label.className='hero-label';label.textContent='รายละเอียด Archetype';copy.querySelector('.profile-hero .hero-split>div').prepend(label);
     return copy.innerHTML;
    },type.id);
+   const modal=await p.locator('#share-dialog').evaluate(e=>{const copy=e.cloneNode(true);copy.querySelectorAll('button').forEach(b=>b.disabled=true);return copy.outerHTML;});
+   const scripts=['quiz-data.js','wizard-data.js','wizard-matching.js','artwork.js','share-card.js','share.js','static-profile.js'].map(src=>'<script defer src="../../'+src+'?v=20261106-transparent"></script>').join('');
    const html=`<!doctype html>
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escape(title)}</title><meta name="description" content="${escape(desc)}"><link rel="canonical" href="${url}">
 <meta property="og:type" content="website"><meta property="og:locale" content="th_TH"><meta property="og:site_name" content="Wizards of Learning"><meta property="og:title" content="${escape(title)}"><meta property="og:description" content="${escape(desc)}"><meta property="og:url" content="${url}"><meta property="og:image" content="${image}"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="${escape(cardAlt)}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escape(title)}"><meta name="twitter:description" content="${escape(desc)}"><meta name="twitter:image" content="${image}"><meta name="twitter:image:alt" content="${escape(cardAlt)}">
-<link rel="icon" href="../../assets/brand/wol-logo.png"><link rel="stylesheet" href="../../style.css?v=20261106-personal"></head>
-<body><a class="skip-link" href="#main">ข้ามไปเนื้อหา</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../"><img class="brand-logo" src="../../assets/brand/wol-logo.png" alt="" width="64" height="64"><span>Wizards of Learning</span></a><nav aria-label="เมนูหลัก"><a href="../../">ค้นพบ Wizard ของฉัน</a><a href="../../#wizards">27 Wizard</a></nav></div></header>
-<main id="main" class="static-profile" tabindex="-1" aria-labelledby="profile-title" style="--family-color:${family.color}">${profile}</main>
+<link rel="icon" href="../../assets/brand/wol-logo.png"><link rel="stylesheet" href="../../style.css?v=20261106-transparent">${scripts}</head>
+<body data-family="${type.family}"><a class="skip-link" href="#main">ข้ามไปเนื้อหา</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../"><img class="brand-logo" src="../../assets/brand/wol-logo.png" alt="" width="64" height="64"><span>Wizards of Learning</span></a><nav aria-label="เมนูหลัก"><a href="../../">ค้นพบ Wizard ของฉัน</a><a href="../../#wizards">27 Wizard</a></nav></div></header>
+<main id="main" class="static-profile" data-archetype="${type.id}" tabindex="-1" aria-labelledby="profile-title" style="--family-color:${family.color}">${profile}</main>${modal}
 <footer class="site-footer"><p>27 Wizards of Learning · What Is Your Learning Magic?</p><a href="../../">ค้นพบเวทมนตร์ของคุณใน 10 คำถาม →</a></footer></body></html>`;
    const directory=path.join(root,'share',type.id);fs.mkdirSync(directory,{recursive:true});fs.writeFileSync(path.join(directory,'index.html'),html);
   }

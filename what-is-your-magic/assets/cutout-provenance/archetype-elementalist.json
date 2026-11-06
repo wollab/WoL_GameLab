@@ -1,0 +1,11 @@
+{
+  "id": "elementalist",
+  "name": "Elementalist",
+  "kind": "archetype",
+  "tool": "Built-in image_gen background extraction",
+  "prompt": "Background extraction ONLY for the supplied existing Elementalist illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+  "sourceOriginal": "assets/archetypes/masters/elementalist.png",
+  "generatedFile": "exec-edec83e7-f070-4696-89ff-df4efe133db1.png",
+  "master": "assets/archetypes/cutouts/masters/elementalist.png",
+  "web": "assets/archetypes/cutouts/elementalist.png"
+}

@@ -1,0 +1,1240 @@
+{
+  "tool": "Built-in image_gen background extraction",
+  "status": "All 36 RGBA cutouts exported; inspect visual edges separately",
+  "export": "PNG, preserve alpha/aspect, width at most512, no source-master edits",
+  "assets": [
+    {
+      "id": "connector",
+      "name": "นักเชื่อมโยง",
+      "kind": "angle",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing นักเชื่อมโยง illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/characters/connector.png",
+      "generatedFile": "exec-6246feb6-48a0-4d0b-95f6-c6558cfe1561.png",
+      "master": "assets/characters/cutouts/masters/connector.png",
+      "web": "assets/characters/cutouts/connector.png",
+      "solidCoreRgbMeanDifference": [
+        12.5898,
+        11.5197,
+        13.2569
+      ],
+      "solidPixelFraction": 0.2456,
+      "dimensions": [
+        1123,
+        1401
+      ],
+      "originalDimensions": [
+        400,
+        499
+      ],
+      "transparentFraction": 0.7057,
+      "masterSha256": "06b6c46b4cda58a10b9edee6ba7bcee0fceaa782b1a342e9d63d33156d54f998",
+      "sourceSha256": "f5dc8793604f1f5c778ab71807f4f0f4b214efd802270135cdb9022288724a83",
+      "webDimensions": [
+        512,
+        639
+      ],
+      "webBytes": 203336
+    },
+    {
+      "id": "creator",
+      "name": "นักสร้างสรรค์",
+      "kind": "angle",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing นักสร้างสรรค์ illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/characters/creator.png",
+      "generatedFile": "exec-0e2ee9a3-b2f9-47da-818a-3b31fb234222.png",
+      "master": "assets/characters/cutouts/masters/creator.png",
+      "web": "assets/characters/cutouts/creator.png",
+      "solidCoreRgbMeanDifference": [
+        10.7749,
+        11.0714,
+        12.6837
+      ],
+      "solidPixelFraction": 0.2737,
+      "dimensions": [
+        1123,
+        1401
+      ],
+      "originalDimensions": [
+        400,
+        499
+      ],
+      "transparentFraction": 0.6758,
+      "masterSha256": "b110880ec2471483e1c3383b42ac88b6a898f175e1c3b101036e4fbed80ad288",
+      "sourceSha256": "2bc09e8c2d6f2986060f065b6641fb0a5c2822cf30fafe706278559961feeb66",
+      "webDimensions": [
+        512,
+        639
+      ],
+      "webBytes": 226400
+    },
+    {
+      "id": "decider",
+      "name": "นักตัดสินใจ",
+      "kind": "angle",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Clean up the alpha matte of this existing transparent PNG only. Keep this exact character and every solid object unchanged in shape, face, pose, costume, scale and original canvas aspect ratio. REMOVE ALL stray semi-transparent colored haze, mottled noise, pale fog and white residue around the OUTSIDE of the figure, including around hat, body, legs, feet and floating objects. Outside the precisely defined character/accessory silhouettes must be completely transparent, with only a very narrow clean antialias edge. Do not keep broad glows or ground shadows. Keep the actual solid magical geometric shapes / arrows and their fine connecting lines; remove just the noisy cloud around them. Keep internal white/cream clothing, eyes and highlights fully intact. No added background, no checkerboard, no text, no redesign. Output a genuine transparent RGBA PNG.",
+      "sourceOriginal": "assets/characters/decider.png",
+      "generatedFile": "exec-3c5cbfc2-1b6b-4bb6-bbbe-d578a832a631.png",
+      "master": "assets/characters/cutouts/masters/decider-v2.png",
+      "web": "assets/characters/cutouts/decider.png",
+      "previousExtractions": [
+        {
+          "generatedFile": "exec-5972d4be-98a3-4a1c-8bc2-bc59df147f8f.png",
+          "master": "assets/characters/cutouts/masters/decider.png",
+          "prompt": "Background extraction ONLY for the supplied existing นักตัดสินใจ illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly."
+        }
+      ],
+      "editReference": "assets/characters/cutouts/masters/decider.png",
+      "note": "Targeted alpha cleanup removes broad exterior haze; original and first cutout retained.",
+      "solidCoreRgbMeanDifference": [
+        15.8909,
+        14.2171,
+        15.008
+      ],
+      "solidPixelFraction": 0.3095,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        400,
+        499
+      ],
+      "transparentFraction": 0.6611,
+      "masterSha256": "4a35620b32ca20edcc8ff3a14f79b3d643080431c287c498447fe2583c5e4d3a",
+      "sourceSha256": "cbd1fb6aa2b48cebc0c692f218f284e19e1f625228b8dadfeb6667dbaa7c9d6e",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 209470
+    },
+    {
+      "id": "experimenter",
+      "name": "นักทดลอง",
+      "kind": "angle",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing นักทดลอง illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/characters/experimenter.png",
+      "generatedFile": "exec-42900ffe-1ee5-4b7d-88e4-4a0ddc395790.png",
+      "master": "assets/characters/cutouts/masters/experimenter.png",
+      "web": "assets/characters/cutouts/experimenter.png",
+      "solidCoreRgbMeanDifference": [
+        8.8055,
+        8.8353,
+        8.4129
+      ],
+      "solidPixelFraction": 0.2557,
+      "dimensions": [
+        1123,
+        1401
+      ],
+      "originalDimensions": [
+        400,
+        499
+      ],
+      "transparentFraction": 0.702,
+      "masterSha256": "c47133e816f120511827580d181b304a2bc2ad1f38e58757bc3e5a8a623b4b97",
+      "sourceSha256": "0774256e6ce5c78e34d3753a638ee3f5c4d445266f3818fe580a44d14ee29742",
+      "webDimensions": [
+        512,
+        639
+      ],
+      "webBytes": 185913
+    },
+    {
+      "id": "explorer",
+      "name": "นักสำรวจ",
+      "kind": "angle",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing นักสำรวจ illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/characters/explorer.png",
+      "generatedFile": "exec-bdbd76fd-b1a7-4648-b6a3-9a6a152d6eb0.png",
+      "master": "assets/characters/cutouts/masters/explorer.png",
+      "web": "assets/characters/cutouts/explorer.png",
+      "solidCoreRgbMeanDifference": [
+        14.8875,
+        12.1701,
+        10.169
+      ],
+      "solidPixelFraction": 0.2341,
+      "dimensions": [
+        1123,
+        1401
+      ],
+      "originalDimensions": [
+        400,
+        499
+      ],
+      "transparentFraction": 0.7162,
+      "masterSha256": "614fd8b30650f1473a47559dbc357a1aef89a899eafb69bd4211340edd528330",
+      "sourceSha256": "0914729909de2d51921d2ff9c79f76fe68f9ad49dc163de7a613b6057f664c18",
+      "webDimensions": [
+        512,
+        639
+      ],
+      "webBytes": 196985
+    },
+    {
+      "id": "listener",
+      "name": "นักฟัง",
+      "kind": "angle",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing นักฟัง illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/characters/listener.png",
+      "generatedFile": "exec-1fe3a168-28b5-4a54-a7d4-69d12cdedfe3.png",
+      "master": "assets/characters/cutouts/masters/listener.png",
+      "web": "assets/characters/cutouts/listener.png",
+      "solidCoreRgbMeanDifference": [
+        11.4386,
+        9.5183,
+        8.5422
+      ],
+      "solidPixelFraction": 0.2941,
+      "dimensions": [
+        1123,
+        1401
+      ],
+      "originalDimensions": [
+        400,
+        499
+      ],
+      "transparentFraction": 0.6719,
+      "masterSha256": "ce4efa75d9d65f8786730bba9974b645143d814075affa672223165ae4becd72",
+      "sourceSha256": "052dc7922c7d6a7acb79be081f7749952335e9ce16193a26fed735cda0eaad23",
+      "webDimensions": [
+        512,
+        639
+      ],
+      "webBytes": 224044
+    },
+    {
+      "id": "meaningmaker",
+      "name": "นักสื่อสาร",
+      "kind": "angle",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing นักสื่อสาร illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/characters/meaningmaker.png",
+      "generatedFile": "exec-bcba24ee-7ac3-4d6b-828d-db945a0ffff0.png",
+      "master": "assets/characters/cutouts/masters/meaningmaker.png",
+      "web": "assets/characters/cutouts/meaningmaker.png",
+      "solidCoreRgbMeanDifference": [
+        8.2113,
+        8.7769,
+        9.6053
+      ],
+      "solidPixelFraction": 0.236,
+      "dimensions": [
+        1123,
+        1401
+      ],
+      "originalDimensions": [
+        400,
+        499
+      ],
+      "transparentFraction": 0.7184,
+      "masterSha256": "97724a8941f92e6b3ef82578696f6549278fb736111027462da5fb038a4c22ea",
+      "sourceSha256": "7ac568f1acb4669a6c0d0f4e2424815217cc8004866d34499de8a30b8568afe4",
+      "webDimensions": [
+        512,
+        639
+      ],
+      "webBytes": 176968
+    },
+    {
+      "id": "reflector",
+      "name": "นักทบทวน",
+      "kind": "angle",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing นักทบทวน illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/characters/reflector.png",
+      "generatedFile": "exec-1d9c427d-4cab-40cd-8705-9445ab5528ca.png",
+      "master": "assets/characters/cutouts/masters/reflector.png",
+      "web": "assets/characters/cutouts/reflector.png",
+      "solidCoreRgbMeanDifference": [
+        9.8002,
+        8.777,
+        10.1368
+      ],
+      "solidPixelFraction": 0.3044,
+      "dimensions": [
+        1123,
+        1401
+      ],
+      "originalDimensions": [
+        400,
+        499
+      ],
+      "transparentFraction": 0.6468,
+      "masterSha256": "0b7b3c6ff9621e66d10a0db3f082e2a0e5b72300bfdd82cfd3aa282bd2c9f0be",
+      "sourceSha256": "e45b7c3be72233d94374cf133f54fb850a5437ad0f3787fd326131a0e6e3ec7d",
+      "webDimensions": [
+        512,
+        639
+      ],
+      "webBytes": 221172
+    },
+    {
+      "id": "synthesizer",
+      "name": "นักสรุป",
+      "kind": "angle",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing นักสรุป illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/characters/synthesizer.png",
+      "generatedFile": "exec-caffd78b-2e5a-403f-bf25-23ecd845b3d4.png",
+      "master": "assets/characters/cutouts/masters/synthesizer.png",
+      "web": "assets/characters/cutouts/synthesizer.png",
+      "solidCoreRgbMeanDifference": [
+        10.1088,
+        10.7406,
+        10.6178
+      ],
+      "solidPixelFraction": 0.2382,
+      "dimensions": [
+        1123,
+        1401
+      ],
+      "originalDimensions": [
+        400,
+        499
+      ],
+      "transparentFraction": 0.7274,
+      "masterSha256": "21117df989a6b35ba5f6fe477bfee797fee7d8521f630af7d0b1d619ca4a901e",
+      "sourceSha256": "dc363816a365e32804eae58f0b5519861b0e83aa0731b30fa74965c19505279d",
+      "webDimensions": [
+        512,
+        639
+      ],
+      "webBytes": 177733
+    },
+    {
+      "id": "alchemist",
+      "name": "Alchemist",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Alchemist illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/alchemist.png",
+      "generatedFile": "exec-9cf1a6d3-ef13-4d65-b39d-352463bf0857.png",
+      "master": "assets/archetypes/cutouts/masters/alchemist.png",
+      "web": "assets/archetypes/cutouts/alchemist.png",
+      "family": "B",
+      "solidCoreRgbMeanDifference": [
+        11.2958,
+        9.7073,
+        9.5634
+      ],
+      "solidPixelFraction": 0.3074,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.655,
+      "masterSha256": "b2c2bb7da3d7df9bea58b1a6138dada231e536132cd1098cd8577cdcebdf7a60",
+      "sourceSha256": "e2e358410571593ee755d53a4bfa10cae5835a19ecb25e70c4c67a1cf3e05eaa",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 244934
+    },
+    {
+      "id": "artificer",
+      "name": "Artificer",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Artificer illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/artificer.png",
+      "generatedFile": "exec-7035db5a-ce76-4125-908b-7ed95228cbe7.png",
+      "master": "assets/archetypes/cutouts/masters/artificer.png",
+      "web": "assets/archetypes/cutouts/artificer.png",
+      "family": "E",
+      "solidCoreRgbMeanDifference": [
+        10.0876,
+        9.0164,
+        10.8007
+      ],
+      "solidPixelFraction": 0.2816,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6765,
+      "masterSha256": "580d3b2fb1774a020c2f95cb97903406da9e92423d00130fdb8115a8f8ea09f8",
+      "sourceSha256": "57cb79d121e200bbbb16926919bf512a33709e9f3f5c5898700aa8b30173f84f",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 232046
+    },
+    {
+      "id": "bard",
+      "name": "Bard / Artist Mage",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Bard / Artist Mage illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/bard.png",
+      "generatedFile": "exec-020a9d62-3516-4119-8908-07e7cf3cb1e8.png",
+      "master": "assets/archetypes/cutouts/masters/bard.png",
+      "web": "assets/archetypes/cutouts/bard.png",
+      "family": "D",
+      "solidCoreRgbMeanDifference": [
+        10.5663,
+        13.0756,
+        13.0603
+      ],
+      "solidPixelFraction": 0.3165,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6215,
+      "masterSha256": "4bb6f943a6a7c5dcb429319feb9e0591725f8823c1b59a47b0bbf19d457a28b5",
+      "sourceSha256": "527f639b02a414f06c20ae86c51a8b9c68320397e90772c8e9b7c40d36a5ddd0",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 283114
+    },
+    {
+      "id": "beastmaster",
+      "name": "Beastmaster",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Beastmaster illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/beastmaster.png",
+      "generatedFile": "exec-8f7ef186-9e3f-4e30-9e7a-50fb3d5389a2.png",
+      "master": "assets/archetypes/cutouts/masters/beastmaster.png",
+      "web": "assets/archetypes/cutouts/beastmaster.png",
+      "family": "B",
+      "solidCoreRgbMeanDifference": [
+        11.8203,
+        9.2903,
+        8.279
+      ],
+      "solidPixelFraction": 0.341,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6141,
+      "masterSha256": "93da6550225151c6f2e81823d8486ad9e3c2e0ae5c6902da6269c5aa2fe76aac",
+      "sourceSha256": "bd008f88c30244d1b35f7adea8c4c123f90b894a1d1a90228432ac05e324ee1c",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 271107
+    },
+    {
+      "id": "blood-mage",
+      "name": "Blood Mage",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Blood Mage illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/blood-mage.png",
+      "generatedFile": "exec-2e1f0555-aa5a-4f64-a8a3-d99cce6a011d.png",
+      "master": "assets/archetypes/cutouts/masters/blood-mage.png",
+      "web": "assets/archetypes/cutouts/blood-mage.png",
+      "family": "E",
+      "solidCoreRgbMeanDifference": [
+        10.5701,
+        7.8941,
+        7.2613
+      ],
+      "solidPixelFraction": 0.3289,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6291,
+      "masterSha256": "6686f4234710ac2ada74f0a1bb7281007c5a5fd4ce31ac3930c1c07ef4f6138a",
+      "sourceSha256": "c19f960971b68cc2022811227219f1a31c16c3500619f28770bfe1377da333bf",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 260066
+    },
+    {
+      "id": "chronomancer",
+      "name": "Chronomancer",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Chronomancer illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/chronomancer.png",
+      "generatedFile": "exec-589a96e7-86b4-473b-890a-85f7ba15a7f0.png",
+      "master": "assets/archetypes/cutouts/masters/chronomancer.png",
+      "web": "assets/archetypes/cutouts/chronomancer.png",
+      "family": "A",
+      "solidCoreRgbMeanDifference": [
+        10.4548,
+        9.2688,
+        12.3052
+      ],
+      "solidPixelFraction": 0.3532,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.5954,
+      "masterSha256": "5012e640e4a92604007f7fb2396b2fb3870fd19db9dfc9c9f5f4d8533c7cf515",
+      "sourceSha256": "06bc3b45661bd6b4d232fa4d55b5ccd86e61802808a5a843ad48bd5af1b34fc2",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 289776
+    },
+    {
+      "id": "diviner",
+      "name": "Diviner",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Diviner illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly. Diviner must retain exactly TWO existing hands: the lower hand with three cards and the raised open palm. Do NOT add a magnifying glass or extra arm.",
+      "sourceOriginal": "assets/archetypes/masters/diviner.png",
+      "generatedFile": "exec-66d1f749-854a-4fca-8f68-0155ac4df8cd.png",
+      "master": "assets/archetypes/cutouts/masters/diviner.png",
+      "web": "assets/archetypes/cutouts/diviner.png",
+      "family": "A",
+      "solidCoreRgbMeanDifference": [
+        9.0917,
+        9.5338,
+        11.3967
+      ],
+      "solidPixelFraction": 0.2973,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6258,
+      "masterSha256": "8e2b03171968310adb5c647ac40b67b6111f2e2fc37360ab483a10758339c21e",
+      "sourceSha256": "523c95f0deac516055c760eb667889de88ae8b2a90a69e8418ac6b5010081c36",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 244830
+    },
+    {
+      "id": "elementalist",
+      "name": "Elementalist",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Elementalist illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/elementalist.png",
+      "generatedFile": "exec-edec83e7-f070-4696-89ff-df4efe133db1.png",
+      "master": "assets/archetypes/cutouts/masters/elementalist.png",
+      "web": "assets/archetypes/cutouts/elementalist.png",
+      "family": "A",
+      "solidCoreRgbMeanDifference": [
+        10.247,
+        10.2656,
+        12.1861
+      ],
+      "solidPixelFraction": 0.3162,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6207,
+      "masterSha256": "bc0a2bff2cb4d04b86813f5ed267f9f58384c033db0f1d076dcd46ef628aca9a",
+      "sourceSha256": "e627fe49a7162a835a47883a2ba8d9c4e056087f0f89c03c6c209c0263a4874b",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 282008
+    },
+    {
+      "id": "enchanter",
+      "name": "Enchanter",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Enchanter illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/enchanter.png",
+      "generatedFile": "exec-e8e6c135-144e-4c3d-bcf0-901e87cab4f4.png",
+      "master": "assets/archetypes/cutouts/masters/enchanter.png",
+      "web": "assets/archetypes/cutouts/enchanter.png",
+      "family": "D",
+      "solidCoreRgbMeanDifference": [
+        8.3043,
+        8.646,
+        9.0126
+      ],
+      "solidPixelFraction": 0.3309,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6052,
+      "masterSha256": "980ecf95cb9d8bf5802f38e382335a0170a09117fb5013b139a23b484a5cb8f4",
+      "sourceSha256": "f79182ba692c3d755caa8e656e083a0af1d65f53b2221a1795325db3b96f9572",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 268355
+    },
+    {
+      "id": "force-mage",
+      "name": "Force Mage",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Force Mage illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/force-mage.png",
+      "generatedFile": "exec-3e6ec04d-a3c0-4e2c-b925-9c6716a2019f.png",
+      "master": "assets/archetypes/cutouts/masters/force-mage.png",
+      "web": "assets/archetypes/cutouts/force-mage.png",
+      "family": "A",
+      "solidCoreRgbMeanDifference": [
+        7.4203,
+        6.2265,
+        8.3059
+      ],
+      "solidPixelFraction": 0.3029,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6305,
+      "masterSha256": "e8e804a03ff946ef4626219f2a69781802bf0f6a111f7016f40477d6477d849b",
+      "sourceSha256": "ba70991e5173acd278be346089a7ad8911c68bff9e5fd0b618865aa5c4ebef3a",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 268857
+    },
+    {
+      "id": "geomancer",
+      "name": "Geomancer",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Geomancer illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/geomancer.png",
+      "generatedFile": "exec-fe748c64-0a74-4890-bf09-fefa8ba5d744.png",
+      "master": "assets/archetypes/cutouts/masters/geomancer.png",
+      "web": "assets/archetypes/cutouts/geomancer.png",
+      "family": "A",
+      "solidCoreRgbMeanDifference": [
+        10.2096,
+        9.7798,
+        9.3489
+      ],
+      "solidPixelFraction": 0.3394,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6171,
+      "masterSha256": "153160d4f5b99b98500aa2655871a7c500535614c2b6c204571deb4c0d2d3501",
+      "sourceSha256": "df6989acbfbb6d360754c5172a32d497038ec3d32a0784a8c0a661f674c83448",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 265999
+    },
+    {
+      "id": "healer",
+      "name": "Healer",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Healer illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/healer.png",
+      "generatedFile": "exec-1e03ccd6-398a-4431-a7aa-9071a5189ab1.png",
+      "master": "assets/archetypes/cutouts/masters/healer.png",
+      "web": "assets/archetypes/cutouts/healer.png",
+      "family": "B",
+      "solidCoreRgbMeanDifference": [
+        11.485,
+        11.2252,
+        14.4458
+      ],
+      "solidPixelFraction": 0.3628,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.5882,
+      "masterSha256": "80f88fcf84b66b8158c9cf1bbead2526723f5a527f81248baab32513e2f35c04",
+      "sourceSha256": "a771d9b9f10f38fa19625b4d3b1879ba5234c25c5a3f0e65437de148d147b11d",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 270468
+    },
+    {
+      "id": "holy-knight",
+      "name": "Holy Knight",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Holy Knight illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/holy-knight.png",
+      "generatedFile": "exec-82a06d98-bd15-4270-8d33-bcab150fad37.png",
+      "master": "assets/archetypes/cutouts/masters/holy-knight.png",
+      "web": "assets/archetypes/cutouts/holy-knight.png",
+      "family": "B",
+      "solidCoreRgbMeanDifference": [
+        7.7996,
+        7.5088,
+        8.3019
+      ],
+      "solidPixelFraction": 0.3153,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6471,
+      "masterSha256": "8975b7084eebddeb5b4fc19f6ec6f9a4f67d2e891ec8ae108e948aa724908d91",
+      "sourceSha256": "8648705972e89cea6d6a5de5864f461ac34a1565add6cfeb058f517899f24a2a",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 249542
+    },
+    {
+      "id": "illusionist",
+      "name": "Illusionist",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Illusionist illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/illusionist.png",
+      "generatedFile": "exec-28c21b0e-5b15-42e3-9cc5-75106459ef78.png",
+      "master": "assets/archetypes/cutouts/masters/illusionist.png",
+      "web": "assets/archetypes/cutouts/illusionist.png",
+      "family": "D",
+      "solidCoreRgbMeanDifference": [
+        9.154,
+        10.7543,
+        10.1368
+      ],
+      "solidPixelFraction": 0.3295,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6022,
+      "masterSha256": "ddf43be37baa4544669a2342a25e3664f1cf8090241031b5fd1490238756a86f",
+      "sourceSha256": "205163825e302399a5eba62ee0926de53647499e8bab7f14f2de72b23596dded",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 281307
+    },
+    {
+      "id": "mage",
+      "name": "Mage / Generalist",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Edit the supplied project-owned Mage / Generalist illustration ONLY to remove its plain white background and produce a genuinely transparent RGBA PNG cutout. Preserve the exact existing character, face, expression, hair, skin tone, costume colors, hat, staff, floating gems, all details, pose, full-body framing and proportions. Do not redraw, redesign, reinterpret, add or remove any part of the character. Keep white highlights and all white areas INSIDE the character. Remove the exterior white canvas completely, including between staff, arms and legs, with clean antialiased edges and no white halo. The existing faint contact shadow may remain as subtle semitransparent gray. No added scene, text, logo, border, checkerboard or matte. Keep the same image aspect ratio and whole figure visible. This is background extraction, not new artwork.",
+      "sourceOriginal": "assets/archetypes/masters/mage.png",
+      "generatedFile": "exec-72d93d5e-38ef-41ff-a557-a8a236b8cdc1.png",
+      "master": "assets/archetypes/cutouts/masters/mage.png",
+      "web": "assets/archetypes/cutouts/mage.png",
+      "family": "A",
+      "solidCoreRgbMeanDifference": [
+        10.4621,
+        8.6666,
+        8.3647
+      ],
+      "solidPixelFraction": 0.3529,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.5937,
+      "masterSha256": "33e1ccd2d21cdcfa66f57a13d2d2e7acb26803c63e84948086cd1a8fa3a23e02",
+      "sourceSha256": "f8a2e2010301dba016125d1d63b0212828156cbcae536c15e70f015d7d0bd4e0",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 284840
+    },
+    {
+      "id": "mimic",
+      "name": "Mimic / Blue Mage",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Mimic / Blue Mage illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/mimic.png",
+      "generatedFile": "exec-07784e41-ca79-4de5-9e57-c16648708158.png",
+      "master": "assets/archetypes/cutouts/masters/mimic.png",
+      "web": "assets/archetypes/cutouts/mimic.png",
+      "family": "D",
+      "solidCoreRgbMeanDifference": [
+        11.1343,
+        11.3413,
+        12.6761
+      ],
+      "solidPixelFraction": 0.3493,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.5797,
+      "masterSha256": "520909c4c433f88c5f8df11ad2ef05acc4a2b90fe0537183eed9acecb8103dd2",
+      "sourceSha256": "87e9a6e26fed8ef6a877e128beb3ad4c3c1f8c8de29687b8ed776b054aad2a09",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 291576
+    },
+    {
+      "id": "necromancer",
+      "name": "Necromancer",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Necromancer illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/necromancer-sample.png",
+      "generatedFile": "exec-4546ac11-5d1d-459a-9059-da78345e42f4.png",
+      "master": "assets/archetypes/cutouts/masters/necromancer.png",
+      "web": "assets/archetypes/cutouts/necromancer.png",
+      "family": "C",
+      "solidCoreRgbMeanDifference": [
+        6.1285,
+        5.971,
+        7.0
+      ],
+      "solidPixelFraction": 0.3142,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1123,
+        1401
+      ],
+      "transparentFraction": 0.648,
+      "masterSha256": "66107fe08df1e5e6da8fbd910c8a4a17b743efd35ed1c12304264650d36be22e",
+      "sourceSha256": "fe3c5a5956a3c8c7861a3f62b0f820436cb79f19c89bcd260343ebc7559745bb",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 222534
+    },
+    {
+      "id": "priest",
+      "name": "Priest",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Priest illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/priest.png",
+      "generatedFile": "exec-474927ba-61de-45fe-8d82-cff13e273e4a.png",
+      "master": "assets/archetypes/cutouts/masters/priest.png",
+      "web": "assets/archetypes/cutouts/priest.png",
+      "family": "B",
+      "solidCoreRgbMeanDifference": [
+        9.0239,
+        8.7338,
+        10.809
+      ],
+      "solidPixelFraction": 0.3135,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6454,
+      "masterSha256": "47ba0cf9f6068d94ebb7bd6602878f2ec5241101849e61bf81edc113a5511bdc",
+      "sourceSha256": "968a478c351f315a2e7030934466793f6754e1e40a59b6a3188673ffa5978c8f",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 248399
+    },
+    {
+      "id": "ritualist",
+      "name": "Ritualist",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Ritualist illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/ritualist.png",
+      "generatedFile": "exec-915a71ab-6d70-4343-b88a-6632c9289a09.png",
+      "master": "assets/archetypes/cutouts/masters/ritualist.png",
+      "web": "assets/archetypes/cutouts/ritualist.png",
+      "family": "C",
+      "solidCoreRgbMeanDifference": [
+        8.0634,
+        8.1248,
+        10.2452
+      ],
+      "solidPixelFraction": 0.3254,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6325,
+      "masterSha256": "4631ea13440ecb6d503ea84712e63b4a0c7b6a6780c6a52676d7c8ed05bdf46c",
+      "sourceSha256": "a1b40aacbf2514abe42b625f4beb1897d72cd9f27a02e345451316f2711f0bd3",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 247487
+    },
+    {
+      "id": "scholar",
+      "name": "Scholar",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Scholar illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/scholar.png",
+      "generatedFile": "exec-a796e532-fbba-498e-a84e-03a2b8dd113e.png",
+      "master": "assets/archetypes/cutouts/masters/scholar.png",
+      "web": "assets/archetypes/cutouts/scholar.png",
+      "family": "A",
+      "solidCoreRgbMeanDifference": [
+        11.1452,
+        10.1869,
+        10.4064
+      ],
+      "solidPixelFraction": 0.3122,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6342,
+      "masterSha256": "3b17e3ad9ccb0c7bcc8555f0b511eae1b6b5062f8d8b74bd308fd5344db30a03",
+      "sourceSha256": "5f00d1a8521e747714a32bba8bd06ebb874404d2324398943e2bfed299f79e75",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 286607
+    },
+    {
+      "id": "shaman",
+      "name": "Shaman",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Shaman illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/shaman.png",
+      "generatedFile": "exec-9aafce54-973c-46da-8453-7fb691947025.png",
+      "master": "assets/archetypes/cutouts/masters/shaman.png",
+      "web": "assets/archetypes/cutouts/shaman.png",
+      "family": "C",
+      "solidCoreRgbMeanDifference": [
+        8.9674,
+        8.7484,
+        9.5011
+      ],
+      "solidPixelFraction": 0.3083,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.658,
+      "masterSha256": "13115822576d8c7902b5ea54d670f7b6f93c787698910791a98cfa2244025c14",
+      "sourceSha256": "7e00383ff25be3c3f949b2b1f5853126ba08777daf2a3f80711ba6f71a42b699",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 238148
+    },
+    {
+      "id": "spellblade",
+      "name": "Spellblade",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Spellblade illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/spellblade.png",
+      "generatedFile": "exec-ec42e548-f1dc-4bde-afa6-50b0fae3219c.png",
+      "master": "assets/archetypes/cutouts/masters/spellblade.png",
+      "web": "assets/archetypes/cutouts/spellblade.png",
+      "family": "E",
+      "solidCoreRgbMeanDifference": [
+        9.338,
+        8.4933,
+        9.7642
+      ],
+      "solidPixelFraction": 0.3083,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6434,
+      "masterSha256": "8c933739a7ea370dead339ef14b2551a94778690cb4665d8598a058625c53b57",
+      "sourceSha256": "0b73eb64f53848df81d8a13589e349eb91b4e3eeaacde7f2990c386c31e38003",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 252724
+    },
+    {
+      "id": "spirit-medium",
+      "name": "Spirit Medium",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Spirit Medium illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/spirit-medium.png",
+      "generatedFile": "exec-256cf4c6-faf1-4399-b13f-7fbc069f69c8.png",
+      "master": "assets/archetypes/cutouts/masters/spirit-medium.png",
+      "web": "assets/archetypes/cutouts/spirit-medium.png",
+      "family": "C",
+      "solidCoreRgbMeanDifference": [
+        7.5303,
+        9.5697,
+        9.5798
+      ],
+      "solidPixelFraction": 0.3244,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.616,
+      "masterSha256": "ee8146cd2793d7d9a4e2f4af594cd38269c06e198d1e8553dd5088eadac7f566",
+      "sourceSha256": "de3a08409f45919bc7a7272c370b85a88f0b0d7311e537237a1f9e3726ce9d96",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 266724
+    },
+    {
+      "id": "summoner",
+      "name": "Summoner",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Clean up the alpha matte of this existing transparent PNG only. Keep this exact character and every solid object unchanged in shape, face, pose, costume, scale and original canvas aspect ratio. REMOVE ALL stray semi-transparent colored haze, mottled noise, pale fog and white residue around the OUTSIDE of the figure, including around hat, body, legs, feet and floating objects. Outside the precisely defined character/accessory silhouettes must be completely transparent, with only a very narrow clean antialias edge. Do not keep broad glows or ground shadows. Keep the actual solid magical geometric shapes / arrows and their fine connecting lines; remove just the noisy cloud around them. Keep internal white/cream clothing, eyes and highlights fully intact. No added background, no checkerboard, no text, no redesign. Output a genuine transparent RGBA PNG.",
+      "sourceOriginal": "assets/archetypes/masters/summoner.png",
+      "generatedFile": "exec-8a2a30cb-550c-43c1-8c5e-7699881cb11a.png",
+      "master": "assets/archetypes/cutouts/masters/summoner-v2.png",
+      "web": "assets/archetypes/cutouts/summoner.png",
+      "previousExtractions": [
+        {
+          "generatedFile": "exec-92de7bad-b78a-4164-9405-90198fcc35de.png",
+          "master": "assets/archetypes/cutouts/masters/summoner.png",
+          "prompt": "Background extraction ONLY for the supplied existing Summoner illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly."
+        }
+      ],
+      "editReference": "assets/archetypes/cutouts/masters/summoner.png",
+      "note": "Targeted alpha cleanup removes broad exterior haze; original and first cutout retained.",
+      "family": "C",
+      "solidCoreRgbMeanDifference": [
+        14.3203,
+        11.5644,
+        12.4762
+      ],
+      "solidPixelFraction": 0.3363,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6239,
+      "masterSha256": "1e5ae77e6d4b611e6a82f17e2d292aeeec415492b7981d908a10dac2553258ad",
+      "sourceSha256": "bdf6bd4f2e25adcfabc436be6cb4c9ccc67303be092b0c4490e59a43c39d211e",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 277066
+    },
+    {
+      "id": "transmuter",
+      "name": "Transmuter",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Transmuter illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/transmuter.png",
+      "generatedFile": "exec-8790e3cf-fb57-47df-9841-e7990a9111dd.png",
+      "master": "assets/archetypes/cutouts/masters/transmuter.png",
+      "web": "assets/archetypes/cutouts/transmuter.png",
+      "family": "B",
+      "solidCoreRgbMeanDifference": [
+        8.1284,
+        9.5801,
+        11.0048
+      ],
+      "solidPixelFraction": 0.2975,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.6569,
+      "masterSha256": "f8bb612e761fa0a1b0d4a19999edd9ed40df342583e3ca403c4616923675f004",
+      "sourceSha256": "6876d87af8575a6032011ad47db389c3a6314af5f4d3b6e66096a609383dfe31",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 250004
+    },
+    {
+      "id": "warden",
+      "name": "Warden",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Warden illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/warden.png",
+      "generatedFile": "exec-0680f516-1650-4d4f-9aab-2dfb204ca223.png",
+      "master": "assets/archetypes/cutouts/masters/warden.png",
+      "web": "assets/archetypes/cutouts/warden.png",
+      "family": "B",
+      "solidCoreRgbMeanDifference": [
+        8.618,
+        8.2706,
+        9.6287
+      ],
+      "solidPixelFraction": 0.372,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.5978,
+      "masterSha256": "6fb07b9858a8a65dd2a2106e2379f6ed8e94db05c9083ebf842b385814988af2",
+      "sourceSha256": "edafd64db0a7e0eaa05aacab82e6e879a83288ab04dfbc0fba3471b509ded9ff",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 272413
+    },
+    {
+      "id": "warlock",
+      "name": "Warlock / Hexer",
+      "kind": "archetype",
+      "tool": "Built-in image_gen background extraction",
+      "prompt": "Background extraction ONLY for the supplied existing Warlock / Hexer illustration. Create a genuinely transparent RGBA PNG of this exact existing character, NOT new artwork. Preserve every existing face, expression, hair, skin tone, costume color, accessory, hand, prop, floating object, silhouette, pose, scale, full-body framing and original aspect ratio. No redesign or reinterpretation. Remove only the exterior white canvas including gaps between arms, legs and props; keep all white highlights and pale/white details INSIDE eyes, clothes, pages, shields, lenses and objects. Clean antialiased edges, no exterior white halo, no checkerboard texture, no new background, text, logo or border. Existing contact shadow may remain subtly semitransparent. Retain all limbs and small disconnected original decorative items exactly.",
+      "sourceOriginal": "assets/archetypes/masters/warlock.png",
+      "generatedFile": "exec-4e3c0e33-dbcb-443c-a035-bd9878202dd3.png",
+      "master": "assets/archetypes/cutouts/masters/warlock.png",
+      "web": "assets/archetypes/cutouts/warlock.png",
+      "family": "C",
+      "solidCoreRgbMeanDifference": [
+        10.8242,
+        10.3909,
+        10.6006
+      ],
+      "solidPixelFraction": 0.3176,
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "originalDimensions": [
+        1122,
+        1402
+      ],
+      "transparentFraction": 0.638,
+      "masterSha256": "92ef5e29c0a9a99301cebfd8c514608d181f981a2637aa1ea0e0b04808965323",
+      "sourceSha256": "3beb0f4ca437646f56481695c95226bcb08fc625056544772559a0e5063bb85d",
+      "webDimensions": [
+        512,
+        640
+      ],
+      "webBytes": 244659
+    }
+  ]
+}
