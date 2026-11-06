@@ -13,7 +13,9 @@ Local acceptance:59 Chrome/Playwright groups pass (core12, profiles10, UX5, artw
 
 Scoring5/5 covers all177,147 legal paths; source snapshot/11 original assets verified. Empty original-app/source-master diffs, strict static audit zero findings and whitespace check pass. Evidence outside repository: chat visualization transparent-final/ with seven JSON reports, screenshots and named master PNG ZIPs. Runtime localhost preview: http://127.0.0.1:4189/what-is-your-magic/ ; isolated root4190 also verified. Public remains approved PR #6 version, not this revision.
 
-Exact next action: finish health/documentation checkpoint, commit/push only repository scope, create a new review PR against main and read back its head/files. Obtain specific approval before merging this later PR: original user instruction held automatic merges, and later explicit PR #6 permission applied to that release only. After approval, merge expected reviewed head, wait Pages and run actual-public58 browser groups (local isolated-root case omitted). Keep original app untouched and leave the preview playable while approval is pending.
+Delivery: tested implementation4c7ea4e57605f1b530db9c581529cd66c539560e committed/pushed on feature branch. New PR #7 https://github.com/wollab/WoL_GameLab/pull/7 is open/mergeable; read-back confirms200 scoped files and no original-app/private files. Health check30 passed/one pre-existing tmp warning/zero failures. This documentation-only checkpoint does not change tested application bytes.
+
+Exact next action: await specific approval to merge PR #7 and publish. Original user instruction held automatic merges, and later explicit PR #6 permission applied to that release only. After approval, reread current PR head/files, merge expected reviewed head, wait Pages and run actual-public58 browser groups (local isolated-root case omitted). Keep original app untouched and local preview playable while approval is pending. Current public version remainsf9fe1bf from approved PR #6; do not claim the later Family/PNG revision is live.
 
 ## Completed personal sharing release — 2026-11-06
 
