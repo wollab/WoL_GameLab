@@ -1,5 +1,9 @@
 # 27 Wizards of Learning — task checkpoint
 
+## Optional newsletter entry — 2026-11-07
+
+Chief authorized a simple signup link on the website before any member/profile system. In production worktree deploy/yourmagic-vercel, added optional result-end audience invitation using Family tokens, after share/retake actions. Destination verified in authenticated Mailchimp Forms UI: published Wizards of Learning Subscription landing https://mailchi.mp/84bf34c6b740/wol-subscribe adds to WoL contact2 with Subscription tag. Public form Email/FirstName/LastName and subscribe action verified. No quiz scores or personal information sent by link; only campaign UTM labels. No signup submission or email triggered. No backend/auto welcome/profile/7day resource promise. Actual Chrome320/390/1440 ten-question journeys→signup form popup→retained result→share→retake passed, zero console/page/HTTP failures, no overflow. Evidence external signup-local-qa.json and screenshots beside worktree. Design.md updated; original9-learning-angles unchanged. Next: publish tested commit to same Vercel project/permanent domain, rerun public acceptance, then record deployment/hash. Full new-subscriber confirmation path not tested; current scope verifies signup entry and real form only.
+
 ## Original goal and scope
 Complete the separate `/WoL_GameLab/what-is-your-magic/` website: landing → ten original questions → one of 27 Wizards, preserving `/WoL_GameLab/9-learning-angles/`. Work on `feature/wizard-discovery-v1`. Original instruction held merge; Chief later explicitly authorized publishing the tested website. Do not infer blanket authorization for unrelated releases.
 

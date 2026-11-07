@@ -6,6 +6,10 @@ purpose: Maintain the approved scope and current visual implementation choices
 
 # 27 Wizards of Learning — web design direction
 
+## Optional WoL audience invitation — 7 November 2026
+
+Chief approved a simple signup entry before any profile/login system. After the result reading and share/retake actions, show one optional invitation using the current Family accent/background tokens, existing typography and book icon. Link to the verified published Mailchimp landing page for WoL contact 2 in a new tab, retaining the quiz result. Explain monthly learning/game ideas and optional signup/unsubscribe. No gated result, popup interruption, score transmission, account creation, unprepared resource promise or new backend. UTM labels identify this result-page entry only. The destination form owns collection and subscription state; do not claim subscription succeeded merely from clicking the link.
+
 ## Intent and controlling correction
 
 Thai-first creative learning reflection. Primary journey: landing → ten original questions → Wizard suggestion → read/refine understanding → explore nearby profiles or retake. Original `9-learning-angles/` remains unchanged.
