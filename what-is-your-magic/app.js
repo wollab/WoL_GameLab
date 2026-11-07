@@ -101,12 +101,7 @@
       button.addEventListener("click",()=>{
         if(!button.isConnected)return;
         choices[step]=opt;
-        wrap.querySelectorAll("button").forEach(item=>item.setAttribute("aria-pressed",String(item===button)));
-        el("quiz-next").disabled=false;
-        const count=choices.filter(Boolean).length;
-        el("progress").setAttribute("aria-valuenow",count);
-        el("progress").setAttribute("aria-valuetext","เลือกคำตอบแล้ว "+count+" จาก "+questions.length+" ข้อ");
-        el("progress-fill").style.width=(count/questions.length*100)+"%";
+        nextQuestion();
       });
       wrap.append(button);
     });
@@ -141,11 +136,10 @@
     const highest=Math.max(...Object.values(answers));
     const peaks=angleOrder.filter(id=>answers[id]===highest);
     el("result-introduction").textContent="ในคำตอบชุดนี้ มุมที่คุณเลือกใช้มากที่สุดคือ "+peaks.map(id=>angles[id].thai).join(" / ")+" ("+highest+" คะแนน) ลองเทียบกับเหตุการณ์จริงของคุณว่าเห็นมุมเหล่านี้อย่างไร";
-    el("result-gift").textContent=winner.gift;
+    el("result-guidance").replaceChildren(...WizardPages.guidance(winner,"result"));
     const contributed=winner.sig.filter(id=>answers[toOriginalId(id)]>0);
     const unused=winner.sig.filter(id=>answers[toOriginalId(id)]===0);
     el("result-reason").textContent="ระบบเทียบคะแนนทั้ง 9 มุมกับลายเซ็นที่ออกแบบให้ Wizard แต่ละสาย โดยมุมหลักมีน้ำหนักมากกว่ามุมรองและมุมสนับสนุน สำหรับสายนี้ คะแนนที่มีส่วนร่วมมาจาก "+contributed.map(id=>WIZARD_ANGLE_NAMES[id]+" "+answers[toOriginalId(id)]+" คะแนน").join(" / ")+(unused.length?" ส่วน "+unused.map(id=>WIZARD_ANGLE_NAMES[id]).join(" / ")+" ได้ 0 คะแนนในคำตอบชุดนี้ เป็นส่วนหนึ่งของลายเซ็น Wizard ไม่ใช่พฤติกรรมที่คุณเลือก":"")+" ผลนี้จึงเป็นข้อชวนสำรวจ ไม่ใช่คำอธิบายตัวคุณทุกด้าน";
-    el("result-quest-copy").textContent=winner.quest;
     const signature=el("signature");signature.replaceChildren();
     ["มุมหลัก","มุมรอง","มุมสนับสนุน"].forEach((name,i)=>{
       const id=winner.sig[i],a=angles[toOriginalId(id)],row=$("div","sig");
@@ -168,7 +162,7 @@
       box.append(WizardUI.portrait(t,"alternative-portrait",true),label,$("span","small muted",t.matchScore+" แต้มจับคู่"),WizardUI.icon("arrow"));alt.append(box);
     });
     renderMatrix();
-    WizardUI.chapters("result-chapters","#result",[["intro","บทนำ"],["statistics","สถิติผลแบบสอบถาม"],["matrix","9 Learning Angles"],["signature","Learning Signature"],["strength","จุดแข็ง"],["nearby","Wizard ใกล้เคียง"],["quest","Growth Quest"]]);
+    WizardUI.chapters("result-chapters","#result",[["intro","บทนำ"],["statistics","สถิติผลแบบสอบถาม"],["matrix","9 Learning Angles"],["signature","Learning Signature"],...WizardPages.guidanceChapters,["nearby","Wizard ใกล้เคียง"]]);
   }
   function renderMatrix(){
     const wrap=el("angle-matrix");

@@ -23,7 +23,7 @@
   <meta name="twitter:image" content="https://yourmagic.wizardsoflearning.com/assets/social/og-learning-magic-v1.jpg">
   <meta name="twitter:image:alt" content="ค้นพบเวทมนตร์ในวิธีเรียนรู้ของคุณ · 10 คำถาม · 27 สายเวท พร้อม Wizard ทั้งห้าร่วมสร้างสะพานจากความรู้">
   <link rel="icon" href="assets/brand/wol-logo.png" type="image/png">
-  <link rel="stylesheet" href="style.css?v=20261107-save">
+  <link rel="stylesheet" href="style.css?v=20261107-three">
   <script defer src="startup.js?v=20261105-art27"></script>
   <script defer src="quiz-data.js?v=20261107-mental"></script>
   <script defer src="wizard-data.js?v=20261107-story"></script>
@@ -31,10 +31,11 @@
   <script defer src="result-stats.js?v=20261107-stats"></script>
   <script defer src="artwork.js?v=20261106-transparent"></script>
   <script defer src="ui.js?v=20261106-transparent"></script>
-  <script defer src="wizard-pages.js?v=20261107-stats"></script>
-  <script defer src="share-card.js?v=20261107-story"></script>
-  <script defer src="share.js?v=20261107-story"></script>
-  <script defer src="app.js?v=20261107-story"></script>
+  <script defer src="wizard-guidance.js?v=20261107-three"></script>
+  <script defer src="wizard-pages.js?v=20261107-three"></script>
+  <script defer src="share-card.js?v=20261107-canvas"></script>
+  <script defer src="share.js?v=20261107-three"></script>
+  <script defer src="app.js?v=20261107-guide"></script>
 </head>
 <body>
 <a href="#main" class="skip-link" id="skip-content">ข้ามไปเนื้อหา</a>
@@ -64,7 +65,7 @@
       <div class="intro-steps" aria-label="เส้นทางค้นพบเวทมนตร์">
         <article class="step-card step-teal"><span class="step-illustration" data-icon="quiz"></span><small>STEP 1</small><h2>ตอบในแบบที่เป็นคุณ</h2><p>เลือกคำตอบจาก 10 สถานการณ์ โดยนึกถึงสิ่งที่คุณมักทำจริง</p></article>
         <article class="step-card step-green"><span class="step-illustration" data-icon="book"></span><small>STEP 2</small><h2>รู้จักเวทมนตร์ของคุณ</h2><p>พบ Wizard ที่ใกล้กับคำตอบ พร้อมเห็นคะแนน Learning Angles ทั้ง 9</p></article>
-        <article class="step-card step-purple"><span class="step-illustration" data-icon="quest"></span><small>STEP 3</small><h2>ลองมุมใหม่ให้ตัวเอง</h2><p>อ่านสายใกล้เคียง แล้วเลือก Growth Quest เล็ก ๆ ไปทดลองต่อ</p></article>
+        <article class="step-card step-purple"><span class="step-illustration" data-icon="quest"></span><small>STEP 3</small><h2>ลองมุมใหม่ให้ตัวเอง</h2><p>อ่านจุดเด่นและข้อควรระวัง แล้วลองลงมือทำผ่าน Growth Quest</p></article>
       </div>
       <section class="home-families">
         <h2 class="section-heading"><span data-icon="people"></span><span>5 Wizard Families</span></h2>
@@ -79,7 +80,7 @@
     <div class="quiz-shell">
       <div class="quiz-top"><button type="button" class="plain" id="quit" disabled>← กลับหน้าแรก</button><strong id="progress-label" aria-live="polite"></strong></div>
       <div class="progress" role="progressbar" aria-label="ความคืบหน้า" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progress"><div id="progress-fill"></div></div>
-      <div class="question-panel"><span class="question-icon" data-icon="quiz"></span><h2 id="quiz-title" tabindex="-1">เลือกคำตอบที่ใกล้ตัวคุณที่สุด</h2><p id="question-note" class="muted small"></p><p id="quiz-instructions" class="small muted">เลือก 1 คำตอบ แล้วกดข้อถัดไป · ย้อนกลับมาแก้ได้</p><div class="options" id="options" role="group" aria-describedby="quiz-instructions" aria-label="คำตอบ"></div></div>
+      <div class="question-panel"><span class="question-icon" data-icon="quiz"></span><h2 id="quiz-title" tabindex="-1">เลือกคำตอบที่ใกล้ตัวคุณที่สุด</h2><p id="question-note" class="muted small"></p><p id="quiz-instructions" class="small muted">แตะคำตอบเพื่อไปต่อ · ถ้าย้อนมาดูและใช้คำตอบเดิม กดข้อถัดไปได้เลย</p><div class="options" id="options" role="group" aria-describedby="quiz-instructions" aria-label="คำตอบ"></div></div>
       <div class="quiz-actions"><button type="button" id="quiz-prev" class="secondary" disabled>← ข้อก่อนหน้า</button><button type="button" id="quiz-next" class="primary" disabled>ข้อถัดไป →</button></div>
       <p class="center muted small">นึกถึงช่วง 1–2 เดือนที่ผ่านมา และเลือกสิ่งที่คุณมักทำจริง</p>
       <p class="center muted small">เมื่อทำครบ จะบันทึกสายที่ได้และรวมคะแนน 9 มุมเพื่อแสดงสถิติ โดยไม่เก็บชื่อ อีเมล คำตอบรายข้อ หรือชุดคะแนนรายบุคคล</p>
@@ -106,9 +107,8 @@
           <div id="angle-detail" class="angle-detail" role="status"></div>
         </section>
         <section class="chapter" id="result-signature"><h2 class="section-heading"><span data-icon="book"></span><span>Learning Signature</span></h2><p id="result-reason"></p><div id="signature" class="signature"></div></section>
-        <section class="chapter" id="result-strength"><h2 class="section-heading"><span data-icon="spark"></span><span>จุดแข็งที่ชวนสำรวจ</span></h2><p id="result-gift" class="large-copy"></p><p class="muted">ลองนึกถึงเหตุการณ์หนึ่งที่คุณเคยใช้มุมเหล่านี้ แล้วสังเกตว่ามันช่วยให้เข้าใจเรื่องนั้นอย่างไร</p></section>
+        <div id="result-guidance"></div>
         <section class="chapter nearby-section" id="result-nearby"><h2 class="section-heading"><span data-icon="people"></span><span>Wizard สายใกล้เคียง</span></h2><p>คะแนนชุดเดียวกันอาจใกล้กับ Wizard ได้หลายสาย กดอ่าน Profile แล้วเปรียบเทียบลายเซ็นของแต่ละสายได้เลย</p><p id="close-note" class="callout" hidden></p><div id="alternatives" class="alternatives"></div><a class="text-link" href="#wizards">สำรวจทั้ง 27 สาย <span data-icon="arrow"></span></a></section>
-        <section class="chapter" id="result-quest"><div class="insight-band growth"><span data-icon="quest"></span><div><h2>Growth Quest</h2><p id="result-quest-copy" class="large-copy"></p><p class="small muted">ลองใช้มุมอื่นเพิ่มเติม โดยไม่ต้องตีความว่าเป็นสิ่งที่คุณขาด</p></div></div></section>
       <div class="actions"><button type="button" class="secondary" id="retake" disabled>ทำแบบสอบถามใหม่</button><button type="button" class="primary" id="share" disabled>แชร์ผลของฉัน <span data-icon="arrow"></span></button></div>
       <aside class="audience-invitation" aria-labelledby="audience-heading">
         <span class="audience-mark" data-icon="book" aria-hidden="true"></span>
@@ -147,7 +147,7 @@
       <label class="caption-label" for="share-caption-preview">ข้อความสำหรับแชร์</label><textarea id="share-caption-preview" class="share-caption-preview resize-none" rows="7" readonly></textarea><button type="button" class="secondary share-caption" id="share-copy-caption" disabled>คัดลอกผลลัพธ์พร้อมลิงก์</button>
       <hr>
       <h3 id="share-link-heading">รายละเอียด Archetype ที่ฉันได้</h3><label for="share-link" class="small">ลิงก์อ่านรายละเอียด Archetype</label><div class="share-link-row"><input id="share-link" type="url" readonly><button type="button" class="secondary" id="share-copy-link" disabled>คัดลอกลิงก์</button></div>
-      <p id="share-link-help" class="small muted">ภาพและข้อความด้านบนเป็นผลส่วนตัวของคุณ ส่วนลิงก์นี้เปิดคำอธิบาย จุดแข็ง และ Growth Quest ของ Archetype ที่ได้</p>
+      <p id="share-link-help" class="small muted">ลิงก์นี้เปิดจุดเด่น ข้อควรระวัง และ Growth Quest ของ Archetype ที่ได้</p>
       <div class="share-social"><button type="button" id="share-facebook" class="secondary" disabled>เตรียมโพสต์ Facebook</button><a id="share-facebook-link" class="secondary button-link" target="_blank" rel="noopener noreferrer">แชร์ลิงก์บน Facebook</a><a id="share-line" class="secondary button-link" target="_blank" rel="noopener noreferrer">ส่งผลทาง LINE</a><button type="button" class="secondary" id="share-native-link" disabled>ส่งข้อความผลลัพธ์…</button></div>
       <p class="small muted share-facebook-help">Facebook: เตรียมโพสต์เพื่อบันทึกภาพและคัดลอก caption แล้วเพิ่มในโพสต์ของคุณ หรือเลือกแชร์ลิงก์เพื่อแสดงภาพแนะนำ Archetype</p><p id="share-status" class="small" role="status" aria-live="polite"></p>
       <div id="share-fallback" class="share-panel" hidden><label for="share-text">ข้อความสำหรับเลือกและคัดลอก</label><textarea id="share-text" class="resize-none" rows="6" readonly></textarea></div>

@@ -13,9 +13,27 @@
   }
   function fit(ctx,img,x,y,w,h){const s=Math.min(w/img.width,h/img.height);ctx.save();ctx.drawImage(img,x+(w-img.width*s)/2,y+(h-img.height*s)/2,img.width*s,img.height*s);ctx.restore();}
   function scene(ctx,img,x,y,w,h,alpha=.75){const s=Math.max(w/img.width,h/img.height);ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();ctx.globalAlpha=alpha;ctx.drawImage(img,x+(w-img.width*s)/2,y+(h-img.height*s)/2,img.width*s,img.height*s);ctx.restore();}
-  function quote(ctx,copy,x,y,width,size){ctx.font=`italic 400 ${size}px Kanit`;ctx.textAlign='center';ctx.fillStyle=ink;const rows=lines(ctx,'“'+copy+'”',width);rows.forEach((line,i)=>ctx.fillText(line,x,y+i*size*1.35));return rows.length*size*1.35;}
+  function drawAlignedText(ctx,copy,x,y,align='left',maxWidth=Infinity){
+    // Affected WebKit versions ignore center/right alignment for Thai Canvas text.
+    // measureText still returns the correct width. See WebKit bug 316235.
+    ctx.textAlign='left';
+    const width=ctx.measureText(copy).width;
+    const drawnWidth=Math.min(width,maxWidth);
+    const offset=align==='center'?drawnWidth/2:align==='right'?drawnWidth:0;
+    const left=x-offset;
+    if(width<=maxWidth){
+      ctx.fillText(copy,left,y);
+      return;
+    }
+    ctx.save();
+    ctx.translate(left,y);
+    ctx.scale(drawnWidth/width,1);
+    ctx.fillText(copy,0,0);
+    ctx.restore();
+  }
+  function quote(ctx,copy,x,y,width,size){ctx.font=`italic 400 ${size}px Kanit`;ctx.fillStyle=ink;const rows=lines(ctx,'“'+copy+'”',width);rows.forEach((line,i)=>drawAlignedText(ctx,line,x,y+i*size*1.35,'center'));return rows.length*size*1.35;}
   function text(ctx,copy,x,y,size,color=ink,weight=400,align='left'){
-    ctx.font=`${weight} ${size}px Kanit`;ctx.fillStyle=color;ctx.textAlign=align;ctx.fillText(copy,x,y);
+    ctx.font=`${weight} ${size}px Kanit`;ctx.fillStyle=color;drawAlignedText(ctx,copy,x,y,align);
   }
   function lines(ctx,copy,width){
     const words=typeof Intl.Segmenter==='function'?[...new Intl.Segmenter('th',{granularity:'word'}).segment(copy)].map(x=>x.segment):Array.from(copy);
@@ -33,8 +51,8 @@
       size-=2;
     }while(true);
     if(rows.length*step>h){step=h/rows.length;ctx.font=`${italic?'italic ':''}${weight} ${Math.min(size,step/1.28)}px "${font}"`;}
-    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=color;
-    rows.forEach((row,i)=>ctx.fillText(row,x,y+h/2+(i-(rows.length-1)/2)*step,w));
+    ctx.textBaseline='middle';ctx.fillStyle=color;
+    rows.forEach((row,i)=>drawAlignedText(ctx,row,x,y+h/2+(i-(rows.length-1)/2)*step,'center',w));
     ctx.restore();
   }
   function rounded(ctx,x,y,w,h,r){ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);else ctx.rect(x,y,w,h);}

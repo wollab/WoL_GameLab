@@ -7,22 +7,27 @@ const out=process.env.TEST_OUTPUT_DIR||path.join(os.tmpdir(),'magic-audit');fs.m
 const report={checks:[],errors:[],requests:[],measurements:[]};let browser;
 const original=id=>({communicator:'meaningmaker',summarizer:'synthesizer'}[id]||id);
 async function check(name,fn){await fn();report.checks.push({name,status:'passed'});console.log('PASS '+name);}
-async function play(p,witness){await p.locator('#start').click();for(let i=0;i<10;i++){const text=await p.locator('#quiz-title').textContent(),q=data.questions.findIndex(q=>q.text===text);await p.locator('#options button').filter({hasText:data.questions[q].options[witness.choices[q]].text}).click();await p.locator('#quiz-next').click();}}
+async function play(p,witness){await p.locator('#start').click();for(let i=0;i<10;i++){const text=await p.locator('#quiz-title').textContent(),q=data.questions.findIndex(q=>q.text===text);await p.locator('#options button').filter({hasText:data.questions[q].options[witness.choices[q]].text}).click();}}
 function contrast(a,b){const lum=s=>s.match(/[\d.]+/g).slice(0,3).map(Number).map(n=>n/255).map(n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4).reduce((n,c,i)=>n+c*[.2126,.7152,.0722][i],0);const x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
 (async()=>{
   browser=await chromium.launch({headless:true,...(process.env.BROWSER_EXECUTABLE?{executablePath:process.env.BROWSER_EXECUTABLE}:{})});
   const p=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
   p.on('pageerror',e=>report.errors.push(e.message));p.on('console',m=>{if(m.type()==='error')report.errors.push(m.text())});p.on('response',r=>{if(r.status()>=400)report.requests.push({url:r.url(),status:r.status()})});p.on('requestfailed',r=>report.requests.push(r.url()));
   await p.goto(base);
-  await check('Answer correction retains choice, waits for Next, replaces score without double counting',async()=>{
+  await check('Answers advance immediately, and Back retains the option and supports Next',async()=>{
     await p.locator('#start').click();assert.ok(await p.locator('#quiz-next').isDisabled());assert.ok(await p.locator('#quiz-prev').isDisabled());
     const title=await p.locator('#quiz-title').textContent(),buttons=p.locator('#options button');
-    await buttons.first().click();assert.equal(await p.locator('#quiz-title').textContent(),title);await buttons.nth(1).click();const selected=await buttons.nth(1).textContent();
-    await p.locator('#quiz-next').click();await p.locator('#quiz-prev').click();assert.equal(await p.locator('#quiz-title').textContent(),title);assert.equal(await p.locator('#options button[aria-pressed=true]').textContent(),selected);
+    const selected=await buttons.first().textContent();
+    await buttons.first().click();const secondTitle=await p.locator('#quiz-title').textContent();assert.notEqual(secondTitle,title);
+    await p.locator('#quiz-prev').click();assert.equal(await p.locator('#quiz-title').textContent(),title);assert.equal(await p.locator('#options button[aria-pressed=true]').textContent(),selected);
+    await p.locator('#quiz-next').click();assert.equal(await p.locator('#quiz-title').textContent(),secondTitle);
+    await p.locator('#quiz-prev').click();const revised=await buttons.nth(1).textContent();await buttons.nth(1).click();
+    assert.equal(await p.locator('#quiz-title').textContent(),secondTitle);await p.locator('#quiz-prev').click();
+    assert.equal(await p.locator('#options button[aria-pressed=true]').textContent(),revised);
     const scores=Object.fromEntries(Object.keys(data.moves).map(id=>[id,0]));
     for(let i=0;i<10;i++){
       const text=await p.locator('#quiz-title').textContent(),q=data.questions.find(q=>q.text===text),choiceText=await p.locator('#options button>span:last-child').first().textContent(),opt=q.options.find(o=>o.text===choiceText);
-      await p.locator('#options button').first().click();scores[opt.move]+=q.weight;await p.locator('#quiz-next').click();
+      await p.locator('#options button').first().click();scores[opt.move]+=q.weight;
     }
     assert.equal(Object.values(scores).reduce((n,x)=>n+x,0),19);for(const [id,n]of Object.entries(scores))assert.equal(await p.locator('[data-angle="'+id+'"] .angle-score b').textContent(),String(n));assert.equal(await p.locator('#result-title').textContent(),referenceRank(scores,data.types)[0].name);
   });

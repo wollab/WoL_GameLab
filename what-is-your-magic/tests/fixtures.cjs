@@ -4,10 +4,10 @@ const vm = require('node:vm');
 const app = path.resolve(__dirname, '..');
 function load() {
   const context = vm.createContext({});
-  for (const file of ['quiz-data.js','wizard-data.js','wizard-matching.js']) {
+  for (const file of ['quiz-data.js','wizard-data.js','wizard-matching.js','wizard-guidance.js']) {
     vm.runInContext(fs.readFileSync(path.join(app,file),'utf8'),context,{filename:file});
   }
-  return vm.runInContext('({moves:MOVES,questions:QUESTIONS,types:WIZARD_ARCHETYPES,families:WIZARD_FAMILIES,matching:WizardMatching})',context);
+  return vm.runInContext('({moves:MOVES,questions:QUESTIONS,types:WIZARD_ARCHETYPES,families:WIZARD_FAMILIES,matching:WizardMatching,guidance:WIZARD_GUIDANCE})',context);
 }
 const legacy = id => ({communicator:'meaningmaker',summarizer:'synthesizer'}[id] || id);
 // Independent reference implementation used to check rendered scores/ranking.

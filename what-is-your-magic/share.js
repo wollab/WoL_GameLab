@@ -48,7 +48,7 @@
     el('share-native-link').textContent=mode==='personal'?'ส่งข้อความผลลัพธ์…':'ส่งข้อความ Archetype…';
     el('share-image-description').textContent=mode==='personal'?'ภาพแสดง Wizard และคะแนนจริงทั้ง 9 มุมจากคำตอบครั้งนี้':'ภาพแนะนำตัวละครและสามมุมใน Learning Signature ของสายนี้';
     el('share-link-heading').textContent=mode==='personal'?'รายละเอียด Archetype ที่ฉันได้':'อ่านรายละเอียด Archetype';
-    el('share-link-help').textContent='ลิงก์เปิดคำอธิบาย จุดแข็ง และ Growth Quest ของ '+winner.name;
+    el('share-link-help').textContent='ลิงก์เปิดจุดเด่น ข้อควรระวัง และ Growth Quest ของ '+winner.name;
     el('share-line').href='https://social-plugins.line.me/lineit/share?url='+encodeURIComponent(link())+'&text='+encodeURIComponent(caption());
     el('share-facebook-link').href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link());
     el('share-native-link').hidden=!navigator.share;

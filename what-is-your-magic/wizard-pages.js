@@ -2,6 +2,28 @@
   'use strict';
   const {node,icon,emblem,profileLink,heading}=WizardUI;
   const original=id=>({communicator:'meaningmaker',summarizer:'synthesizer'}[id]||id);
+  const guidanceChapters=[['strength','จุดเด่น'],['caution','ข้อควรระวัง'],['quest','Growth Quest']];
+  function guidance(type,prefix){
+    const {develop,quest,caution}=WIZARD_GUIDANCE[type.id];
+    const strength=node('section','chapter');
+    strength.id=prefix+'-strength';
+    const gift=node('p','large-copy',type.gift);
+    if(prefix==='result')gift.id='result-gift';
+    const development=node('p','',develop);
+    development.id=prefix+'-development';
+    strength.append(heading('จุดเด่น','spark'),gift,development);
+
+    const watch=node('section','chapter');
+    watch.id=prefix+'-caution';
+    watch.append(heading('ข้อควรระวัง','leaf'),node('p','large-copy',caution));
+
+    const practice=node('section','chapter');
+    practice.id=prefix+'-quest';
+    const practiceCopy=node('div','insight-band growth');
+    practiceCopy.append(node('p','',quest));
+    practice.append(heading('Growth Quest','quest'),practiceCopy);
+    return [strength,watch,practice];
+  }
   function related(type){
     return WIZARD_ARCHETYPES.filter(t=>t.id!==type.id).map(t=>({type:t,overlap:t.sig.reduce((n,id)=>n+(type.sig.includes(id)?1:0),0)})).sort((a,b)=>b.overlap-a.overlap||a.type.name.localeCompare(b.type.name,'en')).slice(0,3).map(x=>x.type);
   }
@@ -52,14 +74,12 @@
     if(match)context.textContent=(ranked[0].id===id?'Wizard หลักจากคำตอบของคุณ':'จากคำตอบชุดเดียวกันของคุณ')+' · '+match.matchScore+' แต้มจับคู่';
     const intro=node('section','chapter');intro.id='profile-intro';intro.append(heading('รู้จัก '+type.name,'spark'),node('p','large-copy',type.desc),node('p','',family.description),node('p','muted','ลายเซ็นนี้เป็นวิธีเล่าเรื่องการเรียนรู้ ไม่ใช่เงื่อนไขว่าคุณต้องเป็นแบบนี้ทุกครั้งหรือใช้มุมอื่นไม่ได้'));
     const sig=node('section','chapter');sig.id='profile-signature';sig.append(heading('Learning Signature','book'),node('p','section-intro','สามมุมการเรียนรู้ที่ใช้เป็นลายเซ็นของ Wizard สายนี้'),signature(type));
-    const strength=node('section','chapter');strength.id='profile-strength';strength.append(heading('จุดแข็งที่ชวนสำรวจ','spark'),node('p','large-copy',type.gift),node('p','muted','ลองนึกถึงเหตุการณ์ที่คุณเคยใช้มุมเหล่านี้ แล้วสังเกตว่ามันช่วยให้เข้าใจหรือทำสิ่งต่าง ๆ ได้อย่างไร'));
-    const quest=node('section','chapter');quest.id='profile-quest';quest.append(heading('Growth Quest','quest'),node('p','large-copy',type.quest),node('p','muted','ลองทำเป็นกิจกรรมเล็ก ๆ แล้วทบทวนว่าได้เรียนรู้อะไร ไม่จำเป็นต้องทำให้ได้เหมือนคำอธิบายทุกข้อ'));
     const statistics=node('section','chapter');statistics.id='profile-statistics';WizardStats.show(statistics,type.id);
-    wrap.append(intro,statistics,sig,strength,quest);
+    wrap.append(intro,statistics,sig,...guidance(type,'profile'));
     const more=node('section','chapter related-chapter');more.id='profile-related';more.append(heading('Wizard ที่มี Learning Signature ใกล้กัน','people'),node('p','section-intro','สำรวจสายที่ใช้มุมการเรียนรู้ร่วมกัน แล้วเลือกอ่านสิ่งที่รู้สึกเชื่อมโยงกับคุณ'));
     const grid=node('div','wizard-grid');related(type).forEach(t=>grid.append(card(t)));more.append(grid);wrap.append(more);
-    WizardUI.chapters('profile-chapters','#wizard/'+id,[['intro','บทนำ'],['statistics','สถิติผลแบบสอบถาม'],['signature','Learning Signature'],['strength','จุดแข็ง'],['quest','Growth Quest'],['related','Wizard ใกล้เคียง']]);
+    WizardUI.chapters('profile-chapters','#wizard/'+id,[['intro','บทนำ'],['statistics','สถิติผลแบบสอบถาม'],['signature','Learning Signature'],...guidanceChapters,['related','Wizard ใกล้เคียง']]);
     return true;
   }
-  root.WizardPages={catalog,profile,related};
+  root.WizardPages={catalog,profile,related,guidance,guidanceChapters};
 })(window);

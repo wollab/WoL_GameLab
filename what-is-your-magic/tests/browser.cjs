@@ -44,9 +44,7 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
     const button=page.locator('#options button').filter({hasText:opt.text});assert.equal(await button.count(),1);
     if(keyboard){await page.keyboard.press('Tab');assert.ok(await page.locator('#options button').first().evaluate(el=>el===document.activeElement));await button.focus();await page.keyboard.press('Enter');}
     else await button.click();
-    assert.equal(await button.getAttribute('aria-pressed'),'true');
-    assert.equal(await page.locator('#quiz-title').textContent(),text,'choice remains visible until Next');
-    if(keyboard){await page.locator('#quiz-next').focus();await page.keyboard.press('Enter');}else await page.locator('#quiz-next').click();
+    if(step<9)assert.equal(await page.locator('#progress-label').textContent(),'คำถาม '+(step+2)+' / 10');
     scores[opt.move]+=item.q.weight;
   }
   assert.equal(remaining.size,0);
@@ -55,7 +53,8 @@ async function play(page,witness,{screenshots=false,keyboard=false}={}){
   assert.equal(await page.locator('#result-title').textContent(),winner.name);
   assert.equal(await page.locator('#result-family').textContent(),'Family '+winner.family+' · '+data.families[winner.family].thai);
   assert.equal(await page.locator('#result-family').getAttribute('title'),data.families[winner.family].title);
-  assert.equal(await page.locator('#result-quest-copy').textContent(),winner.quest);
+  assert.equal(await page.locator('#result-strength #result-development').textContent(),data.guidance[winner.id].develop);
+  assert.equal(await page.locator('#result-quest p').textContent(),data.guidance[winner.id].quest);
   assert.ok((await page.locator('#result-gift').textContent()).includes(winner.gift));
   assert.equal(await page.locator('#signature .sig').count(),3);
   assert.equal(await page.locator('.angle-card').count(),9);

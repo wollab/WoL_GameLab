@@ -16,7 +16,7 @@ async function quiz(p,id){
   const witness=fixtures.witnesses[id];await p.locator('#start').click();
   for(let i=0;i<10;i++){
     const text=await p.locator('#quiz-title').textContent(),index=data.questions.findIndex(q=>q.text===text);
-    await p.locator('#options button').filter({hasText:data.questions[index].options[witness.choices[index]].text}).click();await p.locator('#quiz-next').click();
+    await p.locator('#options button').filter({hasText:data.questions[index].options[witness.choices[index]].text}).click();
   }
   assert.equal(await p.locator('#result-title').textContent(),data.types.find(t=>t.id===id).name);return witness;
 }
@@ -46,8 +46,8 @@ async function quiz(p,id){
     assert.equal(await p.locator('#result-matrix .angle-card').count(),9);await snap(p,'new-result-matrix-desktop');
     await p.locator('#result-quest').scrollIntoViewIfNeeded();await p.locator('#result-chapters a[href="#result/matrix"]').click();
     assert.ok(await p.locator('#result-matrix').evaluate(el=>el.getBoundingClientRect().top<300),'re-selecting current chapter scrolls back to it');
-    const chapters=await p.locator('#result .reading-content>.chapter').evaluateAll(els=>els.map(el=>({top:el.offsetTop,height:el.offsetHeight})));
-    assert.equal(chapters.length,6);assert.ok(chapters.every((c,i)=>i===0||c.top>chapters[i-1].top+chapters[i-1].height));
+    const chapters=await p.locator('#result .reading-content .chapter').evaluateAll(els=>els.map(el=>({top:el.getBoundingClientRect().top,height:el.offsetHeight})));
+    assert.equal(chapters.length,8);assert.ok(chapters.every((c,i)=>i===0||c.top>chapters[i-1].top+chapters[i-1].height));
     await p.locator('#winner-profile').click();await p.locator('#wizard-profile.active').waitFor();await snap(p,'new-profile-desktop');
   });
   await check('All 27 profile routes render correct source content and reload directly',async()=>{
@@ -57,7 +57,8 @@ async function quiz(p,id){
       assert.equal(await p.locator('#profile-art .hero-angle img').count(),3);assert.equal(await p.locator('#profile-art .archetype-portrait img').getAttribute('src'),'assets/archetypes/cutouts/'+type.id+'.png');assert.ok(await p.locator('#profile-art .archetype-portrait img').evaluate(async img=>{await img.decode();return img.naturalWidth===512&&img.naturalHeight>600}));
       assert.equal(await p.locator('.profile-signature-row').count(),3);
       assert.equal(await p.locator('#profile-strength .large-copy').textContent(),type.gift);
-      assert.equal(await p.locator('#profile-quest .large-copy').textContent(),type.quest);
+      assert.equal(await p.locator('#profile-strength #profile-development').textContent(),data.guidance[type.id].develop);
+      assert.equal(await p.locator('#profile-quest p').textContent(),data.guidance[type.id].quest);
       assert.equal(await p.locator('#profile-related .wizard-card').count(),3);await noOverflow(p);
     }
     await p.reload();await p.locator('#wizard-profile.active').waitFor();assert.equal(await p.locator('#profile-title').textContent(),'Blood Mage');
