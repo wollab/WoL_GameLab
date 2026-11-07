@@ -137,7 +137,7 @@
     el("result-family").title=f.title;
     el("result-title").textContent=winner.name;
     el("result-motto").textContent="“"+winner.quote+"”";
-    el("result-description").textContent=winner.name.split(" / ")[0]+" "+winner.desc;
+    el("result-description").textContent=winner.roleDescription;
     const highest=Math.max(...Object.values(answers));
     const peaks=angleOrder.filter(id=>answers[id]===highest);
     el("result-introduction").textContent="ในคำตอบชุดนี้ มุมที่คุณเลือกใช้มากที่สุดคือ "+peaks.map(id=>angles[id].thai).join(" / ")+" ("+highest+" คะแนน) ลองเทียบกับเหตุการณ์จริงของคุณว่าเห็นมุมเหล่านี้อย่างไร";

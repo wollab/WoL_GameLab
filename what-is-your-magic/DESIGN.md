@@ -6,6 +6,14 @@ purpose: Maintain the approved scope and current visual implementation choices
 
 # 27 Wizards of Learning — web design direction
 
+## Share card typography and reading order — 7 November 2026
+
+Chief prefers the tall 9:16 export and the result hero's larger italic quotation. Open the share dialog on Story by default and retain 4:5. Both PNG sizes stack the existing Family scene and portrait, Family-colored italic quote in Bai Jamjuree, Thai role description, and scores or signature. Use bounded text areas with wrapping so long Thai quotes and role lines fit. Keep the English Archetype heading and existing score values. Use the same Thai role description in the personal result hero and both PNG modes. Profile link OG artwork is outside this change.
+
+## PNG save fallback — prepared 7 November 2026
+
+The download attribute requests a save but cannot confirm OS completion. Share dialog now offers an inline image and instructions for long-press/right-click saving, automatically expands the help after a download request, and keeps it manually accessible. Both personal results and all static profiles reuse the same current PNG; changing format and closing clear old preview state. File-share and caption/link paths remain available. This mitigation is locally verified; physical in-app browser failure remains unconfirmed. Warden layout has no reproducible overflow in checked widths/enlarged text, so no speculative layout patch. Chief selects only PNG/Warden bugs followed by a combined growth/caution/Quest/seven-day content pass; other feedback ideas excluded.
+
 ## Aggregate result statistics — 7 November 2026
 
 Chief approved aggregate archetype distribution on both personal results and every dynamic/static archetype profile, then added aggregate 9 Learning Angles. Use one shared result-stats.js card and current Family tokens, without increasing hero height. Show actual count/denominator and first collection date; expandable lists cover27types and9angles. Archetype % = this type/recorded completed quizzes; Angle % = accumulated angle points/all accumulated points, with its own covered-result denominator. Clearly label attempts rather than people; zero/outage states never invent percentages. Retry on failure and keep quiz/share usable independently. Server validates legal scores and recomputes matching; scores enter the RPC only to atomically increment angle counters, never stored per attempt. Anonymous run UUID/version/archetype/time are stored for idempotency. Profile reads/refresh don't write; intentional retake starts a new run. Separate test/production datasets. A signed completion ticket reduces replay, not a guarantee of unique humans or bot-proof survey validity.

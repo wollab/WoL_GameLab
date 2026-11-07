@@ -1,21 +1,24 @@
 (function(root){
   'use strict';
   const el=id=>document.getElementById(id),dialog=()=>el('share-dialog');
-  let winner=null,scores=null,mode='personal',format='post',file=null,imageUrl=null,generation=0,opener=null;
+  const defaultFormat='story';
+  let winner=null,scores=null,mode='personal',format=defaultFormat,file=null,imageUrl=null,generation=0,opener=null;
   function status(message){el('share-status').textContent=message;}
   function link(){const base=new URL('.',location.href);const at=base.pathname.indexOf('/share/');if(at!==-1)base.pathname=base.pathname.slice(0,at+1);return new URL('share/'+winner.id+'/',base).href;}
   function peak(){const highest=Math.max(...Object.values(scores));return WizardShareCard.angleOrder.filter(id=>scores[id]===highest).map(id=>MOVES[id].thai).join(' / ')+' ('+highest+' คะแนน)';}
   function caption(){return (mode==='personal'?'เวทมนตร์การเรียนรู้ที่ได้คือ “'+winner.name+'” ✨\nมุมที่ฉันเลือกใช้มากที่สุด: '+peak():'มารู้จักเวทมนตร์การเรียนรู้แบบ “'+winner.name+'” ✨')+'\n“'+winner.quote+'”\n\nอ่านรายละเอียด Archetype '+winner.name+':\n'+link()+'\n\nลองทำแบบสอบถามได้ที่\n'+new URL('../../',link()).href;}
-  function clean(){generation++;file=null;if(imageUrl)URL.revokeObjectURL(imageUrl);imageUrl=null;el('share-preview').removeAttribute('src');}
+  function clean(){generation++;file=null;if(imageUrl)URL.revokeObjectURL(imageUrl);imageUrl=null;el('share-preview').removeAttribute('src');el('share-save-preview').removeAttribute('src');el('share-save-help').open=false;}
   async function prepare(){
-    const current=++generation;file=null;el('share-download').disabled=true;el('share-image').disabled=true;el('share-facebook').disabled=true;
+    const current=++generation;file=null;el('share-save-preview').removeAttribute('src');el('share-save-help').open=false;el('share-download').disabled=true;el('share-image').disabled=true;el('share-facebook').disabled=true;
     el('share-preview-wrap').setAttribute('aria-busy','true');el('share-loading').hidden=false;el('share-error').hidden=true;
     el('share-preview-wrap').dataset.format=format;
     try{
       const result=await WizardShareCard.render(winner,format,scores,{mode});if(current!==generation)return;
       const next=URL.createObjectURL(result.blob);if(imageUrl)URL.revokeObjectURL(imageUrl);imageUrl=next;
       file=new File([result.blob],(mode==='personal'?'my-wizard-':'archetype-')+winner.id+'-'+format+'.png',{type:'image/png'});
+      for(const id of ['share-preview','share-save-preview']){el(id).width=result.width;el(id).height=result.height;}
       el('share-preview').src=next;el('share-preview').alt=(mode==='personal'?'ผลของฉัน ':'รายละเอียด Archetype ')+winner.name+' · '+(mode==='personal'?WizardShareCard.angleOrder.map(id=>MOVES[id].thai+' '+scores[id]+' คะแนน').join(' · '):winner.quote);
+      el('share-save-preview').src=next;el('share-save-preview').alt=el('share-preview').alt;
       el('share-full').href=next;el('share-full').hidden=false;
       el('share-download').disabled=false;
       el('share-facebook').disabled=false;
@@ -33,7 +36,7 @@
   }
   function openProfile(id,trigger){const type=WIZARD_ARCHETYPES.find(t=>t.id===id);if(!type)return false;scores=null;winner=type;mode='profile';return present(trigger);}
   function present(trigger){
-    opener=trigger||document.activeElement;format='post';status('');el('share-fallback').hidden=true;
+    opener=trigger||document.activeElement;format=defaultFormat;status('');el('share-fallback').hidden=true;
     dialog().dataset.family=winner.family;
     el('share-heading').textContent=(mode==='personal'?'แชร์ผลของฉัน: ':'แชร์ Archetype: ')+winner.name;el('share-link').value=link();
     el('share-intro').textContent=mode==='personal'?'แชร์ผลจากคำตอบของคุณ พร้อมภาพและลิงก์อ่านรายละเอียด Archetype ที่ได้':'แบ่งปันเรื่องราวของ Archetype นี้ พร้อมภาพและลิงก์อ่านรายละเอียด';
@@ -57,7 +60,7 @@
     catch(e){el('share-text').value=value;el('share-fallback').hidden=false;status('เลือกและคัดลอก'+label+'ด้านล่างได้เลย');el('share-text').focus();el('share-text').select();return false;}
   }
   function download(){
-    if(!file||!imageUrl)return;const a=document.createElement('a');a.href=imageUrl;a.download=file.name;document.body.append(a);a.click();a.remove();status('เริ่มดาวน์โหลดภาพแล้ว เลือกภาพจากแกลเลอรีเพื่อโพสต์ได้เลย');
+    if(!file||!imageUrl)return;const a=document.createElement('a');a.href=imageUrl;a.download=file.name;document.body.append(a);a.click();a.remove();el('share-save-help').open=true;status('ส่งคำขอดาวน์โหลดแล้ว ตรวจในโฟลเดอร์ดาวน์โหลด หากไม่พบไฟล์ ให้แตะภาพด้านล่างค้างเพื่อบันทึก');
   }
   async function shareImage(){
     if(!file)return;
@@ -90,7 +93,7 @@
     el('share-native-link').addEventListener('click',shareLink);
     el('share-copy-link').addEventListener('click',()=>copy(link(),'ลิงก์'));
     el('share-copy-caption').addEventListener('click',()=>copy(caption(),'ข้อความ'));
-    el('share-facebook').addEventListener('click',async()=>{if(!file)return;download();if(await copy(caption(),'ผลลัพธ์พร้อมลิงก์'))status('เริ่มดาวน์โหลดภาพและคัดลอกผลพร้อมลิงก์แล้ว เพิ่มภาพและวางข้อความในโพสต์ Facebook ได้เลย');});
+    el('share-facebook').addEventListener('click',async()=>{if(!file)return;download();if(await copy(caption(),'ผลลัพธ์พร้อมลิงก์'))status('คัดลอกข้อความพร้อมลิงก์แล้ว ตรวจไฟล์ภาพในดาวน์โหลด หรือแตะภาพด้านล่างค้างเพื่อบันทึก แล้วเพิ่มภาพและวางข้อความในโพสต์ Facebook');});
     el('share-retry').addEventListener('click',prepare);
     document.querySelectorAll('[data-share-format]').forEach(b=>b.addEventListener('click',()=>{if(format===b.dataset.shareFormat)return;format=b.dataset.shareFormat;status('');document.querySelectorAll('[data-share-format]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));prepare();}));
     // Controls become usable only after their handlers have been registered.

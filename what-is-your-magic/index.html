@@ -23,18 +23,18 @@
   <meta name="twitter:image" content="https://yourmagic.wizardsoflearning.com/assets/social/og-learning-magic-v1.jpg">
   <meta name="twitter:image:alt" content="ค้นพบเวทมนตร์ในวิธีเรียนรู้ของคุณ · 10 คำถาม · 27 สายเวท พร้อม Wizard ทั้งห้าร่วมสร้างสะพานจากความรู้">
   <link rel="icon" href="assets/brand/wol-logo.png" type="image/png">
-  <link rel="stylesheet" href="style.css?v=20261107-stats">
+  <link rel="stylesheet" href="style.css?v=20261107-save">
   <script defer src="startup.js?v=20261105-art27"></script>
   <script defer src="quiz-data.js?v=20261107-mental"></script>
-  <script defer src="wizard-data.js?v=20261106-transparent"></script>
+  <script defer src="wizard-data.js?v=20261107-story"></script>
   <script defer src="wizard-matching.js?v=20261105-art27"></script>
   <script defer src="result-stats.js?v=20261107-stats"></script>
   <script defer src="artwork.js?v=20261106-transparent"></script>
   <script defer src="ui.js?v=20261106-transparent"></script>
   <script defer src="wizard-pages.js?v=20261107-stats"></script>
-  <script defer src="share-card.js?v=20261106-transparent"></script>
-  <script defer src="share.js?v=20261106-transparent"></script>
-  <script defer src="app.js?v=20261107-stats"></script>
+  <script defer src="share-card.js?v=20261107-story"></script>
+  <script defer src="share.js?v=20261107-story"></script>
+  <script defer src="app.js?v=20261107-story"></script>
 </head>
 <body>
 <a href="#main" class="skip-link" id="skip-content">ข้ามไปเนื้อหา</a>
@@ -134,15 +134,16 @@
   <p id="share-personal-summary" class="share-personal-summary"></p><blockquote id="share-quote" class="motto share-quote"></blockquote>
   <div class="share-workspace">
     <div>
-      <div class="share-formats" role="group" aria-label="รูปแบบภาพ"><button type="button" class="secondary" data-share-format="post" disabled aria-pressed="true">โพสต์ 4:5</button><button type="button" class="secondary" data-share-format="story" disabled aria-pressed="false">Story 9:16</button></div>
-      <div id="share-preview-wrap" class="share-preview-wrap" data-format="post" aria-busy="true"><img id="share-preview" alt="ภาพการ์ด Wizard" width="1080" height="1350"><p id="share-loading" role="status">กำลังเตรียมภาพของคุณ…</p></div>
+      <div class="share-formats" role="group" aria-label="รูปแบบภาพ"><button type="button" class="secondary" data-share-format="story" disabled aria-pressed="true">Story 9:16</button><button type="button" class="secondary" data-share-format="post" disabled aria-pressed="false">โพสต์ 4:5</button></div>
+      <div id="share-preview-wrap" class="share-preview-wrap" data-format="story" aria-busy="true"><img id="share-preview" alt="ภาพการ์ด Wizard" width="1080" height="1920"><p id="share-loading" role="status">กำลังเตรียมภาพของคุณ…</p></div>
       <div class="share-full-row"><a id="share-full" class="text-link small" target="_blank" rel="noopener">ดูภาพเต็ม</a></div>
       <div id="share-error" class="share-error" hidden><p>ยังเตรียมภาพไม่สำเร็จ ลองอีกครั้ง หรือแชร์ลิงก์ด้านข้างได้เลย</p><button type="button" class="secondary" id="share-retry" disabled>ลองเตรียมภาพอีกครั้ง</button></div>
     </div>
     <div class="share-options">
       <h3 id="share-image-heading">ภาพผลลัพธ์ของฉัน</h3><p id="share-image-description" class="small muted">ตัวละครและคะแนนทั้ง 9 มุมมาจากคำตอบของคุณครั้งนี้</p>
       <div class="share-buttons"><button type="button" id="share-image" class="primary" disabled>แชร์ภาพผลลัพธ์…</button><button type="button" id="share-download" class="secondary" disabled>บันทึกภาพ PNG</button></div>
-      <p id="share-image-help" class="small muted">หากส่งภาพตรงไม่ได้ ให้บันทึก PNG · Instagram Story ใช้สติกเกอร์ลิงก์เพิ่มลิงก์ด้านล่าง</p>
+      <p id="share-image-help" class="small muted">ไฟล์ PNG อยู่ในดาวน์โหลดของเครื่อง หากไม่พบไฟล์ เปิดวิธีบันทึกด้านล่าง · Instagram Story ใช้สติกเกอร์ลิงก์เพิ่มลิงก์</p>
+      <details id="share-save-help" class="share-save-help"><summary>บันทึกภาพไม่ได้? ดูวิธีบันทึกอีกทาง</summary><p class="small">บนมือถือ ให้แตะภาพด้านล่างค้าง แล้วเลือกบันทึกรูปภาพ หากเปิดผ่าน Facebook, Messenger หรือ LINE แล้วไม่มีเมนูนี้ ให้เปิดหน้านี้ใน Safari หรือ Chrome แล้วลองอีกครั้ง หรือใช้ปุ่มแชร์ภาพเพื่อเลือกแอปที่รองรับ</p><img id="share-save-preview" alt="" width="1080" height="1920"><p class="small muted">บนคอมพิวเตอร์ คลิกขวาที่ภาพแล้วเลือกบันทึกรูปภาพ ภาพนี้เป็นไฟล์เดียวกับปุ่มดาวน์โหลด</p></details>
       <label class="caption-label" for="share-caption-preview">ข้อความสำหรับแชร์</label><textarea id="share-caption-preview" class="share-caption-preview resize-none" rows="7" readonly></textarea><button type="button" class="secondary share-caption" id="share-copy-caption" disabled>คัดลอกผลลัพธ์พร้อมลิงก์</button>
       <hr>
       <h3 id="share-link-heading">รายละเอียด Archetype ที่ฉันได้</h3><label for="share-link" class="small">ลิงก์อ่านรายละเอียด Archetype</label><div class="share-link-row"><input id="share-link" type="url" readonly><button type="button" class="secondary" id="share-copy-link" disabled>คัดลอกลิงก์</button></div>

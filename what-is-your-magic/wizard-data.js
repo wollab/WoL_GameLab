@@ -75,4 +75,20 @@ const WIZARD_QUOTES = {
   spellblade:"ฝึกจนเข้าใจ แล้วเลือกใช้ให้ตรงจังหวะ",
   "blood-mage":"เข้าใจต้นทุนของทางเลือก แล้วลงมืออย่างมีความหมาย"
 };
-WIZARD_ARCHETYPES.forEach(type=>{type.quote=WIZARD_QUOTES[type.id];});
+const WIZARD_THAI_ROLES = {
+  mage:"นักเวทสารพัดศาสตร์", scholar:"นักปราชญ์", elementalist:"นักเวทธาตุ",
+  geomancer:"นักเวทภูมิศาสตร์", chronomancer:"นักเวทกาลเวลา", diviner:"นักพยากรณ์",
+  "force-mage":"นักเวทพลัง", healer:"นักเยียวยา", priest:"นักบวช",
+  "holy-knight":"อัศวินศักดิ์สิทธิ์", warden:"ผู้พิทักษ์", beastmaster:"ผู้ผูกมิตรกับสัตว์",
+  transmuter:"นักเล่นแร่แปรธาตุ", alchemist:"นักปรุงสูตรเวท",
+  necromancer:"นักเวทปลุกวิญญาณ", warlock:"นักเวทพันธสัญญา", summoner:"นักอัญเชิญ",
+  "spirit-medium":"ผู้สื่อสารกับวิญญาณ", shaman:"หมอผี", ritualist:"นักประกอบพิธี",
+  illusionist:"นักสร้างภาพลวงตา", enchanter:"นักร่ายมนตร์", bard:"นักขับขาน",
+  mimic:"นักเวทเลียนแบบ", artificer:"นักประดิษฐ์เวท", spellblade:"นักดาบเวท",
+  "blood-mage":"นักเวทโลหิต"
+};
+WIZARD_ARCHETYPES.forEach(type=>{
+  type.quote=WIZARD_QUOTES[type.id];
+  type.thaiRole=WIZARD_THAI_ROLES[type.id];
+  type.roleDescription=type.desc.startsWith(type.thaiRole)?type.desc:type.thaiRole+' '+type.desc;
+});
