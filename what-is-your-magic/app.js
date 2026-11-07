@@ -28,7 +28,7 @@
   }
   function route(){
     const [name,id,part]=location.hash.slice(1).split("/");
-    if(ranked.length)history.replaceState({magicScores:{...answers}},"",location.href);
+    if(ranked.length)history.replaceState({...history.state,magicScores:{...answers}},"",location.href);
     let chapter;
     if(name==="wizard"){
       if(!WizardPages.profile(id,{ranked})){show("not-found");return;}
@@ -76,6 +76,7 @@
     questions=[...shuffled(QUESTIONS.slice(0,-1)).map(q=>({...q,options:shuffled(q.options)})), {...QUESTIONS[QUESTIONS.length-1],options:shuffled(QUESTIONS[QUESTIONS.length-1].options)}];
     step=0;choices=[];
     if(location.hash!=="#quiz")history.pushState({},"","#quiz");else history.replaceState({},"","#quiz");
+    WizardStats.begin();
     show("quiz");renderQuestion();
   }
   function renderQuestion(){
@@ -121,11 +122,12 @@
     answers=Object.fromEntries(angleOrder.map(id=>[id,0]));
     choices.forEach((opt,i)=>{answers[opt.move]+=questions[i].weight||1;});
     step=questions.length;
-    renderResult();history.replaceState({magicScores:{...answers}},"","#result");show("result");
+    renderResult();history.replaceState({...history.state,magicScores:{...answers}},"","#result");show("result");WizardStats.complete(answers);
   }
   function renderResult(){
     ranked=WizardMatching.matchWizards(answers,WIZARD_ARCHETYPES);
     const winner=ranked[0],f=WIZARD_FAMILIES[winner.family];
+    WizardStats.show(el("result-statistics-panel"),winner.id);
     el("result").style.setProperty("--family-color",f.color);
     el("result").dataset.family=winner.family;
     el("result-art").replaceChildren(WizardUI.heroVisual(winner));
@@ -166,7 +168,7 @@
       box.append(WizardUI.portrait(t,"alternative-portrait",true),label,$("span","small muted",t.matchScore+" แต้มจับคู่"),WizardUI.icon("arrow"));alt.append(box);
     });
     renderMatrix();
-    WizardUI.chapters("result-chapters","#result",[["intro","บทนำ"],["matrix","9 Learning Angles"],["signature","Learning Signature"],["strength","จุดแข็ง"],["nearby","Wizard ใกล้เคียง"],["quest","Growth Quest"]]);
+    WizardUI.chapters("result-chapters","#result",[["intro","บทนำ"],["statistics","สถิติผลแบบสอบถาม"],["matrix","9 Learning Angles"],["signature","Learning Signature"],["strength","จุดแข็ง"],["nearby","Wizard ใกล้เคียง"],["quest","Growth Quest"]]);
   }
   function renderMatrix(){
     const wrap=el("angle-matrix");
@@ -227,6 +229,6 @@
   });
   window.addEventListener("hashchange",route);
   const saved=history.state?.magicScores;
-  if(saved&&angleOrder.every(id=>Number.isInteger(saved[id])&&saved[id]>=0&&saved[id]<=7)&&angleOrder.reduce((sum,id)=>sum+saved[id],0)===19){answers=Object.fromEntries(angleOrder.map(id=>[id,saved[id]]));renderResult();}
+  if(saved&&angleOrder.every(id=>Number.isInteger(saved[id])&&saved[id]>=0&&saved[id]<=7)&&angleOrder.reduce((sum,id)=>sum+saved[id],0)===19){answers=Object.fromEntries(angleOrder.map(id=>[id,saved[id]]));renderResult();WizardStats.resume(answers);}
   route();
 })();

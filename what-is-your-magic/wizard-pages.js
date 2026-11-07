@@ -54,10 +54,11 @@
     const sig=node('section','chapter');sig.id='profile-signature';sig.append(heading('Learning Signature','book'),node('p','section-intro','สามมุมการเรียนรู้ที่ใช้เป็นลายเซ็นของ Wizard สายนี้'),signature(type));
     const strength=node('section','chapter');strength.id='profile-strength';strength.append(heading('จุดแข็งที่ชวนสำรวจ','spark'),node('p','large-copy',type.gift),node('p','muted','ลองนึกถึงเหตุการณ์ที่คุณเคยใช้มุมเหล่านี้ แล้วสังเกตว่ามันช่วยให้เข้าใจหรือทำสิ่งต่าง ๆ ได้อย่างไร'));
     const quest=node('section','chapter');quest.id='profile-quest';quest.append(heading('Growth Quest','quest'),node('p','large-copy',type.quest),node('p','muted','ลองทำเป็นกิจกรรมเล็ก ๆ แล้วทบทวนว่าได้เรียนรู้อะไร ไม่จำเป็นต้องทำให้ได้เหมือนคำอธิบายทุกข้อ'));
-    wrap.append(intro,sig,strength,quest);
+    const statistics=node('section','chapter');statistics.id='profile-statistics';WizardStats.show(statistics,type.id);
+    wrap.append(intro,statistics,sig,strength,quest);
     const more=node('section','chapter related-chapter');more.id='profile-related';more.append(heading('Wizard ที่มี Learning Signature ใกล้กัน','people'),node('p','section-intro','สำรวจสายที่ใช้มุมการเรียนรู้ร่วมกัน แล้วเลือกอ่านสิ่งที่รู้สึกเชื่อมโยงกับคุณ'));
     const grid=node('div','wizard-grid');related(type).forEach(t=>grid.append(card(t)));more.append(grid);wrap.append(more);
-    WizardUI.chapters('profile-chapters','#wizard/'+id,[['intro','บทนำ'],['signature','Learning Signature'],['strength','จุดแข็ง'],['quest','Growth Quest'],['related','Wizard ใกล้เคียง']]);
+    WizardUI.chapters('profile-chapters','#wizard/'+id,[['intro','บทนำ'],['statistics','สถิติผลแบบสอบถาม'],['signature','Learning Signature'],['strength','จุดแข็ง'],['quest','Growth Quest'],['related','Wizard ใกล้เคียง']]);
     return true;
   }
   root.WizardPages={catalog,profile,related};

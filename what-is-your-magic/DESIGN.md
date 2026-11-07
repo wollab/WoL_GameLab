@@ -6,6 +6,12 @@ purpose: Maintain the approved scope and current visual implementation choices
 
 # 27 Wizards of Learning — web design direction
 
+## Aggregate result statistics — 7 November 2026
+
+Chief approved aggregate archetype distribution on both personal results and every dynamic/static archetype profile, then added aggregate 9 Learning Angles. Use one shared result-stats.js card and current Family tokens, without increasing hero height. Show actual count/denominator and first collection date; expandable lists cover27types and9angles. Archetype % = this type/recorded completed quizzes; Angle % = accumulated angle points/all accumulated points, with its own covered-result denominator. Clearly label attempts rather than people; zero/outage states never invent percentages. Retry on failure and keep quiz/share usable independently. Server validates legal scores and recomputes matching; scores enter the RPC only to atomically increment angle counters, never stored per attempt. Anonymous run UUID/version/archetype/time are stored for idempotency. Profile reads/refresh don't write; intentional retake starts a new run. Separate test/production datasets. A signed completion ticket reduces replay, not a guarantee of unique humans or bot-proof survey validity.
+
+Chief-approved wording revision: only the creator option under “มีเรื่องที่อ่านหรือฟังแล้วยังไม่ค่อยเข้าใจ คุณมักจะ...” becomes “ลองจำลองสถานการณ์ในหัว เพื่อช่วยให้เข้าใจเรื่องนั้นมากขึ้น”. sync-quiz.cjs applies this explicit override after reading the unchanged original source; move, weight and other options remain unchanged.
+
 ## Optional WoL audience invitation — 7 November 2026
 
 Chief approved a simple signup entry before any profile/login system. After the result reading and share/retake actions, show one optional invitation using the current Family accent/background tokens, existing typography and book icon. Link to the verified published Mailchimp landing page for WoL contact 2 in a new tab, retaining the quiz result. Explain monthly learning/game ideas and optional signup/unsubscribe. No gated result, popup interruption, score transmission, account creation, unprepared resource promise or new backend. UTM labels identify this result-page entry only. The destination form owns collection and subscription state; do not claim subscription succeeded merely from clicking the link.

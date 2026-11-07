@@ -18,8 +18,8 @@ const server=http.createServer((req,res)=>{
   const folder=path.join(root,'assets/social/wizards');fs.mkdirSync(folder,{recursive:true});
   for(const type of context.types){
    const family=context.families[type.family],url=publicBase+'share/'+type.id+'/',image=publicBase+'assets/social/wizards/'+type.id+'.jpg';
-   const bytes=await p.evaluate(async id=>{const result=await WizardShareCard.render(WIZARD_ARCHETYPES.find(t=>t.id===id),'og');return Array.from(new Uint8Array(await result.blob.arrayBuffer()));},type.id);
-   fs.writeFileSync(path.join(folder,type.id+'.jpg'),Buffer.from(bytes));
+   if(!process.env.SKIP_OG){const bytes=await p.evaluate(async id=>{const result=await WizardShareCard.render(WIZARD_ARCHETYPES.find(t=>t.id===id),'og');return Array.from(new Uint8Array(await result.blob.arrayBuffer()));},type.id);
+   fs.writeFileSync(path.join(folder,type.id+'.jpg'),Buffer.from(bytes));}
    const title=type.name+' · รายละเอียด Archetype · 27 Wizards of Learning';
    const desc=type.desc+' · มาค้นพบ Wizard ของคุณใน 10 คำถาม';
    const cardAlt=type.name+' · '+family.title+' · '+type.desc;
@@ -27,6 +27,7 @@ const server=http.createServer((req,res)=>{
    const profile=await p.evaluate(id=>{
     WizardPages.profile(id);
     const copy=document.getElementById('wizard-profile').cloneNode(true);
+    const stats=copy.querySelector('#profile-statistics');if(stats){stats.replaceChildren();const note=document.createElement('p');note.textContent='สถิติผลแบบสอบถามแสดงเมื่อเปิด JavaScript และเชื่อมต่ออินเทอร์เน็ต';stats.append(note);}
     copy.querySelectorAll('.return-result,.chapter-picker,#profile-match').forEach(e=>e.remove());
     copy.querySelectorAll('button').forEach(e=>e.disabled=true);
     copy.querySelectorAll('[src]').forEach(e=>{if(e.getAttribute('src').startsWith('assets/'))e.setAttribute('src','../../'+e.getAttribute('src'));});
@@ -42,7 +43,7 @@ const server=http.createServer((req,res)=>{
     return copy.innerHTML;
    },type.id);
    const modal=await p.locator('#share-dialog').evaluate(e=>{const copy=e.cloneNode(true);copy.querySelectorAll('button').forEach(b=>b.disabled=true);return copy.outerHTML;});
-   const scripts=['quiz-data.js','wizard-data.js','wizard-matching.js','artwork.js','share-card.js','share.js','static-profile.js'].map(src=>'<script defer src="../../'+src+'?v=20261106-transparent"></script>').join('');
+   const scripts=['quiz-data.js','wizard-data.js','wizard-matching.js','result-stats.js','artwork.js','share-card.js','share.js','static-profile.js'].map(src=>'<script defer src="../../'+src+'?v=20261107-stats"></script>').join('');
    const html=`<!doctype html>
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escape(title)}</title><meta name="description" content="${escape(desc)}"><link rel="canonical" href="${url}">
