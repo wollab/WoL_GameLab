@@ -24,7 +24,7 @@
       const title={home:"main-title",result:"result-title",wizards:"catalog-title","wizard-profile":"profile-title","not-found":"missing-title"}[page];
       if(title)el(title).focus({preventScroll:true});
     }
-    document.title=(page==="wizard-profile"?el("profile-title").textContent+" · ":"")+"27 Wizards of Learning · 27 Wizard Archetypes";
+    document.title=(page==="wizard-profile"?el("profile-title").textContent+" · ":"")+"What Is Your Magic? แบบสำรวจวิธีเรียนรู้ | Wizards of Learning";
   }
   function route(){
     const [name,id,part]=location.hash.slice(1).split("/");
