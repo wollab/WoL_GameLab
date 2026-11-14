@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/result-stats.js": {
+      "includeFiles": "{quiz-data.js,wizard-data.js,wizard-matching.js}",
+      "maxDuration": 15
+    }
+  }
+}

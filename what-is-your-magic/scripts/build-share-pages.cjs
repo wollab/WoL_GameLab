@@ -18,8 +18,8 @@ const server=http.createServer((req,res)=>{
   const folder=path.join(root,'assets/social/wizards');fs.mkdirSync(folder,{recursive:true});
   for(const type of context.types){
    const family=context.families[type.family],url=publicBase+'share/'+type.id+'/',image=publicBase+'assets/social/wizards/'+type.id+'.jpg';
-   const bytes=await p.evaluate(async id=>{const result=await WizardShareCard.render(WIZARD_ARCHETYPES.find(t=>t.id===id),'og');return Array.from(new Uint8Array(await result.blob.arrayBuffer()));},type.id);
-   fs.writeFileSync(path.join(folder,type.id+'.jpg'),Buffer.from(bytes));
+   if(!process.env.SKIP_OG){const bytes=await p.evaluate(async id=>{const result=await WizardShareCard.render(WIZARD_ARCHETYPES.find(t=>t.id===id),'og');return Array.from(new Uint8Array(await result.blob.arrayBuffer()));},type.id);
+   fs.writeFileSync(path.join(folder,type.id+'.jpg'),Buffer.from(bytes));}
    const title=type.name+' · รายละเอียด Archetype · 27 Wizards of Learning';
    const desc=type.desc+' · มาค้นพบ Wizard ของคุณใน 10 คำถาม';
    const cardAlt=type.name+' · '+family.title+' · '+type.desc;
@@ -27,6 +27,7 @@ const server=http.createServer((req,res)=>{
    const profile=await p.evaluate(id=>{
     WizardPages.profile(id);
     const copy=document.getElementById('wizard-profile').cloneNode(true);
+    const stats=copy.querySelector('#profile-statistics');if(stats){stats.replaceChildren();const note=document.createElement('p');note.textContent='สถิติผลแบบสอบถามแสดงเมื่อเปิด JavaScript และเชื่อมต่ออินเทอร์เน็ต';stats.append(note);}
     copy.querySelectorAll('.return-result,.chapter-picker,#profile-match').forEach(e=>e.remove());
     copy.querySelectorAll('button').forEach(e=>e.disabled=true);
     copy.querySelectorAll('[src]').forEach(e=>{if(e.getAttribute('src').startsWith('assets/'))e.setAttribute('src','../../'+e.getAttribute('src'));});
@@ -42,13 +43,13 @@ const server=http.createServer((req,res)=>{
     return copy.innerHTML;
    },type.id);
    const modal=await p.locator('#share-dialog').evaluate(e=>{const copy=e.cloneNode(true);copy.querySelectorAll('button').forEach(b=>b.disabled=true);return copy.outerHTML;});
-   const scripts=['quiz-data.js','wizard-data.js','wizard-matching.js','artwork.js','share-card.js','share.js','static-profile.js'].map(src=>'<script defer src="../../'+src+'?v=20261106-transparent"></script>').join('');
+   const scripts=['quiz-data.js','wizard-data.js','wizard-matching.js','result-stats.js','artwork.js','share-card.js','share.js','static-profile.js'].map(src=>'<script defer src="../../'+src+'?v=20261107-stats"></script>').join('');
    const html=`<!doctype html>
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escape(title)}</title><meta name="description" content="${escape(desc)}"><link rel="canonical" href="${url}">
 <meta property="og:type" content="website"><meta property="og:locale" content="th_TH"><meta property="og:site_name" content="Wizards of Learning"><meta property="og:title" content="${escape(title)}"><meta property="og:description" content="${escape(desc)}"><meta property="og:url" content="${url}"><meta property="og:image" content="${image}"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="${escape(cardAlt)}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escape(title)}"><meta name="twitter:description" content="${escape(desc)}"><meta name="twitter:image" content="${image}"><meta name="twitter:image:alt" content="${escape(cardAlt)}">
-<link rel="icon" href="../../assets/brand/wol-logo.png"><link rel="stylesheet" href="../../style.css?v=20261106-transparent">${scripts}</head>
+<link rel="icon" href="../../assets/brand/wol-logo.png"><link rel="stylesheet" href="../../style.css?v=20261114-stats">${scripts}</head>
 <body data-family="${type.family}"><a class="skip-link" href="#main">ข้ามไปเนื้อหา</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../"><img class="brand-logo" src="../../assets/brand/wol-logo.png" alt="" width="64" height="64"><span>Wizards of Learning</span></a><nav aria-label="เมนูหลัก"><a href="../../">ค้นพบ Wizard ของฉัน</a><a href="../../#wizards">27 Wizard</a></nav></div></header>
 <main id="main" class="static-profile" data-archetype="${type.id}" tabindex="-1" aria-labelledby="profile-title" style="--family-color:${family.color}">${profile}</main>${modal}
 <footer class="site-footer"><p>27 Wizards of Learning · What Is Your Learning Magic?</p><a href="../../">ค้นพบเวทมนตร์ของคุณใน 10 คำถาม →</a></footer></body></html>`;
