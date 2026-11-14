@@ -1,0 +1,6 @@
+{
+  "name": "yourmagic",
+  "private": true,
+  "type": "module",
+  "scripts": { "test:statistics": "node --test tests/statistics.test.mjs", "dev:statistics": "node server/dev.mjs" }
+}
