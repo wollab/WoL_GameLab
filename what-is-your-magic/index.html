@@ -23,7 +23,7 @@
   <meta name="twitter:image" content="https://wollab.github.io/WoL_GameLab/what-is-your-magic/assets/social/og-learning-magic-v1.jpg">
   <meta name="twitter:image:alt" content="ค้นพบเวทมนตร์ในวิธีเรียนรู้ของคุณ · 10 คำถาม · 27 สายเวท พร้อม Wizard ทั้งห้าร่วมสร้างสะพานจากความรู้">
   <link rel="icon" href="assets/brand/wol-logo.png" type="image/png">
-  <link rel="stylesheet" href="style.css?v=20261114-stats">
+  <link rel="stylesheet" href="style.css?v=20261124-gathering">
   <script defer src="startup.js?v=20261105-art27"></script>
   <script defer src="quiz-data.js?v=20261105-art27"></script>
   <script defer src="wizard-data.js?v=20261106-transparent"></script>
@@ -51,7 +51,7 @@
 <main id="main" tabindex="-1">
   <section class="page active" id="home" aria-labelledby="main-title">
     <div class="hero hero-home">
-      <span class="hero-mark" data-icon="book"></span>
+      <div class="hero-home-copy">
       <h1 id="main-title">27 Wizards <em>of Learning</em></h1>
       <p class="subtitle">What Is Your Learning Magic?</p>
       <p class="lead">วิธีเรียนรู้ของคุณ มีเวทมนตร์ซ่อนอยู่แบบไหน?</p>
@@ -59,6 +59,11 @@
       <p id="startup-status" class="small" role="status">กำลังเตรียมแบบสอบถาม…</p>
       <noscript><p>โปรดเปิด JavaScript ใน Browser แล้วโหลดหน้านี้ใหม่เพื่อเริ่มแบบสอบถาม</p></noscript>
       <p class="hero-note">10 คำถาม · ไม่มีถูกผิด · ไม่มีตัวตนตายตัว</p>
+      </div>
+      <picture class="hero-gathering">
+        <source media="(max-width: 760px)" srcset="assets/hero/wizard-gathering-mobile-v1.webp" width="1536" height="1024">
+        <img src="assets/hero/wizard-gathering-wide-v1.webp" width="2172" height="724" alt="Healer ปลูกต้นไม้ Mage อ่านหนังสือ Artificer สร้างนกกลไก Necromancer สำรวจความรู้ และ Bard เล่นดนตรีร่วมกัน" fetchpriority="high" decoding="async">
+      </picture>
     </div>
     <div class="content-width">
       <div class="intro-steps" aria-label="เส้นทางค้นพบเวทมนตร์">

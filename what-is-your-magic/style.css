@@ -162,3 +162,39 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{font-family:Kanit,system-ui,sans-serif;line-hei
 .statistics-panel{padding:26px;border:1px solid var(--border);border-radius:16px;background:var(--bg);margin:22px 0;overflow-wrap:anywhere}.statistics-panel h2{font-size:24px;line-height:1.5;margin:8px 0 16px}.statistics-figure{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.statistics-value{font-size:48px;line-height:1.1;letter-spacing:-1px;color:var(--accent)}.statistics-base{font-weight:600}.statistics-distribution summary{cursor:pointer;color:var(--accent);font-weight:600;padding:12px 0}.statistics-list{list-style:none;padding:0;margin:8px 0}.statistics-list li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;padding:10px 8px;border-bottom:1px solid var(--border);font-size:14px;align-items:center}.statistics-list li.statistics-current{background:var(--surface);color:var(--accent);font-weight:700}.statistics-list small{white-space:nowrap}.statistics-retry{font:inherit;color:var(--accent);text-decoration:underline;border:0;background:none;cursor:pointer;padding:5px}.statistics-explanation{margin-top:20px}
 @media(max-width:760px){.statistics-panel{padding:20px 16px}.statistics-panel h2{font-size:22px}.statistics-value{font-size:42px}.statistics-list li{gap:8px;font-size:12px}.statistics-list small{font-size:10px}}
 .statistics-angles summary{cursor:pointer;color:var(--accent);font-weight:600;padding:14px 0}.statistics-angles{border-top:1px solid var(--border);margin-top:14px}.statistics-angles h3{font-size:18px}
+
+/* Homepage gathering uses the existing lilac, surface and type tokens. */
+.hero.hero-home {
+  padding: 44px 0 0;
+  background: linear-gradient(var(--bg) 0 68%, var(--surface) 100%);
+}
+.hero-home::after { content: none; }
+.hero-home-copy {
+  position: relative;
+  z-index: 1;
+  padding: 0 24px;
+}
+.hero-home h1 { margin-bottom: 16px; }
+.hero-gathering {
+  display: block;
+  max-width: 1800px;
+  margin: -68px auto 0;
+}
+.hero-gathering img {
+  display: block;
+  width: 100%;
+  height: auto;
+  mask-image: linear-gradient(transparent, #000 24%, #000 94%, transparent);
+}
+#home > .hero-home + .content-width .intro-steps { margin-top: 12px; }
+@media (max-width: 760px) {
+  .hero.hero-home { padding-top: 30px; }
+  .hero-home-copy { padding-inline: 20px; }
+  .hero-home .lead { margin-bottom: 20px; }
+  .hero-gathering { margin-top: 8px; }
+  .hero-gathering img {
+    aspect-ratio: 3 / 2;
+    mask-image: linear-gradient(transparent, #000 13%, #000 92%, transparent);
+  }
+  #home > .hero-home + .content-width .intro-steps { margin-top: 18px; }
+}
